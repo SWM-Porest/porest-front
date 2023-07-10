@@ -1,8 +1,8 @@
-name: CD
+name: Build
 
 on:
     push:
-        branches: [main]
+        branches: [fe-dev]
 
 jobs:
     deploy:
