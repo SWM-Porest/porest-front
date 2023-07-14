@@ -1,0 +1,26 @@
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  padding: 0 20px;
+  background-color: #f2f2f2;
+}
+
+.restaurant-name {
+  cursor: pointer;
+  font-size: 20px;
+  text-align: center;
+}
+
+.cart-icon {
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+}
+
+/* 이미지 크기 조정을 위한 스타일 추가 */
+.cart-icon-small {
+  width: 20px;
+  height: 20px;
+}
