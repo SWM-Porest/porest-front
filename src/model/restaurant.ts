@@ -22,7 +22,7 @@ export type Address = {
   zipCode: number
 }
 
-export interface Menu {
+export type Menu = {
   name: string
   price: number
   category: string

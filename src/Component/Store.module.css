@@ -1,5 +1,15 @@
-.box {
-  width: 200px;
-  height: 50px;
-  background-color: blue;
+/* 이미지 크기 조정을 위한 스타일 추가 */
+.restaurant-img {
+  width: 100%;
+}
+.menutype {
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.card-container {
+  display: flex;
+  align-items: center;
+  text-align: center;
 }
