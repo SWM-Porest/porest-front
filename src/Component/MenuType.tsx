@@ -1,14 +1,18 @@
 import React from 'react'
-import styles from './MenuType.module.css' // CSS 모듈 import
+import styled from 'styled-components'
+
+const StyledContainer = styled.div`
+  padding: 20px;
+`
 
 const MenuType: React.FC = () => {
   return (
-    <div className={styles['type-container']}>
+    <StyledContainer>
       <div>Typeimage</div>
       <div>
         <p>식사류</p>
       </div>
-    </div>
+    </StyledContainer>
   )
 }
 

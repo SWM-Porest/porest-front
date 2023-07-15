@@ -1,16 +1,19 @@
 import { Menu } from 'model/restaurant'
 import React from 'react'
-import styles from './MenuCard.module.css' // CSS 모듈 import
-
+import styled from 'styled-components'
 interface OwnProps {
   info: Menu
 }
+const StyledContainer = styled.div`
+  text-align: center;
+  padding: 20px;
+`
 const MenuCard: React.FC<OwnProps> = ({ info }) => {
   return (
-    <div className={styles['card-container']}>
+    <StyledContainer>
       <div>{info.name}</div>
       <div>{info.price}</div>
-    </div>
+    </StyledContainer>
   )
 }
 export default MenuCard
