@@ -1,4 +1,3 @@
-import Footer from 'Component/Footer'
 import Header from 'Component/Header'
 import Ingredients from 'Component/MenuComponent/Ingredients'
 import SelectSpicy from 'Component/MenuComponent/SelectSpicy'
@@ -60,7 +59,6 @@ const MenuPage: React.FC = () => {
       <SelectSpicy hasSpicyLevel={true} onSpicyLevelSelected={handleSpicyLevelSelected} />
       <Ingredients info={myRestaurant.menu[0]} />
       <SpecialInstructions onSubmit={handleFormSubmit} />
-      <Footer />
     </div>
   )
 }
