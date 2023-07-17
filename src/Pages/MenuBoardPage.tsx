@@ -1,4 +1,3 @@
-import Footer from 'Component/Footer'
 import Header from 'Component/Header'
 import Store from 'Component/MenuBoardComponent/Store'
 import { Restaurant } from 'model/restaurant'
@@ -40,7 +39,6 @@ const MenuBoardPage: React.FC = () => {
       <Header HeaderName={myRestaurant.name} />
       <StyledImage src="img/restaurant-img.jpg" alt="레스토랑 메인 이미지" />
       <Store info={myRestaurant} />
-      <Footer />
     </div>
   )
 }
