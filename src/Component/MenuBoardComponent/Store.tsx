@@ -15,12 +15,7 @@ const StyledContainer = styled.div`
 const Store: React.FC<OwnProps> = ({ info }) => {
   return (
     <div>
-      <StyledContainer>
-        <MenuType />
-        <MenuType />
-        <MenuType />
-        <MenuType />
-      </StyledContainer>
+      <MenuType />
       <StyledContainer>
         <MenuCard info={info.menu[0]} />
         <MenuCard info={info.menu[1]} />
