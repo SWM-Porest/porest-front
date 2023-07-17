@@ -1,4 +1,5 @@
 import CartPrice from 'Component/CartComponent/CartPrice'
+import Footer from 'Component/Footer'
 import Header from 'Component/Header'
 import { Cart } from 'model/restaurant'
 import React, { useState } from 'react'
@@ -15,6 +16,7 @@ const CartPage: React.FC = () => {
     <div>
       <Header HeaderName="Cart" />
       <CartPrice cartprice={myCart} />
+      <Footer />
     </div>
   )
 }
