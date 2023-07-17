@@ -2,7 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 
 const StyledContainer = styled.div`
-  padding: 20px;
+  padding: 30px;
+  margin: 10px;
+  background-color: lightgray;
+  font-size: 30px;
 `
 
 const MenuType: React.FC = () => {

@@ -1,19 +1,21 @@
-import { Menu } from 'model/restaurant'
 import React from 'react'
 import styled from 'styled-components'
 interface OwnProps {
-  info: Menu
+  ingre: string
 }
 const StyledContainer = styled.div`
   text-align: center;
   padding: 20px;
+  margin: 10px;
+  background-color: lightgray;
+  font-size: 15px;
 `
-const MenuCard: React.FC<OwnProps> = ({ info }) => {
+
+const IngreCard: React.FC<OwnProps> = ({ ingre }) => {
   return (
     <StyledContainer>
-      <div>{info.name}</div>
-      <div>{info.price}</div>
+      <div>{ingre}</div>
     </StyledContainer>
   )
 }
-export default MenuCard
+export default IngreCard

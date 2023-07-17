@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 interface HeaderProps {
-  restaurantName: string
+  HeaderName: string
 }
 const StyledContainer = styled.div`
   display: flex;
@@ -14,19 +14,30 @@ const StyledContainer = styled.div`
 `
 const StyledLink = styled(Link)`
   cursor: pointer;
-  font-size: 20px;
+  font-size: 50px;
   text-align: center;
+  color: inherit;
+  text-decoration: none;
+  &:hover {
+    transform: translateY(-2px);
+    transition: 1s;
+  }
 `
 const StyledImg = styled.img`
   cursor: pointer;
-  width: 20px;
-  height: 20px;
+  width: 50px;
+  height: 50px;
+  left: 500px;
+  &:hover {
+    transform: translateY(-2px);
+    transition: 1s;
+  }
 `
 
-const Header: React.FC<HeaderProps> = ({ restaurantName }) => {
+const Header: React.FC<HeaderProps> = ({ HeaderName }) => {
   return (
     <StyledContainer>
-      <StyledLink to="/">{restaurantName}</StyledLink>
+      <StyledLink to="/">{HeaderName}</StyledLink>
       <Link to="/cart">
         <StyledImg src="img/cart-icon.png" alt="장바구니" />
       </Link>
