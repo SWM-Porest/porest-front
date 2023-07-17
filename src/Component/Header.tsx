@@ -19,7 +19,7 @@ const StyledLink = styled(Link)`
   color: inherit;
   text-decoration: none;
   &:hover {
-    transform: translateY(-2px);
+    transform: translateY(-4px);
     transition: 1s;
   }
 `
@@ -33,7 +33,7 @@ const StyledImg = styled.img`
   height: 50px;
   left: 500px;
   &:hover {
-    transform: translateY(-2px);
+    transform: translateY(-4px);
     transition: 1s;
   }
 `
