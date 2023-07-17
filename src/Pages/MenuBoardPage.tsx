@@ -28,7 +28,7 @@ const data: Restaurant = {
 }
 
 const StyledImage = styled.img`
-  width: 900px;
+  width: 100%;
   padding: 25px;
 `
 
