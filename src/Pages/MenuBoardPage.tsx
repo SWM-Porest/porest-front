@@ -1,5 +1,6 @@
 import Footer from 'Component/Footer'
 import Header from 'Component/Header'
+import MainBanner from 'Component/MenuBoardComponent/MainBanner'
 import Store from 'Component/MenuBoardComponent/Store'
 import { Restaurant } from 'model/restaurant'
 import React, { useState } from 'react'
@@ -45,18 +46,18 @@ const data: Restaurant = {
   ],
 }
 
-const StyledImage = styled.img`
+const StyledBanner = styled(MainBanner)`
   width: 100%;
   padding: 25px;
 `
 
 const MenuBoardPage: React.FC = () => {
   const [myRestaurant, setMyRestaurant] = useState<Restaurant>(data)
-
+  const images = ['img/restaurant-img.jpg', 'img/환타.jpg', 'img/짜장.png']
   return (
     <div className="MenuBoard">
       <Header HeaderName={myRestaurant.name} />
-      <StyledImage src="img/restaurant-img.jpg" alt="레스토랑 메인 이미지" />
+      <StyledBanner images={images} />
       <Store info={myRestaurant} />
       <Footer />
     </div>
