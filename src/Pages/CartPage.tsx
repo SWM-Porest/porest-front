@@ -1,8 +1,9 @@
 import CartPrice from 'Component/CartComponent/CartPrice'
-import Footer from 'Component/Footer'
 import Header from 'Component/Header'
 import { Cart } from 'model/restaurant'
 import React, { useState } from 'react'
+import styled from 'styled-components'
+
 const data: Cart = {
   menu: [
     {
@@ -25,14 +26,19 @@ const data: Cart = {
     },
   ],
 }
+const StyledCartPrice = styled(CartPrice)`
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+`
+
 const CartPage: React.FC = () => {
   const [myCart, setMyCart] = useState<Cart>(data)
 
   return (
     <div>
       <Header HeaderName="Cart" />
-      <CartPrice cartprice={myCart} />
-      <Footer />
+      <StyledCartPrice cartprice={myCart} />
     </div>
   )
 }
