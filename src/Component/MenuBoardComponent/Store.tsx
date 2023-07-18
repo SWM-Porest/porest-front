@@ -12,14 +12,6 @@ interface Props {
   info: Menu
 }
 
-const StyledLink = styled(Link)`
-  text-align: center;
-  padding: 20px;
-  padding: 30px;
-  margin: 10px;
-  background-color: lightgray;
-  font-size: 30px;
-`
 const StyledImage = styled.img`
   width: 20%;
   padding: 20px;
@@ -36,12 +28,19 @@ const StyledH2 = styled.h2`
   border-radius: 25px 25px 0 0;
   background-color: lightgray;
 `
-const MenuCardContainer = styled.div`
+const MenuCardContainer = styled(Link)`
   display: flex;
   align-items: center;
   margin: 25px;
   border-radius: 25px;
   width: 100%;
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+  &:hover {
+    transform: translateY(-4px);
+    transition: 1s;
+  }
 `
 const StyledName = styled.p`
   padding-left: 20px;
@@ -77,7 +76,7 @@ export default Store
 
 const MenuCard: React.FC<Props> = ({ info }) => {
   return (
-    <MenuCardContainer>
+    <MenuCardContainer to={'/menu'}>
       <StyledImage src={info.img} alt="메뉴 이미지" />
       <div>
         <StyledName>{info.name}</StyledName>
