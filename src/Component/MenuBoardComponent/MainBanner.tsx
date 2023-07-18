@@ -1,4 +1,43 @@
 import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
+
+const SliderWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  padding: 25px;
+  margin: 5px;
+`
+
+const PreviousButton = styled.button`
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+`
+
+const NextButton = styled.button`
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+`
+
+const ArrowImage = styled.img`
+  width: 30px;
+  height: 30px;
+`
+
+const SliderImage = styled.img`
+  width: 100%;
+  height: auto;
+`
+
 interface SliderProps {
   images: string[]
 }
@@ -25,41 +64,19 @@ const MainBanner: React.FC<SliderProps> = ({ images }) => {
   }, [])
 
   return (
-    <div style={{ position: 'relative' }}>
+    <SliderWrapper>
       {currentImageIndex !== 0 && (
-        <button
-          onClick={previousImage}
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '10px',
-            transform: 'translateY(-50%)',
-            backgroundColor: 'transparent',
-            border: 'none',
-            cursor: 'pointer',
-          }}
-        >
-          <img src="img/left-arrow.png" alt="이전 이미지" style={{ width: '30px', height: '30px' }} />
-        </button>
+        <PreviousButton onClick={previousImage}>
+          <ArrowImage src="img/left-arrow.png" alt="이전 이미지" />
+        </PreviousButton>
       )}
-      <img src={images[currentImageIndex]} alt="슬라이더 이미지" style={{ width: '100%', height: 'auto' }} />
+      <SliderImage src={images[currentImageIndex]} alt="슬라이더 이미지" />
       {currentImageIndex !== images.length - 1 && (
-        <button
-          onClick={nextImage}
-          style={{
-            position: 'absolute',
-            top: '50%',
-            right: '10px',
-            transform: 'translateY(-50%)',
-            backgroundColor: 'transparent',
-            border: 'none',
-            cursor: 'pointer',
-          }}
-        >
-          <img src="img/right-arrow.png" alt="다음 이미지" style={{ width: '30px', height: '30px' }} />
-        </button>
+        <NextButton onClick={nextImage}>
+          <ArrowImage src="img/right-arrow.png" alt="다음 이미지" />
+        </NextButton>
       )}
-    </div>
+    </SliderWrapper>
   )
 }
 

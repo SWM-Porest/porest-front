@@ -53,7 +53,7 @@ const StyledBanner = styled(MainBanner)`
 
 const MenuBoardPage: React.FC = () => {
   const [myRestaurant, setMyRestaurant] = useState<Restaurant>(data)
-  const images = ['img/restaurant-img.jpg', 'img/환타.jpg', 'img/짜장.png']
+  const images = ['img/교동짬뽕.jpeg', 'img/메뉴판.jpeg', 'img/내부.jpeg']
   return (
     <div className="MenuBoard">
       <Header HeaderName={myRestaurant.name} />
