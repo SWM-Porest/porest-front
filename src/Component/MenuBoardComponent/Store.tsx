@@ -18,7 +18,7 @@ const StyledImage = styled.img`
 `
 const StyledContainer = styled.div`
   width: 100%;
-  padding: 20px;
+  padding: 10px;
 `
 const StyledH2 = styled.h2`
   margin: 0px;
@@ -42,14 +42,18 @@ const MenuCardContainer = styled(Link)`
     transition: 1s;
   }
 `
+const MenuCardsContainer = styled.div`
+  align-items: center;
+  margin: 0 10px 0 10px;
+`
 const StyledName = styled.p`
   padding-left: 20px;
-  margin: 0 5px 5px 5px;
+  margin: 5px;
   font-size: 40px;
 `
 const StyledPrice = styled.p`
   padding-left: 20px;
-  margin: 5px 5px 0 5px;
+  margin: 5px;
   font-size: 30px;
   color: #ff9100;
 `
@@ -58,16 +62,16 @@ const Store: React.FC<OwnProps> = ({ info }) => {
   return (
     <StyledContainer>
       <MenuType />
-      <div>
+      <MenuCardsContainer>
         <StyledH2>{info.menu[0].menutype}</StyledH2>
         <MenuCard info={info.menu[0]} />
         <MenuCard info={info.menu[1]} />
-      </div>
-      <div>
+      </MenuCardsContainer>
+      <MenuCardsContainer>
         <StyledH2>{info.menu[2].menutype}</StyledH2>
         <MenuCard info={info.menu[2]} />
         <MenuCard info={info.menu[2]} />
-      </div>
+      </MenuCardsContainer>
     </StyledContainer>
   )
 }
