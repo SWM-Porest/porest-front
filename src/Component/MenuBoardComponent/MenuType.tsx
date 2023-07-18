@@ -11,6 +11,7 @@ const StyledContainer = styled.div`
   padding: 30px;
   margin: 10px;
   font-size: 30px;
+  width: 100%;
 `
 const BoxContainer = styled.div`
   background-color: white;

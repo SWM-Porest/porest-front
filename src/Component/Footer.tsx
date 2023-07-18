@@ -4,15 +4,17 @@ const StyledContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
   background-color: #f2f2f2;
   border-radius: 10px;
-  width: 90%;
+  width: 100%;
+  padding: 5px;
 `
 const ParentContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 25px;
+  width: 100%;
 `
 const StyledLink = styled(Link)`
   cursor: pointer;
@@ -22,7 +24,6 @@ const StyledLink = styled(Link)`
   text-decoration: none;
   margin: 0px;
   padding: 10px;
-
   &:hover {
     transform: translateY(-4px);
     transition: 1s;

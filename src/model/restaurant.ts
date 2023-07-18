@@ -15,8 +15,10 @@ export type Address = {
 
 export type Menu = {
   name: string
+  menutype: string
   price: number
   category: string
   description: string
+  img: string
   ingre: string[]
 }
