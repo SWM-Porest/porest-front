@@ -36,6 +36,7 @@ const ArrowImage = styled.img`
 const SliderImage = styled.img`
   width: 100%;
   height: auto;
+  border-radius: 25px;
 `
 
 interface SliderProps {
