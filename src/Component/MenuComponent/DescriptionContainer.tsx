@@ -13,7 +13,7 @@ const TitleBox = styled.div`
   padding: 36px 36px 30px;
   border-radius: 15px;
   background: #fff;
-  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.15);
   width: 80%;
   margin: auto;
   z-index: auto;

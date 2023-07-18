@@ -9,7 +9,7 @@ const Container = styled.div`
 
 const ContainerBox = ({ children }: any) => {
   return (
-    <div>
+    <div style={{ background: 'white' }}>
       <Container>{children}</Container>
     </div>
   )

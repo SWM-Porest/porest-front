@@ -19,6 +19,7 @@ const Categoryli = styled.li`
   letter-spacing: -0.3px;
   text-align: center;
   background-color: #424242;
+  box-shadow: 0 3px 9px 0 rgba(0, 0, 0, 0.4);
 `
 
 const Categories = ({ ingre }: any) => {
@@ -28,7 +29,7 @@ const Categories = ({ ingre }: any) => {
 
   return (
     <React.Fragment>
-      <h2 style={{ fontSize: '3rem', margin: '16px' }}>제목</h2>
+      <h2 style={{ fontSize: '2rem', margin: '16px' }}>주요 재료</h2>
       <Categoryul>{ulelem}</Categoryul>
     </React.Fragment>
   )
