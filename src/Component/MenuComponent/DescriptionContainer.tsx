@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 const DContainerImg = styled.div`
   position: relative;
-  z-index: auto;
+  z-index: 10;
 `
 const DContainerDes = styled.div`
   position: relative;
@@ -16,7 +16,7 @@ const TitleBox = styled.div`
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.15);
   width: 80%;
   margin: auto;
-  z-index: auto;
+  z-index: 20;
 `
 const TitleInner = styled.div`
   width: 90%;
