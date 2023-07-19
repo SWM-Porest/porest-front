@@ -1,3 +1,4 @@
+import MenuPriceCard from 'Component/CartComponent/MenuPriceCard'
 import { Cart } from 'model/restaurant'
 import React from 'react'
 import styled from 'styled-components'
@@ -6,29 +7,41 @@ interface OwnProps {
   cartprice: Cart
 }
 const StyledContainer = styled.div`
-  text-align: center;
-  padding: 20px;
-  margin: 10px;
+  width: 100%;
   background-color: lightgray;
   font-size: 30px;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+const StyledLargeContainer = styled.div`
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 30px;
+  margin: 0;
+`
+const StyledH2 = styled.h2`
+  margin: 30px;
+`
+const StyledP = styled.p`
+  margin: 30px;
+  font-size: 30px;
+  color: #ff4d00;
+  font-weight: bold;
 `
 
 const CartPrice: React.FC<OwnProps> = ({ cartprice }) => {
   return (
-    <div>
+    <StyledLargeContainer>
+      <MenuPriceCard info={cartprice.menu[0]} />
+      <MenuPriceCard info={cartprice.menu[1]} />
       <StyledContainer>
-        <h4>{cartprice.menu[0].name}</h4>
-        <div>{cartprice.menu[0].price}</div>
+        <StyledH2> Total </StyledH2>
+        <StyledP>{cartprice.menu[0].price + cartprice.menu[1].price}원</StyledP>
       </StyledContainer>
-      <StyledContainer>
-        <h4>{cartprice.menu[1].name}</h4>
-        <div>{cartprice.menu[1].price}</div>
-      </StyledContainer>
-      <StyledContainer>
-        <h2> Total </h2>
-        <div>{cartprice.menu[0].price + cartprice.menu[1].price}</div>
-      </StyledContainer>
-    </div>
+    </StyledLargeContainer>
   )
 }
 export default CartPrice

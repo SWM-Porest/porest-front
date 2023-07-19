@@ -10,7 +10,7 @@ const StyledImage = styled.img`
   width: 20%;
   padding: 20px;
 `
-const MenuCardContainer = styled(Link)`
+const MenuCardLink = styled(Link)`
   display: flex;
   align-items: center;
   margin: 25px;
@@ -24,6 +24,12 @@ const MenuCardContainer = styled(Link)`
     transition: 1s;
   }
 `
+const StyledContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 15px 45px 15px 30px;
+`
 const StyledName = styled.p`
   padding-left: 20px;
   margin: 5px;
@@ -34,17 +40,18 @@ const StyledPrice = styled.p`
   margin: 5px;
   font-size: 30px;
   color: #ff9100;
+  font-weight: bold;
 `
 
-const MenuCard: React.FC<OwnProps> = ({ info }) => {
+const MenuPriceCard: React.FC<OwnProps> = ({ info }) => {
   return (
-    <MenuCardContainer to={'/menu'}>
+    <MenuCardLink to={'/menu'}>
       <StyledImage src={info.img} alt="메뉴 이미지" />
-      <div>
+      <StyledContainer>
         <StyledName>{info.name}</StyledName>
         <StyledPrice>{info.price}원</StyledPrice>
-      </div>
-    </MenuCardContainer>
+      </StyledContainer>
+    </MenuCardLink>
   )
 }
-export default MenuCard
+export default MenuPriceCard

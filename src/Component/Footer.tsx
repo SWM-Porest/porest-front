@@ -4,26 +4,38 @@ const StyledContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100px;
   background-color: #f2f2f2;
+  border-radius: 10px;
+  width: 100%;
+  padding: 5px;
+`
+const ParentContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
   width: 100%;
 `
 const StyledLink = styled(Link)`
   cursor: pointer;
-  font-size: 50px;
+  font-size: 40px;
   text-align: center;
   color: inherit;
   text-decoration: none;
+  margin: 0px;
+  padding: 10px;
   &:hover {
-    transform: translateY(-2px);
+    transform: translateY(-4px);
     transition: 1s;
   }
 `
 const Footer: React.FC = () => {
   return (
-    <StyledContainer>
-      <StyledLink to="/cart">장바구니 담기</StyledLink>
-    </StyledContainer>
+    <ParentContainer>
+      <StyledContainer>
+        <StyledLink to="/cart">장바구니 담기</StyledLink>
+      </StyledContainer>
+    </ParentContainer>
   )
 }
 
