@@ -37,11 +37,11 @@ const DescriptionSpan = styled.p`
   font-size: 2rem;
 `
 
-const DescriptionContainer = ({ title, price, description }: any) => {
+const DescriptionContainer = ({ title, price, description, img }: any) => {
   return (
     <div style={{ display: 'block' }}>
       <DContainerImg>
-        <StyledImage src="img/menu.png" alt="짜장 이미지" />
+        <StyledImage src={`${img}`} alt="메뉴 이미지" />
       </DContainerImg>
 
       <DContainerDes>
