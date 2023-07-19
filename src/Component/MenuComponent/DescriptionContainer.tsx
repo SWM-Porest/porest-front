@@ -41,7 +41,7 @@ const DescriptionContainer = ({ title, price, description }: any) => {
   return (
     <div style={{ display: 'block' }}>
       <DContainerImg>
-        <StyledImage src="img/menu.png" alt="짜장 이미지" />
+        <StyledImage src="img/짜장.png" alt="짜장 이미지" />
       </DContainerImg>
 
       <DContainerDes>

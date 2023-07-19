@@ -9,7 +9,7 @@ const StyledNavbar = styled.nav`
   align-items: center;
   justify-content: space-between;
   background-color: #f2f2f2;
-  width: 100%;
+  padding: 10px 20px;
 `
 const StyledLink = styled(Link)`
   cursor: pointer;
@@ -17,10 +17,6 @@ const StyledLink = styled(Link)`
   text-align: center;
   color: inherit;
   text-decoration: none;
-  &:hover {
-    transform: translateY(-4px);
-    transition: 1s;
-  }
 `
 const StyledH2 = styled.h2`
   margin: 0px;
@@ -31,10 +27,6 @@ const StyledImg = styled.img`
   width: 50px;
   height: 50px;
   left: 500px;
-  &:hover {
-    transform: translateY(-4px);
-    transition: 1s;
-  }
 `
 
 const Header: React.FC<HeaderProps> = ({ HeaderName }) => {
