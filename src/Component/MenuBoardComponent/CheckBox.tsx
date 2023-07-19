@@ -7,12 +7,11 @@ interface OwnProps {
 const StyledContainer = styled.div`
   text-align: center;
   align-items: center;
-  padding: 30px;
+
   margin: 10px;
   font-size: 30px;
 `
 const StyledH3 = styled.h3`
-  padding: 10px 0 10px 0;
   margin: 0px;
   font-family: 'Noto Serif KR', serif;
   text-align: center;
@@ -22,7 +21,6 @@ const StyledH3 = styled.h3`
 
 const StyledImage = styled.img`
   width: 30%;
-  padding: 20px;
 `
 const StyledMiniContainer = styled.div`
   display: flex;

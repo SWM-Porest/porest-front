@@ -8,7 +8,7 @@ const StyledContainer = styled.div`
   display: flex;
   text-align: center;
   align-items: center;
-  padding: 30px;
+
   margin: 10px;
   font-size: 30px;
 `
@@ -20,7 +20,6 @@ const BoxContainer = styled.div`
 `
 const StyledImage = styled.img`
   width: 20%;
-  padding: 20px;
 `
 
 const MenuType: React.FC = () => {

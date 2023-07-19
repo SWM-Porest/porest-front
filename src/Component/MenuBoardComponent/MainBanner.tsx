@@ -4,8 +4,6 @@ import styled from 'styled-components'
 const SliderWrapper = styled.div`
   position: relative;
   width: 100%;
-  padding: 25px;
-  margin: 5px;
 `
 
 const PreviousButton = styled.button`

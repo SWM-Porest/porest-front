@@ -10,7 +10,6 @@ const StyledNavbar = styled.nav`
   justify-content: space-between;
   background-color: #f2f2f2;
   width: 100%;
-  padding: 15px 30px;
 `
 const StyledLink = styled(Link)`
   cursor: pointer;

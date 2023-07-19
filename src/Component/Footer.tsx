@@ -7,13 +7,12 @@ const StyledContainer = styled.div`
   background-color: #f2f2f2;
   border-radius: 10px;
   width: 100%;
-  padding: 5px;
 `
 const ParentContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 25px;
+
   width: 100%;
 `
 const StyledLink = styled(Link)`
@@ -23,7 +22,7 @@ const StyledLink = styled(Link)`
   color: inherit;
   text-decoration: none;
   margin: 0px;
-  padding: 10px;
+
   &:hover {
     transform: translateY(-4px);
     transition: 1s;
