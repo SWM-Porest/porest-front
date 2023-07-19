@@ -48,7 +48,6 @@ const data: Restaurant = {
 
 const StyledBanner = styled(MainBanner)`
   width: 100%;
-  padding: 25px;
 `
 
 const MenuBoardPage: React.FC = () => {

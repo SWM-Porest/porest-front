@@ -19,8 +19,6 @@ const StyledLargeContainer = styled.div`
   width: 100%;
   align-items: center;
   justify-content: center;
-  padding: 15px 30px;
-  margin: 0;
 `
 const StyledH2 = styled.h2`
   margin: 30px;

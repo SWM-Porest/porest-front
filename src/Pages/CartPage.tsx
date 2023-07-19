@@ -28,7 +28,7 @@ const data: Cart = {
 }
 const StyledCartPrice = styled(CartPrice)`
   margin: 0px;
-  padding: 0px;
+
   width: 100%;
 `
 

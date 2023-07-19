@@ -8,14 +8,13 @@ interface OwnProps {
 
 const StyledImage = styled.img`
   width: 20%;
-  padding: 20px;
 `
 const MenuCardLink = styled(Link)`
   display: flex;
   align-items: center;
   margin: 25px;
   border-radius: 25px;
-  width: 100%;
+  width: 90%;
   cursor: pointer;
   color: inherit;
   text-decoration: none;
@@ -27,16 +26,14 @@ const MenuCardLink = styled(Link)`
 const StyledContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 100%;
+  width: 90%;
   margin: 15px 45px 15px 30px;
 `
 const StyledName = styled.p`
-  padding-left: 20px;
   margin: 5px;
   font-size: 40px;
 `
 const StyledPrice = styled.p`
-  padding-left: 20px;
   margin: 5px;
   font-size: 30px;
   color: #ff9100;
