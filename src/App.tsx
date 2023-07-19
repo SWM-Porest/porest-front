@@ -2,10 +2,12 @@ import NotFound from 'Component/NotFound'
 import CartPage from 'Pages/CartPage'
 import MenuBoardPage from 'Pages/MenuBoardPage'
 import MenuPage from 'Pages/MenuPage'
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 
 const App: React.FC = () => {
+  const [cart, setCart] = useState()
+
   return (
     <div className="App">
       Any page is visible
