@@ -48,6 +48,7 @@ const data: Restaurant = {
 const MenuPage: React.FC = () => {
   const menu: Menu = {
     name: '짜장',
+    menutype: '요리류',
     price: 2000,
     category: 'PASTA',
     description:
