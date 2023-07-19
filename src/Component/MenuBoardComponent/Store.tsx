@@ -10,11 +10,10 @@ interface OwnProps {
 
 const StyledContainer = styled.div`
   width: 100%;
-  padding: 10px;
 `
 const StyledH2 = styled.h2`
   margin: 0px;
-  padding: 30px 0 15px 40px;
+
   width: 100%;
   font-size: xx-large;
   border-radius: 25px 25px 0 0;

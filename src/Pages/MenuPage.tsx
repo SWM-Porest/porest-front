@@ -48,10 +48,12 @@ const data: Restaurant = {
 const MenuPage: React.FC = () => {
   const menu: Menu = {
     name: '짜장',
+    menutype: '요리류',
     price: 2000,
     category: 'PASTA',
     description:
       '양파, 양배추 등 채소와 돼지고기에 기름으로 튀긴 춘장을 넣어 굵은 국수에 비벼서 먹는 한국식 중국 요리로, 짬뽕, 우동하고 더불어 트로이카 메뉴',
+    img: 'img/짜장.jpg',
     ingre: ['밀가루', '치즈', '토마토', '바질'],
   }
 
