@@ -59,7 +59,6 @@ const MenuPage: React.FC = () => {
 
   return (
     <div>
-      <h1>MenuPage</h1>
       <Header HeaderName={menu.name} />
       <DescriptionContainer title={menu.name} price={menu.price} description={menu.description}></DescriptionContainer>
       {/* 메뉴 정보 및 선택 블럭 */}
