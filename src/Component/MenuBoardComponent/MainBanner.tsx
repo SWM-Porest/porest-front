@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 const SliderWrapper = styled.div`
   position: relative;
-  width: 100%;
+  margin: 30px;
 `
 
 const PreviousButton = styled.button`
