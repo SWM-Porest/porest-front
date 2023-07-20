@@ -7,29 +7,33 @@ interface OwnProps {
 }
 
 const StyledImage = styled.img`
-  width: 20%;
+  width: 50%;
+  padding: 15px 50px 15px 15px;
 `
 const MenuCardContainer = styled(Link)`
   display: flex;
   align-items: center;
   border-radius: 25px;
-  width: 100%;
-  cursor: pointer;
   color: inherit;
   text-decoration: none;
+`
+const StyledName = styled.p`
+  margin: 5px;
+  font-size: 50px;
   &:hover {
     transform: translateY(-4px);
     transition: 1s;
   }
 `
-const StyledName = styled.p`
-  margin: 5px;
-  font-size: 40px;
-`
 const StyledPrice = styled.p`
   margin: 5px;
-  font-size: 30px;
+  font-size: 40px;
+  font-family: 'Noto Serif KR', serif;
   color: #ff9100;
+  &:hover {
+    transform: translateY(-4px);
+    transition: 1s;
+  }
 `
 
 const MenuCard: React.FC<OwnProps> = ({ info }) => {
