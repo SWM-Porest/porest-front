@@ -1,23 +1,23 @@
 import NotFound from 'Component/NotFound'
+import { RestaurantContext, restaurantContextDefaultValue } from 'Context/restaurant_context'
 import CartPage from 'Pages/CartPage'
 import MenuBoardPage from 'Pages/MenuBoardPage'
 import MenuPage from 'Pages/MenuPage'
-import React, { useContext, useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 
 const App: React.FC = () => {
-  const [cart, setCart] = useState()
-
   return (
-    <div className="App">
-      {/* 라우팅: 화면이 계속 바뀌는 부분 */}
-      <Routes>
-        <Route path="/" element={<MenuBoardPage />} />
-        <Route path="/menu" element={<MenuPage />} />
-        <Route path="/cart" element={<CartPage />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </div>
+    <RestaurantContext.Provider value={restaurantContextDefaultValue}>
+      <div className="App">
+        {/* 라우팅: 화면이 계속 바뀌는 부분 */}
+        <Routes>
+          <Route path="/" element={<MenuBoardPage />} />
+          <Route path="/menu" element={<MenuPage />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
+    </RestaurantContext.Provider>
   )
 }
 

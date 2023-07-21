@@ -1,4 +1,10 @@
 import styled from 'styled-components'
+interface OwnProps {
+  title: string
+  price: number
+  description: string
+  img: string
+}
 
 const DContainerImg = styled.div`
   position: relative;
@@ -37,7 +43,7 @@ const DescriptionSpan = styled.p`
   font-size: 2rem;
 `
 
-const DescriptionContainer = ({ title, price, description, img }: any) => {
+const DescriptionContainer: React.FC<OwnProps> = ({ title, price, description, img }) => {
   return (
     <div style={{ display: 'block' }}>
       <DContainerImg>
