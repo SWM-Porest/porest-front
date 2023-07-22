@@ -1,8 +1,8 @@
-import { Restaurant } from 'model/restaurant'
 import React from 'react'
 import styled from 'styled-components'
 import MenuCard from './MenuCard'
 import MenuType from './MenuType'
+import { Restaurant } from 'model/restaurant'
 const menutype = ['요리류', '식사류', '주류', '세트메뉴']
 interface OwnProps {
   info: Restaurant
@@ -30,14 +30,14 @@ const Store: React.FC<OwnProps> = ({ info }) => {
     <StyledContainer>
       <MenuType />
       <MenuCardsContainer>
-        <StyledH2>{info.menu[0].menutype}</StyledH2>
-        <MenuCard info={info.menu[0]} />
-        <MenuCard info={info.menu[1]} />
+        <StyledH2>{info.menus[0].menutype}</StyledH2>
+        <MenuCard info={info.menus[0]} />
+        <MenuCard info={info.menus[0]} />
       </MenuCardsContainer>
       <MenuCardsContainer>
-        <StyledH2>{info.menu[2].menutype}</StyledH2>
-        <MenuCard info={info.menu[2]} />
-        <MenuCard info={info.menu[2]} />
+        <StyledH2>{info.menus[0].menutype}</StyledH2>
+        <MenuCard info={info.menus[0]} />
+        <MenuCard info={info.menus[0]} />
       </MenuCardsContainer>
     </StyledContainer>
   )

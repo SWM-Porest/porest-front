@@ -1,9 +1,11 @@
+import { useRestaurantLoading } from 'Api/useRestaurantContextValue'
 import Footer from 'Component/Footer'
 import Header from 'Component/Header'
 import MainBanner from 'Component/MenuBoardComponent/MainBanner'
 import Store from 'Component/MenuBoardComponent/Store'
+import { RestaurantContext } from 'Context/restaurant_context'
 import { Restaurant } from 'model/restaurant'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
 
 const data: Restaurant = {
@@ -14,7 +16,7 @@ const data: Restaurant = {
     detail: 'somewhere',
     zipCode: 2342345,
   },
-  menu: [
+  menus: [
     {
       name: '짜장',
       menutype: '요리류',
@@ -53,6 +55,9 @@ const StyledBanner = styled(MainBanner)`
 const MenuBoardPage: React.FC = () => {
   const [myRestaurant, setMyRestaurant] = useState<Restaurant>(data)
   const images = ['img/교동짬뽕.jpeg', 'img/메뉴판.jpeg', 'img/내부.jpeg']
+  const { restaurant } = useContext(RestaurantContext)
+  useRestaurantLoading()
+
   return (
     <div className="MenuBoard">
       <Header HeaderName={myRestaurant.name} />
