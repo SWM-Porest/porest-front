@@ -7,7 +7,6 @@ interface OwnProps {
   cartprice: Cart
 }
 const StyledContainer = styled.div`
-  width: 100%;
   background-color: lightgray;
   font-size: 30px;
   border-radius: 25px;
@@ -16,7 +15,6 @@ const StyledContainer = styled.div`
   justify-content: space-between;
 `
 const StyledLargeContainer = styled.div`
-  width: 100%;
   align-items: center;
   justify-content: center;
 `
