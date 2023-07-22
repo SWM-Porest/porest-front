@@ -7,7 +7,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 
 const StyledContainer = styled.div`
-  background-color: #1d1b1b;
+  background-color: #fff;
 `
 const data: Restaurant = {
   name: '흑다돈',
@@ -43,7 +43,7 @@ const data: Restaurant = {
       price: 5000,
       category: 'PASTA',
       description: '설명',
-      img: 'img/환타.jpg',
+      img: '',
       ingre: ['재료'],
     },
   ],

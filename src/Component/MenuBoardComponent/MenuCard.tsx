@@ -2,49 +2,68 @@ import { Menu } from 'model/restaurant'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { FlexAlignCSS } from 'Styles/common'
 interface OwnProps {
   info: Menu
 }
 
-const StyledImage = styled.img`
-  width: 50%;
-  padding: 15px 50px 15px 15px;
-`
-const MenuCardContainer = styled(Link)`
-  display: flex;
-  align-items: center;
-  border-radius: 25px;
-  color: inherit;
-  text-decoration: none;
-`
-const StyledName = styled.p`
-  margin: 5px;
-  font-size: 50px;
-  &:hover {
-    transform: translateY(-4px);
-    transition: 1s;
-  }
-`
-const StyledPrice = styled.p`
-  margin: 5px;
-  font-size: 40px;
-  font-family: 'Noto Serif KR', serif;
-  color: #ff9100;
-  &:hover {
-    transform: translateY(-4px);
-    transition: 1s;
-  }
-`
-
 const MenuCard: React.FC<OwnProps> = ({ info }) => {
   return (
-    <MenuCardContainer to={'/menu'}>
-      <StyledImage src={info.img} alt="메뉴 이미지" />
-      <div>
-        <StyledName>{info.name}</StyledName>
-        <StyledPrice>{info.price}원</StyledPrice>
-      </div>
-    </MenuCardContainer>
+    <div>
+      {info.img !== '' ? (
+        <MenuCardContainer to={'/menu'}>
+          <StyledImage src={info.img} alt="메뉴 이미지" />
+          <StyledContainer>
+            <ImgStyledName>{info.name}</ImgStyledName>
+            <ImgStyledPrice>{info.price}원</ImgStyledPrice>
+          </StyledContainer>
+        </MenuCardContainer>
+      ) : (
+        <MenuCardContainer to={'/menu'}>
+          <div>
+            <StyledName>{info.name}</StyledName>
+            <StyledPrice>{info.price}원</StyledPrice>
+          </div>
+        </MenuCardContainer>
+      )}
+    </div>
   )
 }
 export default MenuCard
+
+const MenuCardContainer = styled(Link)`
+  ${FlexAlignCSS};
+  padding: 16pt 32pt;
+  color: inherit;
+  text-decoration: none;
+  border-top: ridge;
+  border-color: ${({ theme }) => theme.COLOR.common.gray[600]};
+`
+
+const StyledImage = styled.img`
+  display: block;
+  width: 200pt;
+  height: 192pt;
+  border-radius: 8pt;
+`
+const StyledContainer = styled.div``
+const ImgStyledName = styled.h4`
+  padding: 8pt 56pt;
+
+  margin: 0;
+`
+const ImgStyledPrice = styled.h5`
+  padding: 8pt 56pt;
+
+  margin: 0;
+  color: ${({ theme }) => theme.COLOR.number_price};
+`
+const StyledName = styled.h4`
+  padding: 8pt 32pt;
+  margin: 0;
+`
+const StyledPrice = styled.h5`
+  padding: 8pt 32pt;
+  margin: 0;
+  color: ${({ theme }) => theme.COLOR.number_price};
+`
