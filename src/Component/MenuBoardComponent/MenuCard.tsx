@@ -17,6 +17,7 @@ const MenuCard: React.FC<OwnProps> = ({ info }) => {
             <ImgStyledName>{info.name}</ImgStyledName>
             <ImgStyledPrice>{info.price}원</ImgStyledPrice>
           </StyledContainer>
+          <CartImgContainer src="img/add-to-cart.png" alt="메뉴 이미지" />
         </MenuCardContainer>
       ) : (
         <MenuCardContainer to={'/menu'}>
@@ -24,6 +25,7 @@ const MenuCard: React.FC<OwnProps> = ({ info }) => {
             <StyledName>{info.name}</StyledName>
             <StyledPrice>{info.price}원</StyledPrice>
           </div>
+          <CartImgContainer src="img/add-to-cart.png" alt="메뉴 이미지" />
         </MenuCardContainer>
       )}
     </div>
@@ -45,6 +47,15 @@ const StyledImage = styled.img`
   width: 200pt;
   height: 192pt;
   border-radius: 8pt;
+`
+const CartImgContainer = styled.img`
+  border-radius: 8pt;
+  border: solid;
+  border-color: ${({ theme }) => theme.COLOR.common.gray[600]};
+  box-shadow: 3px 3px 3px 3px ${({ theme }) => theme.COLOR.common.gray[600]};
+  position: absolute;
+  right: 72pt;
+  margin: 0;
 `
 const StyledContainer = styled.div``
 const ImgStyledName = styled.h4`
