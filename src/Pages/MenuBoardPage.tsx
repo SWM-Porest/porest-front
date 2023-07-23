@@ -56,7 +56,6 @@ const MenuBoardPage: React.FC = () => {
   const [myRestaurant, setMyRestaurant] = useState<Restaurant>(data)
   const images = ['img/교동짬뽕.jpeg', 'img/메뉴판.jpeg', 'img/내부.jpeg']
   const { restaurant } = useContext(RestaurantContext)
-  useRestaurantLoading()
 
   return (
     <div className="MenuBoard">

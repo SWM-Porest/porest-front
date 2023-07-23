@@ -1,9 +1,9 @@
 import { createContext } from 'react'
+
 export interface RestaurantContextData {
   restaurant: Restaurant
-  isLoading: boolean
-  getRestaurant: (id: string) => void
 }
+
 export interface Restaurant {
   name: string
   en_name: string
@@ -18,7 +18,8 @@ export interface Restaurant {
   status: number
   menus: Menu[]
 }
-interface Menu {
+
+export interface Menu {
   name: string
   en_name: string
   menutype: string
@@ -28,6 +29,7 @@ interface Menu {
   img: string
   ingre: string[]
 }
+
 export const restaurantContextDefaultValue: RestaurantContextData = {
   restaurant: {
     name: '',
@@ -43,7 +45,6 @@ export const restaurantContextDefaultValue: RestaurantContextData = {
     status: 1,
     menus: [],
   },
-  isLoading: false,
-  getRestaurant: () => null,
 }
+
 export const RestaurantContext = createContext<RestaurantContextData>(restaurantContextDefaultValue)

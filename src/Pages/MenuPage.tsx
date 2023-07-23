@@ -9,11 +9,9 @@ import { RestaurantContext } from 'Context/restaurant_context'
 import { useContext } from 'react'
 
 const MenuPage: React.FC = () => {
-  const {
-    restaurant: { menus },
-  } = useContext(RestaurantContext)
+  const { restaurant } = useContext(RestaurantContext)
+  const menus = restaurant?.menus
 
-  console.log('메뉴!', menus)
   return (
     <div>
       <h1>MenuPage</h1>
@@ -24,7 +22,6 @@ const MenuPage: React.FC = () => {
         description={menus[0].description}
         img={menus[0].img}
       ></DescriptionContainer>
-      {/* 메뉴 정보 및 선택 블럭 */}
       <ContainerBox>
         <Categories ingre={menus[0].ingre}></Categories>
       </ContainerBox>

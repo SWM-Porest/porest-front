@@ -1,31 +1,30 @@
 import { Restaurant, RestaurantContext, restaurantContextDefaultValue } from 'Context/restaurant_context'
 import axios from 'axios'
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
-export const useRestaurantContextValue = () => {
+export const useRestaurantContextValue = (id: string) => {
   const [restaurant, setRestaurant] = useState<Restaurant>(restaurantContextDefaultValue.restaurant)
-  const [isLoading, setIsLoading] = useState(false)
 
-  const getRestaurant = useCallback(
-    async (id: string) => {
-      setIsLoading(true)
-      const res = await axios.get(`http://localhost:3001/restaurants/${id}`, {
-        headers: { Authorization: 'Basic YWRtaW46c3dtMTRwb3Jlc3QhIQ==' },
-      })
-      setRestaurant(res.data)
-    },
-    [setRestaurant],
-  )
-  return {
-    restaurant,
-    isLoading,
-    getRestaurant,
-  }
+  useEffect(() => {
+    const getRestaurant = (id: string) => {
+      axios
+        .get(`http://localhost:3001/restaurants/${id}`, {
+          headers: { Authorization: 'Basic YWRtaW46c3dtMTRwb3Jlc3QhIQ==' },
+        })
+        .then((response) => {
+          console.log(response.data, 'axios response')
+          setRestaurant(response.data)
+          console.log(restaurant, 'axios setRestaurant')
+        })
+    }
+    getRestaurant(id)
+  }, [])
+
+  return { restaurant }
 }
 
 export const useRestaurantLoading = () => {
-  const { getRestaurant } = useContext(RestaurantContext)
   useEffect(() => {
-    getRestaurant('64bb91af02ebdee472579f97')
-  }, [getRestaurant])
+    useRestaurantContextValue('64bb91af02ebdee472579f97')
+  }, [])
 }
