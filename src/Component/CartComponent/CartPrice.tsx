@@ -2,42 +2,29 @@ import MenuPriceCard from 'Component/CartComponent/MenuPriceCard'
 import { Cart } from 'model/restaurant'
 import React from 'react'
 import styled from 'styled-components'
+import TotalPrice from './TotalPrice'
 
 interface OwnProps {
   cartprice: Cart
 }
-const StyledContainer = styled.div`
-  background-color: lightgray;
-  font-size: 30px;
-  border-radius: 25px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
-const StyledLargeContainer = styled.div`
-  align-items: center;
-  justify-content: center;
-`
-const StyledH2 = styled.h2`
-  margin: 30px;
-`
-const StyledP = styled.p`
-  margin: 30px;
-  font-size: 30px;
-  color: #ff4d00;
-  font-weight: bold;
-`
 
+function reducer(sum: number, val: number): number {
+  return sum + val
+}
 const CartPrice: React.FC<OwnProps> = ({ cartprice }) => {
+  const priceTotal = cartprice.menu.map((el) => el.price).reduce(reducer, 0)
+
   return (
     <StyledLargeContainer>
       <MenuPriceCard info={cartprice.menu[0]} />
       <MenuPriceCard info={cartprice.menu[1]} />
-      <StyledContainer>
-        <StyledH2> Total </StyledH2>
-        <StyledP>{cartprice.menu[0].price + cartprice.menu[1].price}원</StyledP>
-      </StyledContainer>
+      <TotalPrice price={priceTotal} />
     </StyledLargeContainer>
   )
 }
 export default CartPrice
+
+const StyledLargeContainer = styled.div`
+  align-items: center;
+  justify-content: center;
+`

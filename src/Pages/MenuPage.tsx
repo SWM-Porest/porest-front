@@ -8,8 +8,6 @@ import { RestaurantContext } from 'Context/restaurant_context'
 import { useContext } from 'react'
 
 const MenuPage: React.FC = () => {
-  const { restaurant } = useContext(RestaurantContext)
-  const menus = restaurant?.menus
 
   return (
     <div>
