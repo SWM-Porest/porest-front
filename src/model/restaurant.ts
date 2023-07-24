@@ -19,6 +19,6 @@ export type Menu = {
   price: number
   category: string
   description: string
-  img: string
+  img?: string
   ingre: string[]
 }

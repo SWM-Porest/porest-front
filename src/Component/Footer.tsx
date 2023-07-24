@@ -1,5 +1,18 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+
+const Footer: React.FC = () => {
+  return (
+    <ParentContainer>
+      <StyledContainer>
+        <StyledLink to="/cart">장바구니 담기</StyledLink>
+      </StyledContainer>
+    </ParentContainer>
+  )
+}
+
+export default Footer
+
 const StyledContainer = styled.div`
   display: flex;
   align-items: center;
@@ -22,20 +35,4 @@ const StyledLink = styled(Link)`
   color: inherit;
   text-decoration: none;
   margin: 0px;
-
-  &:hover {
-    transform: translateY(-4px);
-    transition: 1s;
-  }
 `
-const Footer: React.FC = () => {
-  return (
-    <ParentContainer>
-      <StyledContainer>
-        <StyledLink to="/cart">장바구니 담기</StyledLink>
-      </StyledContainer>
-    </ParentContainer>
-  )
-}
-
-export default Footer
