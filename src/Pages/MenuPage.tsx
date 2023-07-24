@@ -56,7 +56,6 @@ const MenuPage: React.FC = () => {
     img: 'img/짜장.jpg',
     ingre: ['밀가루', '치즈', '토마토', '바질'],
   }
-
   return (
     <div>
       <Header HeaderName={menu.name} />
