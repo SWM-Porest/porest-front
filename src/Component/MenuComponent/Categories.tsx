@@ -1,6 +1,10 @@
 import React from 'react'
 import { styled } from 'styled-components'
 
+interface ingre {
+  ingre: string[]
+}
+
 const Categoryul = styled.ul`
   margin: 6px;
   display: flex;
@@ -22,10 +26,13 @@ const Categoryli = styled.li`
   box-shadow: 0 3px 9px 0 rgba(0, 0, 0, 0.4);
 `
 
-const Categories = ({ ingre }: any) => {
-  const ulelem = ingre.map((elem: string) => {
-    return <Categoryli>{elem}</Categoryli>
-  })
+const Categories = ({ ingre }: ingre) => {
+  let ulelem
+  if (ingre) {
+    ulelem = ingre.map((elem: string) => {
+      return <Categoryli>{elem}</Categoryli>
+    })
+  }
 
   return (
     <React.Fragment>

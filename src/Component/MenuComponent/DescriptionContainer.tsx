@@ -1,8 +1,14 @@
 import styled from 'styled-components'
+interface OwnProps {
+  title: string
+  price: number
+  description: string
+  img: string
+}
 
 const DContainerImg = styled.div`
   position: relative;
-  z-index: auto;
+  z-index: 10;
 `
 const DContainerDes = styled.div`
   position: relative;
@@ -16,7 +22,7 @@ const TitleBox = styled.div`
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.15);
   width: 80%;
   margin: auto;
-  z-index: auto;
+  z-index: 20;
 `
 const TitleInner = styled.div`
   width: 90%;
@@ -37,11 +43,11 @@ const DescriptionSpan = styled.p`
   font-size: 2rem;
 `
 
-const DescriptionContainer = ({ title, price, description }: any) => {
+const DescriptionContainer: React.FC<OwnProps> = ({ title, price, description, img }) => {
   return (
     <div style={{ display: 'block' }}>
       <DContainerImg>
-        <StyledImage src="img/짜장.png" alt="짜장 이미지" />
+        <StyledImage src={`${img}`} alt="메뉴 이미지" />
       </DContainerImg>
 
       <DContainerDes>
