@@ -1,4 +1,3 @@
-import { useRestaurantLoading } from 'Api/useRestaurantContextValue'
 import Footer from 'Component/Footer'
 import Header from 'Component/Header'
 import AddCart from 'Component/MenuComponent/AddCart'

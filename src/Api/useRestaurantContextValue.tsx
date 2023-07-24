@@ -1,6 +1,6 @@
-import { Restaurant, RestaurantContext, restaurantContextDefaultValue } from 'Context/restaurant_context'
+import { Restaurant, restaurantContextDefaultValue } from 'Context/restaurant_context'
 import axios from 'axios'
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export const useRestaurantContextValue = (id: string) => {
   const [restaurant, setRestaurant] = useState<Restaurant>(restaurantContextDefaultValue.restaurant)

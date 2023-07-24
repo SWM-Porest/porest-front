@@ -1,4 +1,4 @@
-import { useRestaurantContextValue, useRestaurantLoading } from 'Api/useRestaurantContextValue'
+import { useRestaurantContextValue } from 'Api/useRestaurantContextValue'
 import NotFound from 'Component/NotFound'
 import { RestaurantContext } from 'Context/restaurant_context'
 import CartPage from 'Pages/CartPage'

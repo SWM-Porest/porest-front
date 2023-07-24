@@ -7,7 +7,7 @@ export interface RestaurantContextData {
 export interface Restaurant {
   name: string
   en_name: string
-  categroy: string[]
+  category: string[]
   img: string[]
   intro: string
   notice: string
@@ -34,7 +34,7 @@ export const restaurantContextDefaultValue: RestaurantContextData = {
   restaurant: {
     name: '',
     en_name: '',
-    categroy: [],
+    category: [],
     img: [],
     intro: '',
     notice: '',
