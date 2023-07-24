@@ -10,8 +10,6 @@ import { useContext } from 'react'
 import { styled } from 'styled-components'
 
 const MenuPage: React.FC = () => {
-  const { restaurant } = useContext(RestaurantContext)
-  const menus = restaurant?.menus
 
   return (
     <div>
