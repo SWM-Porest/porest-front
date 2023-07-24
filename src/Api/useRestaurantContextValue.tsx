@@ -14,7 +14,6 @@ export const useRestaurantContextValue = (id: string) => {
         .then((response) => {
           console.log(response.data, 'axios response')
           setRestaurant(response.data)
-          console.log(restaurant, 'axios setRestaurant')
         })
     }
     getRestaurant(id)
