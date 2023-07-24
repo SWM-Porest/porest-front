@@ -63,16 +63,16 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
   return (
     <div>
       <StyledUl>
-        <StyledLi active={activeMenu === 0} onClick={onContent1Click}>
+        <StyledLi $active={activeMenu === 0} onClick={onContent1Click}>
           {menutype[0]}
         </StyledLi>
-        <StyledLi active={activeMenu === 1} onClick={onContent2Click}>
+        <StyledLi $active={activeMenu === 1} onClick={onContent2Click}>
           {menutype[1]}
         </StyledLi>
-        <StyledLi active={activeMenu === 2} onClick={onContent3Click}>
+        <StyledLi $active={activeMenu === 2} onClick={onContent3Click}>
           {menutype[2]}
         </StyledLi>
-        <StyledLi active={activeMenu === 3} onClick={onContent4Click}>
+        <StyledLi $active={activeMenu === 3} onClick={onContent4Click}>
           {menutype[3]}
         </StyledLi>
       </StyledUl>
@@ -81,34 +81,34 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
         <div>
           <StyledLiEach>{menutype[0]}</StyledLiEach>
         </div>
-        <MenuCard info={info.menu[0]} />
-        <MenuCard info={info.menu[1]} />
-        <MenuCard info={info.menu[2]} />
+        <MenuCard info={info.menus[0]} />
+        <MenuCard info={info.menus[1]} />
+        <MenuCard info={info.menus[2]} />
       </MenuCardsContainer>
       <MenuCardsContainer ref={content2Ref}>
         <div>
           <StyledLiEach>{menutype[1]}</StyledLiEach>
         </div>
-        <MenuCard info={info.menu[0]} />
-        <MenuCard info={info.menu[1]} />
+        <MenuCard info={info.menus[0]} />
+        <MenuCard info={info.menus[1]} />
       </MenuCardsContainer>
       <MenuCardsContainer ref={content3Ref}>
         <div>
           <StyledLiEach>{menutype[2]}</StyledLiEach>
         </div>
-        <MenuCard info={info.menu[2]} />
-        <MenuCard info={info.menu[2]} />
-        <MenuCard info={info.menu[2]} />
-        <MenuCard info={info.menu[2]} />
+        <MenuCard info={info.menus[2]} />
+        <MenuCard info={info.menus[2]} />
+        <MenuCard info={info.menus[2]} />
+        <MenuCard info={info.menus[2]} />
       </MenuCardsContainer>
       <MenuCardsContainer ref={content4Ref}>
         <div>
           <StyledLiEach>{menutype[3]}</StyledLiEach>
         </div>
-        <MenuCard info={info.menu[2]} />
-        <MenuCard info={info.menu[2]} />
-        <MenuCard info={info.menu[2]} />
-        <MenuCard info={info.menu[2]} />
+        <MenuCard info={info.menus[2]} />
+        <MenuCard info={info.menus[2]} />
+        <MenuCard info={info.menus[2]} />
+        <MenuCard info={info.menus[2]} />
       </MenuCardsContainer>
     </div>
   )
@@ -129,12 +129,12 @@ const StyledUl = styled.ul`
   border-color: ${({ theme }) => theme.COLOR.common.gray[600]};
 `
 
-const StyledLi = styled.li<{ active: boolean }>`
+const StyledLi = styled.li<{ $active: boolean }>`
   // active props 추가
   display: inline-block;
   padding: 16pt 12pt;
   font-weight: bold;
-  color: ${(props) => (props.active ? '#343434' : '#A9A9A9')}; // active props에 따라 색상 변경
+  color: ${(props) => (props.$active ? '#343434' : '#A9A9A9')}; // active props에 따라 색상 변경
 `
 const MenuCardsContainer = styled.div`
   align-items: center;
