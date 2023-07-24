@@ -2,7 +2,7 @@ export type Restaurant = {
   name: string
   category: string
   address: Address
-  menu: Menu[]
+  menus: Menu[]
 }
 export type Cart = {
   menu: Menu[]
