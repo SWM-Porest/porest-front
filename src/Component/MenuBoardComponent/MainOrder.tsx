@@ -27,6 +27,7 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
           const rect = section.getBoundingClientRect()
           if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
             activeIndex = i
+            break
           }
         }
       }
@@ -45,19 +46,15 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
 
   const onContent1Click = () => {
     content1Ref.current?.scrollIntoView({ behavior: 'smooth' })
-    setActiveMenu(0) // 클릭 시 activeMenu 상태 변경
   }
   const onContent2Click = () => {
     content2Ref.current?.scrollIntoView({ behavior: 'smooth' })
-    setActiveMenu(1) // 클릭 시 activeMenu 상태 변경
   }
   const onContent3Click = () => {
     content3Ref.current?.scrollIntoView({ behavior: 'smooth' })
-    setActiveMenu(2) // 클릭 시 activeMenu 상태 변경
   }
   const onContent4Click = () => {
     content4Ref.current?.scrollIntoView({ behavior: 'smooth' })
-    setActiveMenu(3) // 클릭 시 activeMenu 상태 변경
   }
 
   return (
@@ -110,6 +107,14 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
         <MenuCard info={info.menu[2]} />
         <MenuCard info={info.menu[2]} />
       </MenuCardsContainer>
+      <DisclaimerContainer>
+        <Disclaimer>
+          유의사항
+          <br />
+          • 메뉴 사진은 연출된 이미지로 실제 조리된 음식과 다를 수 있습니다. <br />• 상단 메뉴 및 가격은 업소에서 제공한
+          정보를 기준으로 작성되었으며 변동될 수 있습니다.
+        </Disclaimer>
+      </DisclaimerContainer>
     </div>
   )
 }
@@ -144,4 +149,15 @@ const MenuCardsContainer = styled.div`
 const StyledLiEach = styled.li`
   padding: 16pt 32pt;
   font-weight: bold;
+`
+const DisclaimerContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  background-color: #f2f2f2;
+`
+const Disclaimer = styled.div`
+  font-size: 24px;
+  color: #777;
+  margin-top: 10px;
 `
