@@ -1,9 +1,8 @@
-import { Children, useEffect, useRef, useState } from 'react'
+import { MenuModal } from 'Component/MenuComponent/MenuModal'
+import { Restaurant } from 'Context/restaurantContext'
+import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import MenuCard from './MenuCard'
-import { Restaurant, restaurantContextDefaultValue } from 'Context/restaurantContext'
-import { MenuModal } from 'Component/MenuComponent/MenuModal'
-const menutype = ['요리류', '식사류', '주류', '세트메뉴']
 
 interface OwnProps {
   info: Restaurant
@@ -11,23 +10,29 @@ interface OwnProps {
 
 const MainOrder: React.FC<OwnProps> = ({ info }) => {
   // 모달 state
-  const menuid = '64bbba568b39a229d20e207f'
+  const menuid = '64bfe14ed3789594c638685d'
   const [isOpen, setIsOpen] = useState(false)
   const openModalHandler = () => {
     setIsOpen(!isOpen)
   }
-  // Ref
-  const content1Ref = useRef<HTMLDivElement>(null)
-  const content2Ref = useRef<HTMLDivElement>(null)
-  const content3Ref = useRef<HTMLDivElement>(null)
-  const content4Ref = useRef<HTMLDivElement>(null)
+
+  // 중복되지 않은 메뉴 타입 추출
+  const uniqueMenuTypes = info.menus.reduce((types: string[], menu) => {
+    if (!types.includes(menu.menutype)) {
+      types.push(menu.menutype)
+    }
+    return types
+  }, [])
+
+  // Ref 배열을 동적 생성
+  const contentRefs = uniqueMenuTypes.map(() => useRef<HTMLDivElement>(null))
 
   const [activeMenu, setActiveMenu] = useState(0) // activeMenu state 추가
   useEffect(() => {
     // 스크롤 이벤트 핸들러
     const handleScroll = () => {
       //이렇게 말공~ 네,,,,
-      const menuSections = [content1Ref.current, content2Ref.current, content3Ref.current, content4Ref.current]
+      const menuSections = contentRefs.map((ref) => ref.current)
       let activeIndex = 0
       for (let i = 0; i < menuSections.length; i++) {
         const section = menuSections[i]
@@ -52,63 +57,34 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
     }
   }, [])
 
-  const onContent1Click = () => {
-    content1Ref.current?.scrollIntoView({ behavior: 'smooth' })
-  }
-  const onContent2Click = () => {
-    content2Ref.current?.scrollIntoView({ behavior: 'smooth' })
-  }
-  const onContent3Click = () => {
-    content3Ref.current?.scrollIntoView({ behavior: 'smooth' })
-  }
-  const onContent4Click = () => {
-    content4Ref.current?.scrollIntoView({ behavior: 'smooth' })
-  }
-
   return (
     <div>
       <StyledUl>
-        <StyledLi $active={activeMenu === 0} onClick={onContent1Click}>
-          {menutype[0]}
-        </StyledLi>
-        <StyledLi $active={activeMenu === 1} onClick={onContent2Click}>
-          {menutype[1]}
-        </StyledLi>
-        <StyledLi $active={activeMenu === 2} onClick={onContent3Click}>
-          {menutype[2]}
-        </StyledLi>
-        <StyledLi $active={activeMenu === 3} onClick={onContent4Click}>
-          {menutype[3]}
-        </StyledLi>
+        {uniqueMenuTypes.map((menuType, index) => (
+          <StyledLi
+            key={index}
+            $active={activeMenu === index}
+            onClick={() => contentRefs[index].current?.scrollIntoView({ behavior: 'smooth' })}
+          >
+            {menuType}
+          </StyledLi>
+        ))}
       </StyledUl>
       {/* 메뉴모달 */}
-      <MenuModal id={menuid} isOpen={isOpen} openModalHandler={openModalHandler} />
-      <MenuCardsContainer ref={content1Ref}>
-        <div>
-          <StyledLiEach>{menutype[0]}</StyledLiEach>
-        </div>
-        <div onClick={openModalHandler}>
-          <MenuCard info={info.menus[0]} />
-        </div>
-      </MenuCardsContainer>
-      <MenuCardsContainer ref={content2Ref}>
-        <div>
-          <StyledLiEach>{menutype[1]}</StyledLiEach>
-        </div>
-        <MenuCard info={info.menus[0]} />
-      </MenuCardsContainer>
-      <MenuCardsContainer ref={content3Ref}>
-        <div>
-          <StyledLiEach>{menutype[2]}</StyledLiEach>
-        </div>
-        <MenuCard info={info.menus[0]} />
-      </MenuCardsContainer>
-      <MenuCardsContainer ref={content4Ref}>
-        <div>
-          <StyledLiEach>{menutype[3]}</StyledLiEach>
-        </div>
-        <MenuCard info={info.menus[0]} />
-      </MenuCardsContainer>
+      {uniqueMenuTypes.map((menuType, index) => (
+        <>
+          <MenuModal id={menuid} isOpen={isOpen} openModalHandler={openModalHandler} />
+          <MenuCardsContainer key={index} ref={contentRefs[index]}>
+            <div>
+              <StyledLiEach>{menuType}</StyledLiEach>
+            </div>
+            <div onClick={openModalHandler}>
+              {info.menus.map((menu) => menu.menutype === menuType && <MenuCard key={menu._id} info={menu} />)}
+            </div>
+          </MenuCardsContainer>
+        </>
+      ))}
+
       <DisclaimerContainer>
         <Disclaimer>
           유의사항
@@ -120,6 +96,7 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
     </div>
   )
 }
+
 export default MainOrder
 
 const StyledUl = styled.ul`
