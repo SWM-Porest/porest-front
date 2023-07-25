@@ -65,7 +65,7 @@ const StyledOrder = styled(MainOrder)`
 `
 const MenuBoardPage: React.FC = () => {
   const images = ['img/교동짬뽕.jpeg', 'img/메뉴판.jpeg', 'img/내부.jpeg']
-  const id = '64bb91af02ebdee472579f97'
+  const id = '64be5622cdbb9385ac6851b9'
   const state = useRestaurantState()
   const dispatch = useRestauranDispatch()
 

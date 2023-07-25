@@ -1,6 +1,5 @@
-import { MenuModal } from 'Component/MenuComponent/MenuModal'
 import { Restaurant } from 'Context/restaurantContext'
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import MenuCard from './MenuCard'
 const menutype = ['요리류', '식사류', '주류', '세트메뉴']
@@ -10,24 +9,15 @@ interface OwnProps {
 }
 
 const MainOrder: React.FC<OwnProps> = ({ info }) => {
-  // 모달 state
-  const menuid = '64bbba568b39a229d20e207f'
-  const [isOpen, setIsOpen] = useState(false)
-  const openModalHandler = () => {
-    setIsOpen(!isOpen)
-  }
-  // Ref
   const content1Ref = useRef<HTMLDivElement>(null)
   const content2Ref = useRef<HTMLDivElement>(null)
   const content3Ref = useRef<HTMLDivElement>(null)
   const content4Ref = useRef<HTMLDivElement>(null)
 
-  const [activeMenu, setActiveMenu] = useState(0) // activeMenu state 추가
   useEffect(() => {
     // 스크롤 이벤트 핸들러
     const handleScroll = () => {
-      //이렇게 말공~ 네,,,,
-      const menuSections = [content1Ref.current, content2Ref.current, content3Ref.current, content4Ref.current]
+      const menuSections = contentRefs.current.map((ref) => ref.current)
       let activeIndex = 0
       for (let i = 0; i < menuSections.length; i++) {
         const section = menuSections[i]
@@ -52,44 +42,30 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
     }
   }, [])
 
-  const onContent1Click = () => {
-    content1Ref.current?.scrollIntoView({ behavior: 'smooth' })
-  }
-  const onContent2Click = () => {
-    content2Ref.current?.scrollIntoView({ behavior: 'smooth' })
-  }
-  const onContent3Click = () => {
-    content3Ref.current?.scrollIntoView({ behavior: 'smooth' })
-  }
-  const onContent4Click = () => {
-    content4Ref.current?.scrollIntoView({ behavior: 'smooth' })
+  useEffect(() => {
+    // `menutype`의 개수에 따라 `ref` 생성 및 초기화
+    contentRefs.current = Array.from({ length: menutype.length }, () => React.createRef())
+  }, [menutype.length])
+
+  const onContentClick = (index: number) => {
+    contentRefs.current[index].current?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
     <div>
       <StyledUl>
-        <StyledLi $active={activeMenu === 0} onClick={onContent1Click}>
-          {menutype[0]}
-        </StyledLi>
-        <StyledLi $active={activeMenu === 1} onClick={onContent2Click}>
-          {menutype[1]}
-        </StyledLi>
-        <StyledLi $active={activeMenu === 2} onClick={onContent3Click}>
-          {menutype[2]}
-        </StyledLi>
-        <StyledLi $active={activeMenu === 3} onClick={onContent4Click}>
-          {menutype[3]}
-        </StyledLi>
+        {menutype.map((type, index) => (
+          <StyledLi key={index} $active={activeMenu === index} onClick={() => onContentClick(index)}>
+            {type}
+          </StyledLi>
+        ))}
       </StyledUl>
-      {/* 메뉴모달 */}
-      <MenuModal id={menuid} isOpen={isOpen} openModalHandler={openModalHandler} />
+
       <MenuCardsContainer ref={content1Ref}>
         <div>
           <StyledLiEach>{menutype[0]}</StyledLiEach>
         </div>
-        <div onClick={openModalHandler}>
-          <MenuCard info={info.menus[0]} />
-        </div>
+        <MenuCard info={info.menus[0]} />
       </MenuCardsContainer>
       <MenuCardsContainer ref={content2Ref}>
         <div>

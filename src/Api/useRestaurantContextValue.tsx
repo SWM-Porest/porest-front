@@ -1,6 +1,6 @@
-import { Restaurant, restaurantContextDefaultValue } from 'Context/restaurantContext'
+import { Restaurant } from 'Context/restaurantContext'
 import axios from 'axios'
-import { useEffect, useLayoutEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export const useRestaurantContextValue = (id: string) => {
   const [restaurant, setRestaurant] = useState<Restaurant>()
@@ -29,6 +29,6 @@ export const useRestaurantContextValue = (id: string) => {
 
 export const useRestaurantLoading = () => {
   useEffect(() => {
-    useRestaurantContextValue('64bb91af02ebdee472579f97')
+    useRestaurantContextValue('64be5622cdbb9385ac6851b9')
   }, [])
 }
