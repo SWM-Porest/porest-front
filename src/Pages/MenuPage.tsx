@@ -20,7 +20,7 @@ const MenuPage: React.FC = () => {
     <div>
       {/* 모달 창 */}
       <ContainerBox>
-        <MenuModal>
+        {/* <MenuModal>
           <MenuHeader name={restaurant?.name} />
           <DescriptionContainer
             title={restaurant?.menus[0].name}
@@ -32,7 +32,7 @@ const MenuPage: React.FC = () => {
             <Categories ingre={restaurant?.menus[0].ingre}></Categories>
           </ContainerBox>
           <AddCart />
-        </MenuModal>
+        </MenuModal> */}
       </ContainerBox>
 
       <Footer />
