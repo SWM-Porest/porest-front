@@ -10,7 +10,6 @@ import { useRestauranDispatch, useRestaurantState } from 'Context/restaurantCont
 
 const MenuPage: React.FC = () => {
   const state = useRestaurantState()
-
   const { data: restaurant, loading, error } = state.restaurant
 
   if (loading) return <div>로딩중...</div>
