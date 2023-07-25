@@ -1,4 +1,4 @@
-import { Menu } from 'model/restaurant'
+import { Menu } from 'Context/restaurant_context'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'

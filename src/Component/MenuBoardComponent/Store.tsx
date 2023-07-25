@@ -1,7 +1,6 @@
 import { Restaurant } from 'model/restaurant'
 import React from 'react'
 import styled from 'styled-components'
-import MenuCard from './MenuCard'
 const menutype = ['요리류', '식사류', '주류', '세트메뉴']
 interface OwnProps {
   info: Restaurant
@@ -26,18 +25,19 @@ const MenuCardsContainer = styled.div`
 
 const Store: React.FC<OwnProps> = ({ info }) => {
   return (
-    <StyledContainer>
-      <MenuCardsContainer>
-        <StyledH2>{info.menus[0].menutype}</StyledH2>
-        <MenuCard info={info.menus[0]} />
-        <MenuCard info={info.menus[0]} />
-      </MenuCardsContainer>
-      <MenuCardsContainer>
-        <StyledH2>{info.menus[0].menutype}</StyledH2>
-        <MenuCard info={info.menus[0]} />
-        <MenuCard info={info.menus[0]} />
-      </MenuCardsContainer>
-    </StyledContainer>
+    <div></div>
+    // <StyledContainer>
+    //   <MenuCardsContainer>
+    //     <StyledH2>{info.menus[0].menutype}</StyledH2>
+    //     <MenuCard info={info.menus[0]} />
+    //     <MenuCard info={info.menus[0]} />
+    //   </MenuCardsContainer>
+    //   <MenuCardsContainer>
+    //     <StyledH2>{info.menus[0].menutype}</StyledH2>
+    //     <MenuCard info={info.menus[0]} />
+    //     <MenuCard info={info.menus[0]} />
+    //   </MenuCardsContainer>
+    // </StyledContainer>
   )
 }
 
