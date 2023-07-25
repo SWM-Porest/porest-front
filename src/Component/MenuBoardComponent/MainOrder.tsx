@@ -1,8 +1,8 @@
-import { Children, useEffect, useRef, useState } from 'react'
+import { MenuModal } from 'Component/MenuComponent/MenuModal'
+import { Restaurant } from 'Context/restaurantContext'
+import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import MenuCard from './MenuCard'
-import { Restaurant, restaurantContextDefaultValue } from 'Context/restaurantContext'
-import { MenuModal } from 'Component/MenuComponent/MenuModal'
 const menutype = ['요리류', '식사류', '주류', '세트메뉴']
 
 interface OwnProps {

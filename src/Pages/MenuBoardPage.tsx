@@ -1,4 +1,3 @@
-import { useRestaurantLoading } from 'Api/useRestaurantContextValue'
 import Footer from 'Component/Footer'
 import Header from 'Component/Header'
 import MainBanner from 'Component/MenuBoardComponent/MainBanner'
@@ -10,7 +9,7 @@ import {
   useRestaurantState,
 } from 'Context/restaurantContext'
 import { Restaurant } from 'model/restaurant'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
 const StyledContainer = styled.div`
