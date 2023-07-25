@@ -4,14 +4,13 @@ import Header from 'Component/Header'
 import MainBanner from 'Component/MenuBoardComponent/MainBanner'
 import MainOrder from 'Component/MenuBoardComponent/MainOrder'
 import {
-  RestaurantContext,
   getRestaurant,
   restaurantContextDefaultValue,
   useRestauranDispatch,
   useRestaurantState,
 } from 'Context/restaurantContext'
 import { Restaurant } from 'model/restaurant'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 const StyledContainer = styled.div`
@@ -68,24 +67,22 @@ const StyledOrder = styled(MainOrder)`
 const MenuBoardPage: React.FC = () => {
   const images = ['img/교동짬뽕.jpeg', 'img/메뉴판.jpeg', 'img/내부.jpeg']
   const id = '64bb91af02ebdee472579f97'
-  const [restaurantId, setRestaurantId] = useState<null | string>(null)
   const state = useRestaurantState()
   const dispatch = useRestauranDispatch()
 
-  const { data, loading, error } = state.restaurant
-  const fetchData = () => {
+  const { data: restaurant, loading, error } = state.restaurant
+  useEffect(() => {
     getRestaurant(dispatch, id)
-  }
+  }, [dispatch, id])
 
   if (loading) return <div>로딩중...</div>
   if (error) return <div>에러가 발생했습니다.</div>
-
   return (
     <div className="MenuBoard">
       <StyledContainer>
-        <Header HeaderName={data ? data.name : 'noname'} />
+        <Header HeaderName={restaurant ? restaurant.name : 'noname'} />
         <StyledBanner images={images} />
-        <StyledOrder info={data ? data : restaurantContextDefaultValue} />
+        <StyledOrder info={restaurant ? restaurant : restaurantContextDefaultValue} />
       </StyledContainer>
       <Footer />
     </div>

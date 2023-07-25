@@ -1,11 +1,11 @@
 import NotFound from 'Component/NotFound'
-import { RestaurantProvider } from 'Context/restaurantContext'
+import { RestaurantProvider, getRestaurant, useRestauranDispatch, useRestaurantState } from 'Context/restaurantContext'
 import CartPage from 'Pages/CartPage'
 import MenuBoardPage from 'Pages/MenuBoardPage'
 import MenuPage from 'Pages/MenuPage'
 import { GlobalStyles } from 'Styles/global'
 import { theme } from 'Styles/theme'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 
