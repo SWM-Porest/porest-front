@@ -4,12 +4,13 @@ import AddCart from 'Component/MenuComponent/AddCart'
 import Categories from 'Component/MenuComponent/Categories'
 import ContainerBox from 'Component/MenuComponent/ContainerBox'
 import DescriptionContainer from 'Component/MenuComponent/DescriptionContainer'
+import MenuHeader from 'Component/MenuComponent/MenuHeader'
 import { MenuModal } from 'Component/MenuComponent/MenuModal'
 import { useRestauranDispatch, useRestaurantState } from 'Context/restaurantContext'
 
 const MenuPage: React.FC = () => {
   const state = useRestaurantState()
-  const dispatch = useRestauranDispatch()
+
   const { data: restaurant, loading, error } = state.restaurant
 
   if (loading) return <div>로딩중...</div>
@@ -17,21 +18,10 @@ const MenuPage: React.FC = () => {
   if (!restaurant) return null
   return (
     <div>
-      <h1>MenuPage</h1>
-      <Header HeaderName={restaurant?.menus[0].name} />
-      <DescriptionContainer
-        title={restaurant?.menus[0].name}
-        price={restaurant?.menus[0].price}
-        description={restaurant?.menus[0].description}
-        img={restaurant?.menus[0].img}
-      ></DescriptionContainer>
-      <ContainerBox>
-        <Categories ingre={restaurant?.menus[0].ingre}></Categories>
-      </ContainerBox>
-      <AddCart />
       {/* 모달 창 */}
       <ContainerBox>
         <MenuModal>
+          <MenuHeader name={restaurant?.name} />
           <DescriptionContainer
             title={restaurant?.menus[0].name}
             price={restaurant?.menus[0].price}

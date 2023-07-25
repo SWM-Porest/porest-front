@@ -80,7 +80,7 @@ const MenuBoardPage: React.FC = () => {
   return (
     <div className="MenuBoard">
       <StyledContainer>
-        <Header HeaderName={restaurant ? restaurant.name : 'noname'} />
+        <Header HeaderName={restaurant ? restaurant.name : ''} />
         <StyledBanner images={images} />
         <StyledOrder info={restaurant ? restaurant : restaurantContextDefaultValue} />
       </StyledContainer>

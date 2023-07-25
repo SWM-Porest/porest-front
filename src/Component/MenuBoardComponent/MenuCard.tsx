@@ -11,7 +11,7 @@ const MenuCard: React.FC<OwnProps> = ({ info }) => {
   return (
     <div>
       {info.img ? (
-        <MenuCardContainer to={'/menu'}>
+        <MenuCardContainer>
           <StyledImage src={info.img} alt="메뉴 이미지" />
           <StyledContainer>
             <ImgStyledName>{info.name}</ImgStyledName>
@@ -20,7 +20,7 @@ const MenuCard: React.FC<OwnProps> = ({ info }) => {
           <CartImgContainer src="img/add-to-cart.png" alt="메뉴 이미지" />
         </MenuCardContainer>
       ) : (
-        <MenuCardContainer to={'/menu'}>
+        <MenuCardContainer>
           <div>
             <StyledName>{info.name}</StyledName>
             <StyledPrice>{info.price}원</StyledPrice>
@@ -33,7 +33,7 @@ const MenuCard: React.FC<OwnProps> = ({ info }) => {
 }
 export default MenuCard
 
-const MenuCardContainer = styled(Link)`
+const MenuCardContainer = styled.div`
   ${FlexAlignCSS};
   padding: 16pt 32pt;
   color: inherit;

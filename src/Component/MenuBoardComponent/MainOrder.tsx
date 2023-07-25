@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { Children, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import MenuCard from './MenuCard'
 import { Restaurant } from 'Context/restaurantContext'
+import { MenuModal } from 'Component/MenuComponent/MenuModal'
 const menutype = ['요리류', '식사류', '주류', '세트메뉴']
 
 interface OwnProps {
@@ -73,7 +74,9 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
           {menutype[3]}
         </StyledLi>
       </StyledUl>
-
+      <MenuModal restaurant={info}>
+        <div>tmp</div>
+      </MenuModal>
       <MenuCardsContainer ref={content1Ref}>
         <div>
           <StyledLiEach>{menutype[0]}</StyledLiEach>
