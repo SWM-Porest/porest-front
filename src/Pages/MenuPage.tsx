@@ -5,11 +5,12 @@ import Categories from 'Component/MenuComponent/Categories'
 import ContainerBox from 'Component/MenuComponent/ContainerBox'
 import DescriptionContainer from 'Component/MenuComponent/DescriptionContainer'
 import { MenuModal } from 'Component/MenuComponent/MenuModal'
-import { RestaurantContext } from 'Context/restaurant_context'
+import { RestaurantContext } from 'Context/restaurantContext'
 import { useContext } from 'react'
-import { styled } from 'styled-components'
 
 const MenuPage: React.FC = () => {
+  const { restaurant } = useContext(RestaurantContext)
+  const menus = restaurant?.menus
 
   return (
     <div>

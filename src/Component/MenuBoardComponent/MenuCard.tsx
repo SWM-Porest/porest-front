@@ -10,7 +10,7 @@ interface OwnProps {
 const MenuCard: React.FC<OwnProps> = ({ info }) => {
   return (
     <div>
-      {info.img !== '' ? (
+      {info.img ? (
         <MenuCardContainer to={'/menu'}>
           <StyledImage src={info.img} alt="메뉴 이미지" />
           <StyledContainer>

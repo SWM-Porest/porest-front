@@ -1,7 +1,7 @@
-import { Restaurant } from 'model/restaurant'
 import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import MenuCard from './MenuCard'
+import { Restaurant } from 'Context/restaurantContext'
 const menutype = ['요리류', '식사류', '주류', '세트메뉴']
 
 interface OwnProps {
@@ -82,33 +82,24 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
           <StyledLiEach>{menutype[0]}</StyledLiEach>
         </div>
         <MenuCard info={info.menus[0]} />
-        <MenuCard info={info.menus[1]} />
-        <MenuCard info={info.menus[2]} />
       </MenuCardsContainer>
       <MenuCardsContainer ref={content2Ref}>
         <div>
           <StyledLiEach>{menutype[1]}</StyledLiEach>
         </div>
         <MenuCard info={info.menus[0]} />
-        <MenuCard info={info.menus[1]} />
       </MenuCardsContainer>
       <MenuCardsContainer ref={content3Ref}>
         <div>
           <StyledLiEach>{menutype[2]}</StyledLiEach>
         </div>
-        <MenuCard info={info.menus[2]} />
-        <MenuCard info={info.menus[2]} />
-        <MenuCard info={info.menus[2]} />
-        <MenuCard info={info.menus[2]} />
+        <MenuCard info={info.menus[0]} />
       </MenuCardsContainer>
       <MenuCardsContainer ref={content4Ref}>
         <div>
           <StyledLiEach>{menutype[3]}</StyledLiEach>
         </div>
-        <MenuCard info={info.menus[2]} />
-        <MenuCard info={info.menus[2]} />
-        <MenuCard info={info.menus[2]} />
-        <MenuCard info={info.menus[2]} />
+        <MenuCard info={info.menus[0]} />
       </MenuCardsContainer>
     </div>
   )
