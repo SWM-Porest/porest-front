@@ -1,8 +1,5 @@
 import Footer from 'Component/Footer'
-import AddCart from 'Component/MenuComponent/AddCart'
-import Categories from 'Component/MenuComponent/Categories'
 import ContainerBox from 'Component/MenuComponent/ContainerBox'
-import { MenuModal } from 'Component/MenuComponent/MenuModal'
 import { useRestaurantState } from 'Context/restaurantContext'
 
 const MenuPage: React.FC = () => {
@@ -23,7 +20,7 @@ const MenuPage: React.FC = () => {
             price={restaurant?.menus[0].price}
             description={restaurant?.menus[0].description}
             img={restaurant?.menus[0].img[0]}
-          ></DescriptionContainer> */}
+          ></DescriptionContainer>}
           <ContainerBox>
             <Categories ingre={restaurant?.menus[0].ingre}></Categories>
           </ContainerBox>

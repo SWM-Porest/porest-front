@@ -1,23 +1,38 @@
+import { MenuModal } from 'Component/MenuComponent/MenuModal'
 import { Restaurant } from 'Context/restaurantContext'
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import MenuCard from './MenuCard'
-const menutype = ['요리류', '식사류', '주류', '세트메뉴']
 
 interface OwnProps {
   info: Restaurant
 }
 
 const MainOrder: React.FC<OwnProps> = ({ info }) => {
-  const content1Ref = useRef<HTMLDivElement>(null)
-  const content2Ref = useRef<HTMLDivElement>(null)
-  const content3Ref = useRef<HTMLDivElement>(null)
-  const content4Ref = useRef<HTMLDivElement>(null)
+  // 모달 state
+  const menuid = '64bfe14ed3789594c638685d'
+  const [isOpen, setIsOpen] = useState(false)
+  const openModalHandler = () => {
+    setIsOpen(!isOpen)
+  }
 
+  // 중복되지 않은 메뉴 타입 추출
+  const uniqueMenuTypes = info.menus.reduce((types: string[], menu) => {
+    if (!types.includes(menu.menutype)) {
+      types.push(menu.menutype)
+    }
+    return types
+  }, [])
+
+  // Ref 배열을 동적 생성
+  const contentRefs = uniqueMenuTypes.map(() => useRef<HTMLDivElement>(null))
+
+  const [activeMenu, setActiveMenu] = useState(0) // activeMenu state 추가
   useEffect(() => {
     // 스크롤 이벤트 핸들러
     const handleScroll = () => {
-      const menuSections = contentRefs.current.map((ref) => ref.current)
+      //이렇게 말공~ 네,,,,
+      const menuSections = contentRefs.map((ref) => ref.current)
       let activeIndex = 0
       for (let i = 0; i < menuSections.length; i++) {
         const section = menuSections[i]
@@ -42,49 +57,34 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
     }
   }, [])
 
-  useEffect(() => {
-    // `menutype`의 개수에 따라 `ref` 생성 및 초기화
-    contentRefs.current = Array.from({ length: menutype.length }, () => React.createRef())
-  }, [menutype.length])
-
-  const onContentClick = (index: number) => {
-    contentRefs.current[index].current?.scrollIntoView({ behavior: 'smooth' })
-  }
-
   return (
     <div>
       <StyledUl>
-        {menutype.map((type, index) => (
-          <StyledLi key={index} $active={activeMenu === index} onClick={() => onContentClick(index)}>
-            {type}
+        {uniqueMenuTypes.map((menuType, index) => (
+          <StyledLi
+            key={index}
+            $active={activeMenu === index}
+            onClick={() => contentRefs[index].current?.scrollIntoView({ behavior: 'smooth' })}
+          >
+            {menuType}
           </StyledLi>
         ))}
       </StyledUl>
+      {/* 메뉴모달 */}
+      {uniqueMenuTypes.map((menuType, index) => (
+        <>
+          <MenuModal id={menuid} isOpen={isOpen} openModalHandler={openModalHandler} />
+          <MenuCardsContainer key={index} ref={contentRefs[index]}>
+            <div>
+              <StyledLiEach>{menuType}</StyledLiEach>
+            </div>
+            <div onClick={openModalHandler}>
+              {info.menus.map((menu) => menu.menutype === menuType && <MenuCard key={menu._id} info={menu} />)}
+            </div>
+          </MenuCardsContainer>
+        </>
+      ))}
 
-      <MenuCardsContainer ref={content1Ref}>
-        <div>
-          <StyledLiEach>{menutype[0]}</StyledLiEach>
-        </div>
-        <MenuCard info={info.menus[0]} />
-      </MenuCardsContainer>
-      <MenuCardsContainer ref={content2Ref}>
-        <div>
-          <StyledLiEach>{menutype[1]}</StyledLiEach>
-        </div>
-        <MenuCard info={info.menus[0]} />
-      </MenuCardsContainer>
-      <MenuCardsContainer ref={content3Ref}>
-        <div>
-          <StyledLiEach>{menutype[2]}</StyledLiEach>
-        </div>
-        <MenuCard info={info.menus[0]} />
-      </MenuCardsContainer>
-      <MenuCardsContainer ref={content4Ref}>
-        <div>
-          <StyledLiEach>{menutype[3]}</StyledLiEach>
-        </div>
-        <MenuCard info={info.menus[0]} />
-      </MenuCardsContainer>
       <DisclaimerContainer>
         <Disclaimer>
           유의사항
@@ -96,6 +96,7 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
     </div>
   )
 }
+
 export default MainOrder
 
 const StyledUl = styled.ul`
