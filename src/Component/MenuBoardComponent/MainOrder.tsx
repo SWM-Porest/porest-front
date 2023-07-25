@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { Children, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import MenuCard from './MenuCard'
-import { Restaurant } from 'Context/restaurantContext'
+import { Restaurant, restaurantContextDefaultValue } from 'Context/restaurantContext'
+import { MenuModal } from 'Component/MenuComponent/MenuModal'
 const menutype = ['요리류', '식사류', '주류', '세트메뉴']
 
 interface OwnProps {
@@ -9,6 +10,13 @@ interface OwnProps {
 }
 
 const MainOrder: React.FC<OwnProps> = ({ info }) => {
+  // 모달 state
+  const menuid = '64bbba568b39a229d20e207f'
+  const [isOpen, setIsOpen] = useState(false)
+  const openModalHandler = () => {
+    setIsOpen(!isOpen)
+  }
+  // Ref
   const content1Ref = useRef<HTMLDivElement>(null)
   const content2Ref = useRef<HTMLDivElement>(null)
   const content3Ref = useRef<HTMLDivElement>(null)
@@ -73,12 +81,15 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
           {menutype[3]}
         </StyledLi>
       </StyledUl>
-
+      {/* 메뉴모달 */}
+      <MenuModal id={menuid} isOpen={isOpen} openModalHandler={openModalHandler} />
       <MenuCardsContainer ref={content1Ref}>
         <div>
           <StyledLiEach>{menutype[0]}</StyledLiEach>
         </div>
-        <MenuCard info={info.menus[0]} />
+        <div onClick={openModalHandler}>
+          <MenuCard info={info.menus[0]} />
+        </div>
       </MenuCardsContainer>
       <MenuCardsContainer ref={content2Ref}>
         <div>

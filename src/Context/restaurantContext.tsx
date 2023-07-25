@@ -2,6 +2,7 @@ import axios, { AxiosError } from 'axios'
 import React, { Dispatch, createContext, useContext, useReducer } from 'react'
 
 export interface Restaurant {
+  _id: string
   name: string
   en_name: string
   category: string[]
@@ -25,9 +26,11 @@ export interface Menu {
   description: string
   img: string
   ingre: string[]
+  _id: string
 }
 
 export const restaurantContextDefaultValue: Restaurant = {
+  _id: '',
   name: '',
   en_name: '',
   category: [],
@@ -41,6 +44,7 @@ export const restaurantContextDefaultValue: Restaurant = {
   status: 1,
   menus: [
     {
+      _id: '',
       name: '',
       en_name: 'string',
       menutype: 'string',
