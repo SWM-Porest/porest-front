@@ -16,12 +16,14 @@ import CartModal from '../Component/Modal/CartModal'
 
 const MenuBoardPage: React.FC = () => {
   const images = ['img/교동짬뽕.jpeg', 'img/메뉴판.jpeg', 'img/내부.jpeg']
+
   const { id } = useParams()
   if (id === undefined) throw new Error('id가 없습니다.')
+
   const state = useRestaurantState()
   const dispatch = useRestauranDispatch()
+  const { data: restaurant, loading, error } = useRestaurantState().restaurant
 
-  const { data: restaurant, loading, error } = state.restaurant
   useEffect(() => {
     getRestaurant(dispatch, id)
   }, [dispatch, id])

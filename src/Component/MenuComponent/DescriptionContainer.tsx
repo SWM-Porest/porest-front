@@ -29,6 +29,7 @@ const TitleInner = styled.div`
   margin: auto;
   padding: 0;
   font-size: 3.5rem;
+  font-weight: bold;
 `
 const PriceSpan = styled.span`
   color: #ff5757;
