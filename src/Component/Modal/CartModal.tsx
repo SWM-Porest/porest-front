@@ -1,12 +1,12 @@
-import CartPrice from 'Component/CartComponent/CartPrice'
-import { useCartModal } from 'Context/CartModalContext'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { getCookie } from 'Api/cartCookie'
+import CartPrice from 'Component/CartComponent/CartPrice'
+import Header from 'Component/Header'
+import { useCartModal } from 'Context/CartModalContext'
 import { Cart } from 'model/restaurant'
 import React, { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Header from 'Component/Header'
-
 const data: Cart = {
   menu: [
     {
@@ -32,7 +32,11 @@ const data: Cart = {
 
 const CartModal: React.FC = () => {
   const { isModalOpen, closeModal } = useCartModal()
-
+  const [myCart, setMyCart] = useState<Cart>(JSON.parse(getCookie('cartMenu') || '{}'))
+  useEffect(() => {
+    const cartMenu = JSON.parse(getCookie('cartMenu') || '{}')
+    setMyCart(cartMenu)
+  }, [])
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && isModalOpen) {
@@ -48,8 +52,6 @@ const CartModal: React.FC = () => {
       document.body.style.overflow = 'auto' // 컴포넌트가 unmount 될 때 다시 body의 overflow를 auto로 변경
     }
   }, [isModalOpen, closeModal])
-
-  const [myCart, setMyCart] = useState<Cart>(data)
 
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     // 배경 클릭 시 모달 닫기

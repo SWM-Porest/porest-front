@@ -1,3 +1,4 @@
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { styled } from 'styled-components'
 
@@ -21,11 +22,12 @@ const StyledLink = styled(Link)`
   color: inherit;
   text-decoration: none;
   margin: 0px;
-  font-weight:bold;
-  }
+  font-weight: bold;
 `
-
-const AddCart = () => {
+interface AddCartProps {
+  onAddToCart: () => void
+}
+const AddCart: React.FC<AddCartProps> = ({ onAddToCart }) => {
   return (
     <div style={{ display: 'flex' }}>
       <StyeldButton>

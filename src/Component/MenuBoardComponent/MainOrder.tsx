@@ -1,6 +1,6 @@
 import { MenuModal } from 'Component/MenuComponent/MenuModal'
 import { Restaurant } from 'Context/restaurantContext'
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import MenuCard from './MenuCard'
 
@@ -10,7 +10,7 @@ interface OwnProps {
 
 const MainOrder: React.FC<OwnProps> = ({ info }) => {
   // 모달 state
-  const [menuId, setMenuId] = useState('64bbba568b39a229d20e207f')
+  const [menuId, setMenuId] = useState('64bfe14ed3789594c638685d')
   const [isOpen, setIsOpen] = useState(false)
   const openModalHandler = (id: string) => {
     setMenuId(id)
@@ -80,26 +80,26 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
         }}
       />
       {uniqueMenuTypes.map((menuType, index) => (
-        <>
-          <MenuCardsContainer key={index} ref={contentRefs[index]}>
+        <div key={`menuType_${index}`}>
+          <MenuCardsContainer ref={contentRefs[index]}>
             <div>
               <StyledLiEach>{menuType}</StyledLiEach>
             </div>
 
-            {info.menus.map(
-              (menu) =>
-                menu.menutype === menuType && (
-                  <div
-                    onClick={() => {
-                      openModalHandler(menu._id)
-                    }}
-                  >
-                    <MenuCard key={menu._id} info={menu} />
-                  </div>
-                ),
+            {info.menus.map((menu) =>
+              menu.menutype === menuType && menu._id ? ( // menu._id가 유효한 경우에만 렌더링
+                <div
+                  key={`menu_${menu._id}`}
+                  onClick={() => {
+                    openModalHandler(menu._id)
+                  }}
+                >
+                  <MenuCard key={menu._id} info={menu} />
+                </div>
+              ) : null,
             )}
           </MenuCardsContainer>
-        </>
+        </div>
       ))}
 
       <DisclaimerContainer>
