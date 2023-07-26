@@ -18,9 +18,7 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
   const menu = restaurant?.menus.find((e) => {
     return e._id === id
   })
-  for (let i = 0; i < (restaurant ? restaurant.menus.length : 0); i++) {
-    console.log(restaurant?.menus[i]._id, id)
-  }
+
   if (loading) return <div>로딩중...</div>
   if (error) return <div>에러가 발생했습니다.</div>
 
