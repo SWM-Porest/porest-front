@@ -11,7 +11,8 @@ export default MenuHeader
 
 const StyledDiv = styled.div`
   font-size: ${theme.FONT_SIZE.big};
+  font-weight: bold;
   marign: 16pt;
-  padding: 16pt;
+  padding-top: 16pt;
   text-align: center;
 `

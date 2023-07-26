@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { styled } from 'styled-components'
 import MenuHeader from './MenuHeader'
 import DescriptionContainer from './DescriptionContainer'
@@ -9,21 +8,31 @@ import { useRestaurantState } from 'Context/restaurantContext'
 interface OwnProps {
   id: string
   isOpen: boolean
-  openModalHandler: () => void
+  openModalHandler: (menuId: string) => void
 }
 
 export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) => {
   const state = useRestaurantState()
   const { data: restaurant, loading, error } = state.restaurant
+
   const menu = restaurant?.menus.find((e) => {
-    if (e._id === id) return true
+    return e._id === id
   })
+
+  if (loading) return <div>로딩중...</div>
+  if (error) return <div>에러가 발생했습니다.</div>
+
   return (
     <>
       <ModalContainer>
-        <ModalBackdrop $load={isOpen} onClick={openModalHandler} />
+        <ModalBackdrop
+          $load={isOpen}
+          onClick={() => {
+            openModalHandler(menu ? menu._id : '')
+          }}
+        />
         <ModalView $load={isOpen} onClick={(e) => e.stopPropagation()}>
-          <MenuHeader name={menu ? menu.name : ''} />
+          <MenuHeader name={restaurant ? restaurant.name : ''} />
           <DescriptionContainer
             title={menu ? menu.name : ''}
             price={menu ? menu.price : 0}

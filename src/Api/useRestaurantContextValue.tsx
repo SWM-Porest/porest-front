@@ -29,6 +29,6 @@ export const useRestaurantContextValue = (id: string) => {
 
 export const useRestaurantLoading = () => {
   useEffect(() => {
-    useRestaurantContextValue('64be5622cdbb9385ac6851b9')
+    useRestaurantContextValue('64bb91af02ebdee472579f97')
   }, [])
 }

@@ -1,4 +1,4 @@
-import { Menu } from 'Context/restaurant_context'
+import { Menu } from 'Context/restaurantContext'
 import React from 'react'
 import styled from 'styled-components'
 import { FlexAlignCSS } from 'Styles/common'
