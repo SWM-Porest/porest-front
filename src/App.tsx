@@ -1,6 +1,6 @@
 import NotFound from 'Component/NotFound'
+import { CartModalProvider } from 'Context/CartModalContext'
 import { RestaurantProvider } from 'Context/restaurantContext'
-import CartPage from 'Pages/CartPage'
 import MenuBoardPage from 'Pages/MenuBoardPage'
 import MenuPage from 'Pages/MenuPage'
 import { GlobalStyles } from 'Styles/global'
@@ -15,14 +15,15 @@ const App: React.FC = () => {
       <GlobalStyles />
       <div className="App">
         {/* 라우팅: 화면이 계속 바뀌는 부분 */}
-        <RestaurantProvider>
-          <Routes>
-            <Route path="/restaurants/:id" element={<MenuBoardPage />} />
-            <Route path="/menu" element={<MenuPage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </RestaurantProvider>
+        <CartModalProvider>
+          <RestaurantProvider>
+            <Routes>
+              <Route path="/restaurants/:id" element={<MenuBoardPage />} />
+              <Route path="/menu" element={<MenuPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </RestaurantProvider>
+        </CartModalProvider>
       </div>
     </ThemeProvider>
   )
