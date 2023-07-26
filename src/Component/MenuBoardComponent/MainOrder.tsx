@@ -10,9 +10,11 @@ interface OwnProps {
 
 const MainOrder: React.FC<OwnProps> = ({ info }) => {
   // 모달 state
-  const menuid = '64bfe14ed3789594c638685d'
+  const menuid = '64bbba568b39a229d20e207f'
+  const [menuId, setMenuId] = useState('64bbba568b39a229d20e207f')
   const [isOpen, setIsOpen] = useState(false)
   const openModalHandler = () => {
+    setMenuId(menuid)
     setIsOpen(!isOpen)
   }
 
@@ -73,7 +75,7 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
       {/* 메뉴모달 */}
       {uniqueMenuTypes.map((menuType, index) => (
         <>
-          <MenuModal id={menuid} isOpen={isOpen} openModalHandler={openModalHandler} />
+          <MenuModal id={menuId} isOpen={isOpen} openModalHandler={openModalHandler} />
           <MenuCardsContainer key={index} ref={contentRefs[index]}>
             <div>
               <StyledLiEach>{menuType}</StyledLiEach>
