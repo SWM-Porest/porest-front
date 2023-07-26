@@ -29,23 +29,26 @@ const data: Cart = {
   ],
 }
 
-interface ModalProps {
-  onClose: () => void
-}
-
-const CartModal: React.FC<ModalProps> = ({ onClose }) => {
+const CartModal: React.FC = () => {
   const { isModalOpen, closeModal } = useCartModal()
 
-  const [myCart, setMyCart] = useState<Cart>(data)
-
   useEffect(() => {
-    // 모달이 열릴 때 body 스크롤을 막습니다.
-    if (isModalOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'auto'
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isModalOpen) {
+        closeModal()
+      }
     }
-  }, [isModalOpen])
+
+    document.body.style.overflow = isModalOpen ? 'hidden' : 'auto' // overflow 속성 변경
+    document.addEventListener('keydown', handleEscape)
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape)
+      document.body.style.overflow = 'auto' // 컴포넌트가 unmount 될 때 다시 body의 overflow를 auto로 변경
+    }
+  }, [isModalOpen, closeModal])
+
+  const [myCart, setMyCart] = useState<Cart>(data)
 
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     // 배경 클릭 시 모달 닫기
@@ -66,7 +69,7 @@ const CartModal: React.FC<ModalProps> = ({ onClose }) => {
           <ModalHeader>
             <Title>주문서</Title>
             <CloseButtonContainer>
-              <CloseButton icon={faXmark} onClick={onClose} size="2xl" />
+              <CloseButton icon={faXmark} onClick={closeModal} size="2xl" />
             </CloseButtonContainer>
           </ModalHeader>
           <CartPrice cartprice={myCart} />
@@ -104,11 +107,12 @@ const ModalOverlay = styled.div`
 `
 
 const ModalContent = styled.div`
-  background-color: white;
+  background-color: #ffffff;
   border-radius: 8px;
   position: relative;
   width: 100%;
   height: 100%;
+  overflow: auto;
 `
 
 const CloseButtonContainer = styled.div`
