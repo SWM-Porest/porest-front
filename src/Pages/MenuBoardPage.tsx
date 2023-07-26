@@ -20,7 +20,6 @@ const MenuBoardPage: React.FC = () => {
   const { id } = useParams()
   if (id === undefined) throw new Error('id가 없습니다.')
 
-  const state = useRestaurantState()
   const dispatch = useRestauranDispatch()
   const { data: restaurant, loading, error } = useRestaurantState().restaurant
 
@@ -34,13 +33,13 @@ const MenuBoardPage: React.FC = () => {
   if (error) return <div>에러가 발생했습니다.</div>
   return (
     <div className="MenuBoard">
+      {isModalOpen && <CartModal></CartModal>}
       <StyledContainer>
         <Header HeaderName={restaurant ? restaurant.name : ''} />
         <StyledBanner images={images} />
         <StyledOrder info={restaurant ? restaurant : restaurantContextDefaultValue} />
       </StyledContainer>
       <Footer />
-      {isModalOpen && <CartModal onClose={closeModal}></CartModal>}
     </div>
   )
 }
