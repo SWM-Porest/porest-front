@@ -5,6 +5,7 @@ import { Cart } from 'model/restaurant'
 import React, { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Header from 'Component/Header'
 
 const data: Cart = {
   menu: [
@@ -65,33 +66,21 @@ const CartModal: React.FC = () => {
     <ModalOverlay className={isModalOpen ? 'open' : ''} onClick={handleOverlayClick}>
       <ModalContent onClick={handleContentClick}>
         {/* 모달 내용 */}
-        <div>
-          <ModalHeader>
-            <Title>주문서</Title>
+        <Header
+          HeaderName="주문서"
+          Right={
             <CloseButtonContainer>
               <CloseButton icon={faXmark} onClick={closeModal} size="2xl" />
             </CloseButtonContainer>
-          </ModalHeader>
-          <CartPrice cartprice={myCart} />
-        </div>
+          }
+        ></Header>
+        <CartPrice cartprice={myCart} />
       </ModalContent>
     </ModalOverlay>
   )
 }
 
 export default CartModal
-
-const ModalHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10pt 20pt;
-`
-const Title = styled.h2`
-  text-align: center;
-  flex: 1;
-  margin: 0; /* 제목의 기본 마진 제거 */
-`
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -116,7 +105,6 @@ const ModalContent = styled.div`
 `
 
 const CloseButtonContainer = styled.div`
-  position: absolute;
   right: 20pt;
   width: 72px; /* 원하는 크기 조정 */
   height: 72px; /* 원하는 크기 조정 */
