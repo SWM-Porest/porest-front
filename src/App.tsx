@@ -17,7 +17,7 @@ const App: React.FC = () => {
         {/* 라우팅: 화면이 계속 바뀌는 부분 */}
         <RestaurantProvider>
           <Routes>
-            <Route path="/" element={<MenuBoardPage />} />
+            <Route path="/restaurants/:id" element={<MenuBoardPage />} />
             <Route path="/menu" element={<MenuPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="*" element={<NotFound />} />

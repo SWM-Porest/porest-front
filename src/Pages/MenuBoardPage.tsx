@@ -9,6 +9,7 @@ import {
   useRestaurantState,
 } from 'Context/restaurantContext'
 import React, { useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 
 const StyledContainer = styled.div`
@@ -25,7 +26,8 @@ const StyledOrder = styled(MainOrder)`
 `
 const MenuBoardPage: React.FC = () => {
   const images = ['img/교동짬뽕.jpeg', 'img/메뉴판.jpeg', 'img/내부.jpeg']
-  const id = '64be5622cdbb9385ac6851b9'
+  const { id } = useParams()
+  if (id === undefined) throw new Error('id가 없습니다.')
   const state = useRestaurantState()
   const dispatch = useRestauranDispatch()
 
