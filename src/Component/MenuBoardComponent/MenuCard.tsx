@@ -7,6 +7,7 @@ interface OwnProps {
 }
 
 const MenuCard: React.FC<OwnProps> = ({ info }) => {
+  console.log(info.img, info)
   return (
     <div>
       {info.img ? (

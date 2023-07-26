@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { styled } from 'styled-components'
 import MenuHeader from './MenuHeader'
 import DescriptionContainer from './DescriptionContainer'
@@ -9,14 +8,13 @@ import { useRestaurantState } from 'Context/restaurantContext'
 interface OwnProps {
   id: string
   isOpen: boolean
-  openModalHandler: () => void
+  openModalHandler: (menuId: string) => void
 }
 
 export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) => {
   const state = useRestaurantState()
   const { data: restaurant, loading, error } = state.restaurant
-  console.log(restaurant, loading, error, 'Modal')
-  console.log(restaurant?.menus[0]._id, id)
+
   const menu = restaurant?.menus.find((e) => {
     return e._id === id
   })
@@ -29,9 +27,14 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
   return (
     <>
       <ModalContainer>
-        <ModalBackdrop $load={isOpen} onClick={openModalHandler} />
+        <ModalBackdrop
+          $load={isOpen}
+          onClick={() => {
+            openModalHandler(menu ? menu._id : '')
+          }}
+        />
         <ModalView $load={isOpen} onClick={(e) => e.stopPropagation()}>
-          <MenuHeader name={menu ? menu.name : ''} />
+          <MenuHeader name={restaurant ? restaurant.name : ''} />
           <DescriptionContainer
             title={menu ? menu.name : ''}
             price={menu ? menu.price : 0}
