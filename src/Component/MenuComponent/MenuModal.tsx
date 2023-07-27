@@ -48,7 +48,7 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
           <ContainerBox>
             <Categories ingre={menu ? menu.ingre : []}></Categories>
           </ContainerBox>
-          <AddCart />
+          <AddCart menu={menu ? menu : null} />
         </ModalView>
       </ModalContainer>
     </>

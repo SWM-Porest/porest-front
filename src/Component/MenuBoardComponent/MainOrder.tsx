@@ -10,7 +10,7 @@ interface OwnProps {
 
 const MainOrder: React.FC<OwnProps> = ({ info }) => {
   // 모달 state
-  const [menuId, setMenuId] = useState('64bbba568b39a229d20e207f')
+  const [menuId, setMenuId] = useState('')
   const [isOpen, setIsOpen] = useState(false)
   const openModalHandler = (id: string) => {
     setMenuId(id)
