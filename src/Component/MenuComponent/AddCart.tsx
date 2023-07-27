@@ -1,8 +1,13 @@
-import { Link } from 'react-router-dom'
+import { setCookie } from 'Api/cartCookie'
+import { Menu } from 'Context/restaurantContext'
 import { styled } from 'styled-components'
 
 const StyeldButton = styled.button`
   cursor: pointer;
+  font-size: 40px;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
   background-color: #4caf50e0;
   color: #ffffff;
   padding: 30px;
@@ -13,22 +18,20 @@ const StyeldButton = styled.button`
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.3);
   border: none;
 `
+interface Ownprops {
+  menu: Menu | null
+}
 
-const StyledLink = styled(Link)`
-  cursor: pointer;
-  font-size: 40px;
-  text-align: center;
-  color: inherit;
-  text-decoration: none;
-  margin: 0px;
-  font-weight: bold;
-`
+const AddCart: React.FC<Ownprops> = ({ menu }) => {
 
-const AddCart = () => {
   return (
     <div style={{ display: 'flex' }}>
-      <StyeldButton>
-        <StyledLink to="/cart">장바구니 담기</StyledLink>
+      <StyeldButton
+        onClick={() => {
+          setCookie('cart', menu as Menu)
+        }}
+      >
+        장바구니 담기
       </StyeldButton>
     </div>
   )
