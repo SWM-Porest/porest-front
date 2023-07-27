@@ -1,5 +1,5 @@
 import { useRestaurantState } from 'Context/restaurantContext'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import AddCart from './AddCart'
 import Categories from './Categories'
@@ -37,6 +37,9 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
       setCount(count - 1)
     }
   }
+  useEffect(() => {
+    setCount(1)
+  }, [id])
   return (
     <>
       <ModalContainer>
@@ -66,8 +69,7 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
             <PlusButton onClick={() => handleQuantity('plus')}>+</PlusButton>
           </AmountContainer>
 
-          <AddCart menu={menu ? menu : null} />
-
+          <AddCart menu={menu ? menu : null} cnt={count} />
         </ModalView>
       </ModalContainer>
     </>
