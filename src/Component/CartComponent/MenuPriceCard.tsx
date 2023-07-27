@@ -1,10 +1,11 @@
-import { Menu } from 'model/restaurant'
+import { Menu } from 'Context/restaurantContext'
 import React from 'react'
 import styled from 'styled-components'
 interface OwnProps {
   info: Menu
+  cnt: number
 }
-const MenuPriceCard: React.FC<OwnProps> = ({ info }) => {
+const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt }) => {
   return (
     <div>
       {info.img !== '' ? (
@@ -14,8 +15,8 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info }) => {
           <OuterContainer>
             <ImgStyledName>{info.name}</ImgStyledName>
             <InnerContainer>
-              <ImgStyledCount>개수</ImgStyledCount>
-              <ImgStyledPrice>{info.price}원</ImgStyledPrice>
+              <ImgStyledCount>개수 : {cnt} </ImgStyledCount>
+              <ImgStyledPrice>{info.price * cnt}원</ImgStyledPrice>
             </InnerContainer>
           </OuterContainer>
         </StyledContainer>

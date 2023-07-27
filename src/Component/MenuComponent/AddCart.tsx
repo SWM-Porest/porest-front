@@ -24,12 +24,16 @@ interface Ownprops {
 }
 
 const AddCart: React.FC<Ownprops> = ({ menu, cnt }) => {
+
   const { data: restaurant } = useRestaurantState().restaurant
+
   return (
     <div style={{ display: 'flex' }}>
       <StyeldButton
         onClick={() => {
+
           setCookie(restaurant?._id as string, menu as Menu, cnt)
+
         }}
       >
         장바구니 담기

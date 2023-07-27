@@ -71,7 +71,7 @@ const CartModal: React.FC = () => {
             </CloseButtonContainer>
           }
         ></Header>
-        <CartPrice cartprice={myCart} />
+        <CartPrice />
       </ModalContent>
     </ModalOverlay>
   )

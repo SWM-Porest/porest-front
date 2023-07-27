@@ -13,8 +13,7 @@ interface OwnProps {
 }
 
 export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) => {
-  const state = useRestaurantState()
-  const { data: restaurant, loading, error } = state.restaurant
+  const { data: restaurant, loading, error } = useRestaurantState().restaurant
 
   const menu = restaurant?.menus.find((e) => {
     return e._id === id
