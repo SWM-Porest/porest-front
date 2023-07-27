@@ -1,5 +1,5 @@
 import { setCookie } from 'Api/cartCookie'
-import { Menu, Restaurant, useRestaurantState } from 'Context/restaurantContext'
+import { Menu, useRestaurantState } from 'Context/restaurantContext'
 import { styled } from 'styled-components'
 
 const StyeldButton = styled.button`
