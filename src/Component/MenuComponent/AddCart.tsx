@@ -20,15 +20,16 @@ const StyeldButton = styled.button`
 `
 interface Ownprops {
   menu: Menu | null
+  cnt: number
 }
 
-const AddCart: React.FC<Ownprops> = ({ menu }) => {
+const AddCart: React.FC<Ownprops> = ({ menu, cnt }) => {
   const { data: restaurant } = useRestaurantState().restaurant
   return (
     <div style={{ display: 'flex' }}>
       <StyeldButton
         onClick={() => {
-          setCookie(restaurant?._id as string, menu as Menu)
+          setCookie(restaurant?._id as string, menu as Menu, cnt)
         }}
       >
         장바구니 담기
