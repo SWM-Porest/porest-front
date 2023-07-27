@@ -13,6 +13,7 @@ import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import CartModal from '../Component/Modal/CartModal'
+import { FlexAlignCSS } from 'Styles/common'
 
 const MenuBoardPage: React.FC = () => {
   const images = ['/img/교동짬뽕.jpeg', '/img/메뉴판.jpeg', '/img/내부.jpeg']
@@ -27,7 +28,7 @@ const MenuBoardPage: React.FC = () => {
     getRestaurant(dispatch, id)
   }, [dispatch, id])
 
-  const { isModalOpen, closeModal } = useCartModal()
+  const { openModal, isModalOpen } = useCartModal()
 
   if (loading) return <div>로딩중...</div>
   if (error) return <div>에러가 발생했습니다.</div>
@@ -35,7 +36,14 @@ const MenuBoardPage: React.FC = () => {
     <div className="MenuBoard">
       {isModalOpen && <CartModal></CartModal>}
       <StyledContainer>
-        <Header HeaderName={restaurant ? restaurant.name : ''} />
+        <Header
+          HeaderName={restaurant ? restaurant.name : ''}
+          Right={
+            <StyledButton onClick={openModal}>
+              <h5 style={{ margin: 0 }}>주문내역</h5>
+            </StyledButton>
+          }
+        />
         <StyledBanner images={images} />
         <StyledOrder info={restaurant ? restaurant : restaurantContextDefaultValue} />
       </StyledContainer>
@@ -57,4 +65,11 @@ const StyledBanner = styled(MainBanner)`
 const StyledOrder = styled(MainOrder)`
   margin: 0px;
   padding: 0px;
+`
+const StyledButton = styled.button`
+  ${FlexAlignCSS};
+  color: inherit;
+  padding: 0;
+  border: none;
+  background: none;
 `

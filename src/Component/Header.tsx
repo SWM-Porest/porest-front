@@ -1,20 +1,20 @@
-import { useCartModal } from 'Context/CartModalContext'
-import { FlexAlignCSS } from 'Styles/common'
+import React from 'react'
 import styled from 'styled-components'
 
 interface HeaderProps {
+  Left?: React.ReactNode | undefined
   HeaderName: string
+  Right?: React.ReactNode | undefined
 }
 
-const Header: React.FC<HeaderProps> = ({ HeaderName }) => {
-  const { openModal } = useCartModal()
+const Header: React.FC<HeaderProps> = ({ Left, HeaderName, Right }) => {
   return (
     <StyledNavbar>
-      <span style={{ width: 120 }} />
-      <h2 style={{ margin: 0 }}>{HeaderName}</h2>
-      <StyledButton onClick={openModal}>
-        <h5 style={{ margin: 0 }}>주문내역</h5>
-      </StyledButton>
+      <LeftDiv>{Left == undefined ? <span style={{ width: 120 }} /> : Left}</LeftDiv>
+      <CenterDiv>
+        <HeaderNameText>{HeaderName}</HeaderNameText>
+      </CenterDiv>
+      <RightDiv>{Right == undefined ? <span style={{ width: 120 }} /> : Right}</RightDiv>
     </StyledNavbar>
   )
 }
@@ -22,14 +22,30 @@ const Header: React.FC<HeaderProps> = ({ HeaderName }) => {
 export default Header
 
 const StyledNavbar = styled.nav`
-  ${FlexAlignCSS};
-  justify-content: space-between;
+  display: flex;
+  justify-content: space-between; /* 영역들 간의 공간을 동일하게 분배 */
+  align-items: center; /* 세로 방향으로 가운데 정렬 */
   padding: 24pt 48pt;
 `
-const StyledButton = styled.button`
-  ${FlexAlignCSS};
-  color: inherit;
-  padding: 0;
-  border: none;
-  background: none;
+
+const LeftDiv = styled.div`
+  flex: 1; /* 동등한 공간 차지 */
+  display: flex;
+  justify-content: start; /* 가운데 정렬 */
+`
+
+const CenterDiv = styled.div`
+  flex: 1; /* 동등한 공간 차지 */
+  display: flex;
+  justify-content: center; /* 가운데 정렬 */
+`
+
+const RightDiv = styled.div`
+  flex: 1; /* 동등한 공간 차지 */
+  display: flex;
+  justify-content: end; /* 가운데 정렬 */
+`
+
+const HeaderNameText = styled.h2`
+  margin: 0;
 `
