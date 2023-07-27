@@ -19,6 +19,12 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
     return e._id === id
   })
 
+  if (isOpen) {
+    document.body.style.overflow = 'hidden'
+  } else {
+    document.body.style.overflow = 'auto'
+  }
+
   if (loading) return <div>로딩중...</div>
   if (error) return <div>에러가 발생했습니다.</div>
 
@@ -78,6 +84,7 @@ const ModalView = styled.div<{ $load: boolean }>`
   border-radius: 40px 40px 0px 0px;
   width: 100%;
   height: 80%;
+  overflow-y: auto;
   background-color: #ffffff;
   transition: all 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
   transform: ${(props) => (props.$load ? 'translateY(0)' : 'translateY(105%)')};
