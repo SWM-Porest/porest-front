@@ -1,6 +1,5 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { getCookie } from 'Api/cartCookie'
 import CartPrice from 'Component/CartComponent/CartPrice'
 import Header from 'Component/Header'
 import { useCartModal } from 'Context/CartModalContext'
@@ -32,11 +31,7 @@ const data: Cart = {
 
 const CartModal: React.FC = () => {
   const { isModalOpen, closeModal } = useCartModal()
-  const [myCart, setMyCart] = useState<Cart>(JSON.parse(getCookie('cartMenu') || '{}'))
-  useEffect(() => {
-    const cartMenu = JSON.parse(getCookie('cartMenu') || '{}')
-    setMyCart(cartMenu)
-  }, [])
+  const [myCart, setMyCart] = useState<Cart>(data)
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && isModalOpen) {

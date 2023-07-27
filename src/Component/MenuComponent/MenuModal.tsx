@@ -1,4 +1,3 @@
-import { setCookie } from 'Api/cartCookie'
 import { useRestaurantState } from 'Context/restaurantContext'
 import { useState } from 'react'
 import { styled } from 'styled-components'
@@ -20,12 +19,7 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
   const menu = restaurant?.menus.find((e) => {
     return e._id === id
   })
-  const handleAddToCart = () => {
-    // 메뉴를 선택한 경우 해당 메뉴 정보를 Cookie에 저장합니다.
-    if (menu) {
-      setCookie('cartMenu', JSON.stringify(menu))
-    }
-  }
+
   if (loading) return <div>로딩중...</div>
   if (error) return <div>에러가 발생했습니다.</div>
   const [count, setCount] = useState(1)
@@ -64,7 +58,7 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
             </CountContainer>
             <PlusButton onClick={() => handleQuantity('plus')}>+</PlusButton>
           </AmountContainer>
-          <AddCart onAddToCart={handleAddToCart} />
+          <AddCart />
         </ModalView>
       </ModalContainer>
     </>

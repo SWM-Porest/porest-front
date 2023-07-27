@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import { styled } from 'styled-components'
 
@@ -24,10 +23,8 @@ const StyledLink = styled(Link)`
   margin: 0px;
   font-weight: bold;
 `
-interface AddCartProps {
-  onAddToCart: () => void
-}
-const AddCart: React.FC<AddCartProps> = ({ onAddToCart }) => {
+
+const AddCart = () => {
   return (
     <div style={{ display: 'flex' }}>
       <StyeldButton>
