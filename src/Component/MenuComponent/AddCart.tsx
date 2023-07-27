@@ -1,5 +1,5 @@
 import { setCookie } from 'Api/cartCookie'
-import { Menu } from 'Context/restaurantContext'
+import { Menu, Restaurant, useRestaurantState } from 'Context/restaurantContext'
 import { styled } from 'styled-components'
 
 const StyeldButton = styled.button`
@@ -24,11 +24,16 @@ interface Ownprops {
 }
 
 const AddCart: React.FC<Ownprops> = ({ menu, cnt }) => {
+
+  const { data: restaurant } = useRestaurantState().restaurant
+
   return (
     <div style={{ display: 'flex' }}>
       <StyeldButton
         onClick={() => {
-          setCookie('cart', menu as Menu, cnt)
+
+          setCookie(restaurant?._id as string, menu as Menu, cnt)
+
         }}
       >
         장바구니 담기
