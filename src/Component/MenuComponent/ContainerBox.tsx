@@ -1,11 +1,5 @@
 import { styled } from 'styled-components'
 
-const Container = styled.div`
-  width: 80%;
-  margin: auto;
-  margin-bottom: 50px;
-`
-
 const ContainerBox = ({ children }: any) => {
   return (
     <div style={{ background: 'white' }}>
@@ -15,3 +9,9 @@ const ContainerBox = ({ children }: any) => {
 }
 
 export default ContainerBox
+
+const Container = styled.div`
+  width: 80%;
+  margin: auto;
+  margin-bottom: 48pt;
+`

@@ -9,8 +9,6 @@ interface OwnProps {
 }
 
 const MainOrder: React.FC<OwnProps> = ({ info }) => {
-  // 모달 state
-
   const [menuId, setMenuId] = useState('')
   const [isOpen, setIsOpen] = useState(false)
   const openModalHandler = (id: string) => {
@@ -31,9 +29,7 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
 
   const [activeMenu, setActiveMenu] = useState(0) // activeMenu state 추가
   useEffect(() => {
-    // 스크롤 이벤트 핸들러
     const handleScroll = () => {
-      //이렇게 말공~ 네,,,,
       const menuSections = contentRefs.map((ref) => ref.current)
       let activeIndex = 0
       for (let i = 0; i < menuSections.length; i++) {
@@ -46,7 +42,6 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
           }
         }
       }
-
       setActiveMenu(activeIndex)
     }
 
@@ -72,7 +67,6 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
           </StyledLi>
         ))}
       </StyledUl>
-      {/* 메뉴모달 */}
       <MenuModal
         id={menuId}
         isOpen={isOpen}
@@ -120,13 +114,10 @@ export default MainOrder
 const StyledUl = styled.ul`
   position: sticky;
   top: 0;
-
   background-color: #fff;
   list-style: none;
-
   padding: 16pt;
   display: block;
-  padding-inline-start: 40pt;
   border-bottom: solid;
   border-color: ${({ theme }) => theme.COLOR.common.gray[600]};
 `

@@ -5,27 +5,6 @@ interface ingre {
   ingre: string[]
 }
 
-const Categoryul = styled.ul`
-  margin: 6px;
-  display: flex;
-  padding: 0;
-`
-
-const Categoryli = styled.li`
-  display: inline;
-  font-size: 2rem;
-  font-weight: bold;
-  border-radius: 14.5px;
-  color: #fff;
-  position: realtive;
-  padding: 12px 16px;
-  margin: 6px;
-  letter-spacing: -0.3px;
-  text-align: center;
-  background-color: #424242;
-  box-shadow: 0 3px 9px 0 rgba(0, 0, 0, 0.4);
-`
-
 const Categories = ({ ingre }: ingre) => {
   let ulelem
   if (ingre) {
@@ -43,3 +22,23 @@ const Categories = ({ ingre }: ingre) => {
 }
 
 export default Categories
+const Categoryul = styled.ul`
+  margin: 6px;
+  display: flex;
+  padding: 0;
+`
+
+const Categoryli = styled.li`
+  display: inline;
+  font-size: 2rem;
+  font-weight: bold;
+  border-radius: 14.5px;
+  color: #fff;
+  position: realtive;
+  padding: 8pt 16pt;
+  margin: 6px;
+  letter-spacing: -0.3px;
+  text-align: center;
+  background-color: #424242;
+  box-shadow: 0 3px 9px 0 rgba(0, 0, 0, 0.4);
+`
