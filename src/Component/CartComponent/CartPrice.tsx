@@ -4,13 +4,12 @@ import React from 'react'
 import styled from 'styled-components'
 import MenuPriceCard from './MenuPriceCard'
 import TotalPrice from './TotalPrice'
-function reducer(sum: number, val: number): number {
-  return sum + val
-}
+
 const CartPrice: React.FC = () => {
   const { data: restaurant, loading, error } = useRestaurantState().restaurant
-  const cookie = getCookie('cart')
+  const cookie = getCookie(restaurant?._id as string) || {}
   let priceTotal = 0
+
   for (const [key, value] of Object.entries(cookie)) {
     console.log(`${key}: ${value}`)
     const tmp = restaurant?.menus.find((e) => {
@@ -18,6 +17,7 @@ const CartPrice: React.FC = () => {
     })?.price
     priceTotal += (tmp as number) * (value as number)
   }
+
   console.log(Object.keys(cookie), 'cookie keys')
   return (
     <StyledLargeContainer>
