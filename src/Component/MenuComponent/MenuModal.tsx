@@ -1,10 +1,11 @@
-import { styled } from 'styled-components'
-import MenuHeader from './MenuHeader'
-import DescriptionContainer from './DescriptionContainer'
-import ContainerBox from './ContainerBox'
-import Categories from './Categories'
-import AddCart from './AddCart'
 import { useRestaurantState } from 'Context/restaurantContext'
+import { useState } from 'react'
+import { styled } from 'styled-components'
+import AddCart from './AddCart'
+import Categories from './Categories'
+import ContainerBox from './ContainerBox'
+import DescriptionContainer from './DescriptionContainer'
+import MenuHeader from './MenuHeader'
 interface OwnProps {
   id: string
   isOpen: boolean
@@ -27,7 +28,15 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
 
   if (loading) return <div>로딩중...</div>
   if (error) return <div>에러가 발생했습니다.</div>
-
+  const [count, setCount] = useState(1)
+  const handleQuantity = (type: string) => {
+    if (type === 'plus') {
+      setCount(count + 1)
+    } else {
+      if (count === 1) return
+      setCount(count - 1)
+    }
+  }
   return (
     <>
       <ModalContainer>
@@ -48,7 +57,17 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
           <ContainerBox>
             <Categories ingre={menu ? menu.ingre : []}></Categories>
           </ContainerBox>
+
+          <AmountContainer>
+            <MinusButton onClick={() => handleQuantity('minus')}>-</MinusButton>
+            <CountContainer>
+              <CountSpan>{count}</CountSpan>
+            </CountContainer>
+            <PlusButton onClick={() => handleQuantity('plus')}>+</PlusButton>
+          </AmountContainer>
+
           <AddCart menu={menu ? menu : null} />
+
         </ModalView>
       </ModalContainer>
     </>
@@ -88,4 +107,46 @@ const ModalView = styled.div<{ $load: boolean }>`
   background-color: #ffffff;
   transition: all 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
   transform: ${(props) => (props.$load ? 'translateY(0)' : 'translateY(105%)')};
+`
+const AmountContainer = styled.div`
+  position: relative;
+  width: 100pt;
+  height: 80pt;
+  border: 1px solid #c4c4c4;
+  border-radius: 5px;
+  margin-bottom: 30px;
+`
+const MinusButton = styled.button`
+  position: absolute;
+  width: 24pt;
+  height: 24pt;
+  top: 50%;
+  left: 16pt;
+  transform: translateY(-50%);
+  cursor: pointer;
+`
+const PlusButton = styled.button`
+  position: absolute;
+  width: 24pt;
+  height: 24pt;
+  top: 50%;
+  right: 16pt;
+  transform: translateY(-50%);
+  cursor: pointer;
+`
+const CountSpan = styled.span`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`
+const CountContainer = styled.div`
+  position: absolute;
+  width: 56px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid #c4c4c4;
+  border-top: none;
+  border-bottom: none;
 `
