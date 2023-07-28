@@ -20,6 +20,8 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt }) => {
       setCookie(restaurant?._id as string, info, -1)
     }
   }
+  const price = (info.price * cnt).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+
   return (
     <div>
       {info.img !== '' ? (
@@ -32,7 +34,7 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt }) => {
               <StyledAmountContainer>
                 <AmountCheck count={count} handleQuantity={handleQuantity} />
               </StyledAmountContainer>
-              <StyledPrice>{info.price * cnt}원</StyledPrice>
+              <StyledPrice>{price}원</StyledPrice>
             </InnerContainer>
           </OuterContainer>
         </StyledContainer>

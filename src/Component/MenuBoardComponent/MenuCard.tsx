@@ -7,6 +7,7 @@ interface OwnProps {
 }
 
 const MenuCard: React.FC<OwnProps> = ({ info }) => {
+  const price = info.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   return (
     <div>
       {info.img ? (
@@ -14,14 +15,14 @@ const MenuCard: React.FC<OwnProps> = ({ info }) => {
           <StyledImage src={info.img} alt="메뉴 이미지" />
           <StyledContainer>
             <ImgStyledName>{info.name}</ImgStyledName>
-            <ImgStyledPrice>{info.price}원</ImgStyledPrice>
+            <ImgStyledPrice>{price}원</ImgStyledPrice>
           </StyledContainer>
         </MenuCardContainer>
       ) : (
         <MenuCardContainer>
           <div>
             <StyledName>{info.name}</StyledName>
-            <StyledPrice>{info.price}원</StyledPrice>
+            <StyledPrice>{price}원</StyledPrice>
           </div>
         </MenuCardContainer>
       )}
