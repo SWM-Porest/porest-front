@@ -6,44 +6,6 @@ interface OwnProps {
   img: string
 }
 
-const DContainerImg = styled.div`
-  position: relative;
-  z-index: 10;
-`
-const DContainerDes = styled.div`
-  position: relative;
-  bottom: 75px;
-`
-const TitleBox = styled.div`
-  position: relative;
-  padding: 36px 36px 30px;
-  border-radius: 15px;
-  background: #fff;
-  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.15);
-  width: 90%;
-  margin: auto;
-  z-index: 20;
-`
-const TitleInner = styled.div`
-  width: 90%;
-  margin: auto;
-  padding: 0;
-  font-size: 3.5rem;
-  font-weight: bold;
-`
-const PriceSpan = styled.span`
-  color: #ff5757;
-`
-const StyledImage = styled.img`
-  width: 100%;
-  padding: 25px 0px 0px;
-`
-const DescriptionSpan = styled.p`
-  margin: 0;
-  color: gray;
-  font-size: 2rem;
-`
-
 const DescriptionContainer: React.FC<OwnProps> = ({ title, price, description, img }) => {
   return (
     <div style={{ display: 'block' }}>
@@ -69,3 +31,40 @@ const DescriptionContainer: React.FC<OwnProps> = ({ title, price, description, i
 }
 
 export default DescriptionContainer
+const DContainerImg = styled.div`
+  position: relative;
+  z-index: 10;
+`
+const DContainerDes = styled.div`
+  position: relative;
+  bottom: 56pt;
+`
+const TitleBox = styled.div`
+  position: relative;
+  padding: 32pt 32pt 24pt;
+  border-radius: 16pt;
+  background: #fff;
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.15);
+  width: 90%;
+  margin: auto;
+  z-index: 20;
+`
+const TitleInner = styled.div`
+  width: 90%;
+  margin: auto;
+  padding: 0;
+  font-size: 3.5rem;
+  font-weight: bold;
+`
+const PriceSpan = styled.span`
+  color: ${({ theme }) => theme.COLOR.number_price};
+`
+const StyledImage = styled.img`
+  width: 100%;
+  padding: 25px 0px 0px;
+`
+const DescriptionSpan = styled.p`
+  margin: 0;
+  color: ${({ theme }) => theme.COLOR.common.gray[400]};
+  font-size: 2rem;
+`

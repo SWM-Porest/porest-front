@@ -1,26 +1,22 @@
 import { getCookie } from 'Api/cartCookie'
 import { Menu, useRestaurantState } from 'Context/restaurantContext'
 import React from 'react'
-import styled from 'styled-components'
 import MenuPriceCard from './MenuPriceCard'
 import TotalPrice from './TotalPrice'
 
 const CartPrice: React.FC = () => {
-  const { data: restaurant, loading, error } = useRestaurantState().restaurant
+  const { data: restaurant } = useRestaurantState().restaurant
   const cookie = getCookie(restaurant?._id as string) || {}
   let priceTotal = 0
-
   for (const [key, value] of Object.entries(cookie)) {
-    console.log(`${key}: ${value}`)
     const tmp = restaurant?.menus.find((e) => {
       return e._id === key
     })?.price
     priceTotal += (tmp as number) * (value as number)
   }
 
-  console.log(Object.keys(cookie), 'cookie keys')
   return (
-    <StyledLargeContainer>
+    <div>
       {Object.keys(cookie).map((menuId) => (
         <MenuPriceCard
           key={menuId}
@@ -33,12 +29,7 @@ const CartPrice: React.FC = () => {
         />
       ))}
       <TotalPrice price={priceTotal} />
-    </StyledLargeContainer>
+    </div>
   )
 }
 export default CartPrice
-
-const StyledLargeContainer = styled.div`
-  align-items: center;
-  justify-content: center;
-`

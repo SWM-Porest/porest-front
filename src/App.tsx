@@ -2,7 +2,6 @@ import NotFound from 'Component/NotFound'
 import { CartModalProvider } from 'Context/CartModalContext'
 import { RestaurantProvider } from 'Context/restaurantContext'
 import MenuBoardPage from 'Pages/MenuBoardPage'
-import MenuPage from 'Pages/MenuPage'
 import { GlobalStyles } from 'Styles/global'
 import { theme } from 'Styles/theme'
 import React from 'react'
@@ -19,7 +18,6 @@ const App: React.FC = () => {
           <RestaurantProvider>
             <Routes>
               <Route path="/restaurants/:id" element={<MenuBoardPage />} />
-              <Route path="/menu" element={<MenuPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </RestaurantProvider>

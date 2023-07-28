@@ -32,7 +32,6 @@ const StyledContainer = styled.div`
   display: block;
   position: relative;
   padding: 24pt 48pt;
-
   border-top: ridge;
   border-color: ${({ theme }) => theme.COLOR.common.gray[600]};
 `
@@ -58,7 +57,6 @@ const InnerContainer = styled.div`
 const ImgStyledName = styled.h4`
   display: block;
   padding-right: 48pt;
-
   margin: 0;
 `
 

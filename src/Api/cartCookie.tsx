@@ -6,7 +6,6 @@ const cartCookie = new Cookies()
 export const setCookie = (name: string, value: Menu, cnt: number) => {
   const menuId = value._id
   const cookie = getCookie(name) || {}
-  console.log(cookie[menuId])
   if (!cookie[menuId]) {
     cookie[menuId] = 0
   }

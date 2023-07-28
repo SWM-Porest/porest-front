@@ -143,7 +143,6 @@ export const getRestaurant = async (dispatch: React.Dispatch<RestaurantActionT>,
       headers: { Authorization: 'Basic YWRtaW46c3dtMTRwb3Jlc3QhIQ==' },
     })
     dispatch({ type: 'GET_RESTAURANT_SUCCESS', data: response.data })
-    console.log(response.data, 'axios response')
   } catch (e) {
     if (axios.isAxiosError(e)) {
       dispatch({ type: 'GET_RESTAURANT_FAILURE', error: e })
