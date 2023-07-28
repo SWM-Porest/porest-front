@@ -16,7 +16,7 @@ import CartModal from '../Component/Modal/CartModal'
 import { FlexAlignCSS } from 'Styles/common'
 
 const MenuBoardPage: React.FC = () => {
-  const images = ['/img/교동짬뽕.jpeg', '/img/메뉴판.jpeg', '/img/내부.jpeg']
+  // const images = ['img/교동짬뽕.jpeg', 'img/메뉴판.jpeg', 'img/내부.jpeg']
 
   const { id } = useParams()
   if (id === undefined) throw new Error('id가 없습니다.')
@@ -44,7 +44,7 @@ const MenuBoardPage: React.FC = () => {
             </StyledButton>
           }
         />
-        <StyledBanner images={images} />
+        <StyledBanner images={restaurant ? restaurant.banner_image_urls : []} />
         <StyledOrder info={restaurant ? restaurant : restaurantContextDefaultValue} />
       </StyledContainer>
       <Footer />

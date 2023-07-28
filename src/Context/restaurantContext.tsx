@@ -6,10 +6,10 @@ export interface Restaurant {
   name: string
   en_name: string
   category: string[]
-  img: string[]
   intro: string
   notice: string
   phone_number: string
+  banner_image_urls: string[]
   address: string
   created_at: string
   updated_at: string
@@ -34,7 +34,7 @@ export const restaurantContextDefaultValue: Restaurant = {
   name: '',
   en_name: '',
   category: [],
-  img: ['/public/porest.png'],
+  banner_image_urls: [],
   intro: '',
   notice: '',
   phone_number: '',
