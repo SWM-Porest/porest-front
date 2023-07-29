@@ -1,11 +1,27 @@
-import { Menu } from 'Context/restaurantContext'
-import React from 'react'
+import { setCookie } from 'Api/cartCookie'
+import AmountCheck from 'Component/AmountCheck'
+import { Menu, useRestaurantState } from 'Context/restaurantContext'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 interface OwnProps {
   info: Menu
   cnt: number
 }
 const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt }) => {
+  const { data: restaurant } = useRestaurantState().restaurant
+  const [count, setCount] = useState(cnt)
+  const handleQuantity = (type: string) => {
+    if (type === 'plus') {
+      setCount(count + 1)
+      setCookie(restaurant?._id as string, info, 1)
+    } else {
+      if (count === 1) return
+      setCount(count - 1)
+      setCookie(restaurant?._id as string, info, -1)
+    }
+  }
+  const price = (info.price * cnt).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+
   return (
     <div>
       {info.img !== '' ? (
@@ -13,10 +29,12 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt }) => {
           <StyledImage src={info.img} alt="메뉴 이미지" />
 
           <OuterContainer>
-            <ImgStyledName>{info.name}</ImgStyledName>
+            <StyledName>{info.name}</StyledName>
             <InnerContainer>
-              <ImgStyledCount>개수 : {cnt} </ImgStyledCount>
-              <ImgStyledPrice>{info.price * cnt}원</ImgStyledPrice>
+              <StyledAmountContainer>
+                <AmountCheck count={count} handleQuantity={handleQuantity} />
+              </StyledAmountContainer>
+              <StyledPrice>{price}원</StyledPrice>
             </InnerContainer>
           </OuterContainer>
         </StyledContainer>
@@ -54,20 +72,20 @@ const InnerContainer = styled.div`
   display: block;
 `
 
-const ImgStyledName = styled.h4`
+const StyledName = styled.h4`
   display: block;
   padding-right: 48pt;
   margin: 0;
 `
 
-const ImgStyledCount = styled.h5`
+const StyledAmountContainer = styled.div`
   float: left;
   margin-top: 16pt;
 `
-const ImgStyledPrice = styled.h5`
+const StyledPrice = styled.h5`
   float: right;
   text-align: right;
   display: block;
-  margin: 0;
+  margin-top: 24pt;
   color: ${({ theme }) => theme.COLOR.number_price};
 `

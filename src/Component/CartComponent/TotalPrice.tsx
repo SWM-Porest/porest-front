@@ -6,17 +6,19 @@ interface OwnProps {
 }
 
 const TotalPrice: React.FC<OwnProps> = (price) => {
+  const totalprice = price.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+
   return (
     <div>
       <StyledContainer>
         <StyledH3> 결제 상세 </StyledH3>
         <InnerContainer>
           <StyledTitle> 주문 금액 </StyledTitle>
-          <StyledPrice>{price.price}원</StyledPrice>
+          <StyledPrice>{totalprice}원</StyledPrice>
         </InnerContainer>
         <InnerTotalContainer>
           <StyledTotalTitle> 총 결제 금액 </StyledTotalTitle>
-          <StyledTotalPrice>{price.price}원</StyledTotalPrice>
+          <StyledTotalPrice>{totalprice}원</StyledTotalPrice>
         </InnerTotalContainer>
       </StyledContainer>
     </div>

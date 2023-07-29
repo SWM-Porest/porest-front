@@ -1,3 +1,4 @@
+import AmountCheck from 'Component/AmountCheck'
 import { useRestaurantState } from 'Context/restaurantContext'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
@@ -14,7 +15,6 @@ interface OwnProps {
 
 export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) => {
   const { data: restaurant, loading, error } = useRestaurantState().restaurant
-
   const menu = restaurant?.menus.find((e) => {
     return e._id === id
   })
@@ -59,22 +59,18 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
           <ContainerBox>
             <Categories ingre={menu ? menu.ingre : []}></Categories>
           </ContainerBox>
-
-          <AmountContainer>
-            <MinusButton onClick={() => handleQuantity('minus')}>-</MinusButton>
-            <CountContainer>
-              <CountSpan>{count}</CountSpan>
-            </CountContainer>
-            <PlusButton onClick={() => handleQuantity('plus')}>+</PlusButton>
-          </AmountContainer>
-
+          <StyledAmountContainer>
+            <AmountCheck count={count} handleQuantity={handleQuantity} />
+          </StyledAmountContainer>
           <AddCart menu={menu ? menu : null} cnt={count} />
         </ModalView>
       </ModalContainer>
     </>
   )
 }
-
+const StyledAmountContainer = styled.div`
+  padding-left: 50pt;
+`
 const ModalContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -108,46 +104,4 @@ const ModalView = styled.div<{ $load: boolean }>`
   background-color: #ffffff;
   transition: all 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
   transform: ${(props) => (props.$load ? 'translateY(0)' : 'translateY(105%)')};
-`
-const AmountContainer = styled.div`
-  position: relative;
-  width: 100pt;
-  height: 80pt;
-  border: 1px solid #c4c4c4;
-  border-radius: 5px;
-  margin-bottom: 30px;
-`
-const MinusButton = styled.button`
-  position: absolute;
-  width: 24pt;
-  height: 24pt;
-  top: 50%;
-  left: 16pt;
-  transform: translateY(-50%);
-  cursor: pointer;
-`
-const PlusButton = styled.button`
-  position: absolute;
-  width: 24pt;
-  height: 24pt;
-  top: 50%;
-  right: 16pt;
-  transform: translateY(-50%);
-  cursor: pointer;
-`
-const CountSpan = styled.span`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-`
-const CountContainer = styled.div`
-  position: absolute;
-  width: 56px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border: 1px solid #c4c4c4;
-  border-top: none;
-  border-bottom: none;
 `
