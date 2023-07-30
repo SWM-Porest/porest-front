@@ -1,4 +1,4 @@
-import { setCookie } from 'Api/cartCookie'
+import { removeCookie, setCookie } from 'Api/cartCookie'
 import AmountCheck from 'Component/AmountCheck'
 import { Menu, useRestaurantState } from 'Context/restaurantContext'
 import React, { useEffect, useState } from 'react'
@@ -13,21 +13,33 @@ interface OwnProps {
 const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }) => {
   const { data: restaurant } = useRestaurantState().restaurant
   const [count, setCount] = useState(cnt)
+  const [totalprice, setTotalPrice] = useState((info.price * count).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','))
+  const price = info.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
   const handleQuantity = (type: string) => {
-    const newCount = type === 'plus' ? count + 1 : Math.max(count - 1, 1)
+    let newCount
+    if (type === 'plus') {
+      newCount = count + 1
+    } else {
+      // 쿠키에 있는 값이 1일 때는 더이상 감소하지 않도록 처리
+      newCount = count > 1 ? count - 1 : 1 // 이 부분을 수정하였습니다.
+    }
     setCount(newCount)
-    setCookie(restaurant?._id as string, info, type === 'plus' ? 1 : -1)
+    // 감소할 때, 쿠키에 있는 값이 1인 경우에는 메뉴를 삭제하도록 처리
+    if (type !== 'plus' && count === 1) {
+      removeCookie(restaurant?._id as string, info._id)
+    } else {
+      setCookie(restaurant?._id as string, info, type === 'plus' ? 1 : -1)
+    }
     handlePriceTotalChange()
   }
-
-  const [totalprice, setTotalPrice] = useState((info.price * count).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','))
-
+  const handleRemoveMenu = () => {
+    removeCookie(restaurant?._id as string, info._id) // 특정 메뉴를 쿠키에서 제거
+    handlePriceTotalChange() // 가격 업데이트
+  }
   useEffect(() => {
     setTotalPrice((info.price * count).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','))
   }, [count, info.price])
-
-  const price = info.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
   return (
     <StyledContainer>
@@ -41,6 +53,7 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }
           </StyledAmountContainer>
           <StyledTotalPrice>{totalprice}원</StyledTotalPrice>
         </InnerContainer>
+        <StyledRemoveButton onClick={handleRemoveMenu}>X</StyledRemoveButton>
       </OuterContainer>
     </StyledContainer>
   )
@@ -102,3 +115,5 @@ const StyledTotalPrice = styled.h5`
   margin-top: 24pt;
   color: ${({ theme }) => theme.COLOR.number_price};
 `
+
+const StyledRemoveButton = styled.button``
