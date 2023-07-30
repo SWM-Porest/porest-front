@@ -39,7 +39,6 @@ const CheckMiniBox: React.FC<OwnProps> = ({ img, check }) => {
 const StyledContainer = styled.div`
   text-align: center;
   align-items: center;
-
   margin: 10px;
   font-size: 30px;
 `
@@ -54,6 +53,7 @@ const StyledH3 = styled.h3`
 const StyledImage = styled.img`
   width: 30%;
 `
+
 const StyledMiniContainer = styled.div`
   display: flex;
   align-items: center;

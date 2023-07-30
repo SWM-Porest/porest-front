@@ -13,10 +13,10 @@ const MenuCard: React.FC<OwnProps> = ({ info }) => {
       {info.img ? (
         <MenuCardContainer>
           <StyledImage src={info.img} alt="메뉴 이미지" />
-          <StyledContainer>
+          <div>
             <ImgStyledName>{info.name}</ImgStyledName>
             <ImgStyledPrice>{price}원</ImgStyledPrice>
-          </StyledContainer>
+          </div>
         </MenuCardContainer>
       ) : (
         <MenuCardContainer>
@@ -46,22 +46,23 @@ const StyledImage = styled.img`
   height: 192pt;
   border-radius: 8pt;
 `
-const StyledContainer = styled.div``
+
 const ImgStyledName = styled.h4`
   padding: 8pt 56pt;
-
   margin: 0;
 `
+
 const ImgStyledPrice = styled.h5`
   padding: 8pt 56pt;
-
   margin: 0;
   color: ${({ theme }) => theme.COLOR.number_price};
 `
+
 const StyledName = styled.h4`
   padding: 8pt 32pt;
   margin: 0;
 `
+
 const StyledPrice = styled.h5`
   padding: 8pt 32pt;
   margin: 0;

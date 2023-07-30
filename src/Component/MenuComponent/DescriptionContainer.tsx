@@ -33,6 +33,7 @@ const DescriptionContainer: React.FC<OwnProps> = ({ title, price, description, i
 }
 
 export default DescriptionContainer
+
 const DContainerImg = styled.div`
   position: relative;
   z-index: 10;

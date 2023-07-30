@@ -1,3 +1,5 @@
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { removeCookie, setCookie } from 'Api/cartCookie'
 import AmountCheck from 'Component/AmountCheck'
 import { Menu, useRestaurantState } from 'Context/restaurantContext'
@@ -21,11 +23,9 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }
     if (type === 'plus') {
       newCount = count + 1
     } else {
-      // 쿠키에 있는 값이 1일 때는 더이상 감소하지 않도록 처리
-      newCount = count > 1 ? count - 1 : 1 // 이 부분을 수정하였습니다.
+      newCount = count > 1 ? count - 1 : 1
     }
     setCount(newCount)
-    // 감소할 때, 쿠키에 있는 값이 1인 경우에는 메뉴를 삭제하도록 처리
     if (type !== 'plus' && count === 1) {
       removeCookie(restaurant?._id as string, info._id)
     } else {
@@ -34,8 +34,8 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }
     handlePriceTotalChange()
   }
   const handleRemoveMenu = () => {
-    removeCookie(restaurant?._id as string, info._id) // 특정 메뉴를 쿠키에서 제거
-    handlePriceTotalChange() // 가격 업데이트
+    removeCookie(restaurant?._id as string, info._id)
+    handlePriceTotalChange()
   }
   useEffect(() => {
     setTotalPrice((info.price * count).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','))
@@ -45,7 +45,11 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }
     <StyledContainer>
       {info.img !== '' && <StyledImage src={info.img} alt="메뉴 이미지" />}
       <OuterContainer>
+        <CloseButtonContainer>
+          <CloseButton icon={faXmark} onClick={handleRemoveMenu} size="2xl" />
+        </CloseButtonContainer>
         <StyledName>{info.name}</StyledName>
+
         <StyledPrice>{price}</StyledPrice>
         <InnerContainer>
           <StyledAmountContainer>
@@ -53,7 +57,6 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }
           </StyledAmountContainer>
           <StyledTotalPrice>{totalprice}원</StyledTotalPrice>
         </InnerContainer>
-        <StyledRemoveButton onClick={handleRemoveMenu}>X</StyledRemoveButton>
       </OuterContainer>
     </StyledContainer>
   )
@@ -116,4 +119,28 @@ const StyledTotalPrice = styled.h5`
   color: ${({ theme }) => theme.COLOR.number_price};
 `
 
-const StyledRemoveButton = styled.button``
+const CloseButtonContainer = styled.div`
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.3s ease-in-out;
+  float: right;
+  text-align: right;
+  display: block;
+  &:hover {
+    background: #1d9255;
+  }
+`
+
+const CloseButton = styled(FontAwesomeIcon)`
+  border: none;
+  cursor: pointer;
+  width: 54px;
+  height: 54px;
+  color: #c5c9cc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`

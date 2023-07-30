@@ -129,6 +129,7 @@ const StyledLi = styled.li<{ $active: boolean }>`
   font-weight: bold;
   color: ${(props) => (props.$active ? '#343434' : '#A9A9A9')}; // active props에 따라 색상 변경
 `
+
 const MenuCardsContainer = styled.div`
   align-items: center;
   padding: 16pt;
@@ -138,12 +139,14 @@ const StyledLiEach = styled.li`
   padding: 16pt 32pt;
   font-weight: bold;
 `
+
 const DisclaimerContainer = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
   background-color: #f2f2f2;
 `
+
 const Disclaimer = styled.div`
   font-size: 24px;
   color: #777;
