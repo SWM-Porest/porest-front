@@ -9,9 +9,11 @@ interface OwnProps {
 const DescriptionContainer: React.FC<OwnProps> = ({ title, price, description, img }) => {
   return (
     <div style={{ display: 'block' }}>
-      <DContainerImg>
-        <StyledImage src={`${img}`} alt="메뉴 이미지" />
-      </DContainerImg>
+      {img && (
+        <DContainerImg>
+          <StyledImage src={`${img}`} alt="메뉴 이미지" />
+        </DContainerImg>
+      )}
 
       <DContainerDes>
         <TitleBox>
