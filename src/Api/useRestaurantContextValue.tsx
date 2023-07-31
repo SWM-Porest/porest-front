@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 
 export const useRestaurantContextValue = (id: string) => {
   const [restaurant, setRestaurant] = useState<Restaurant>()
-  const apiUrl = process.env.NODE_ENV === 'production' ? 'api.pocketrestaurant.net' : 'http://localhost:3001' // 개발 환경의 경우 로컬 API 서버 주소
+  const apiUrl = process.env.NODE_ENV === 'production' ? 'api.pocketrestaurant.net' : 'http://localhost:3001'
 
   useEffect(() => {
     const getRestaurant = async (id: string) => {
