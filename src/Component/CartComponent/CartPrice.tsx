@@ -1,43 +1,46 @@
-import MenuPriceCard from 'Component/CartComponent/MenuPriceCard'
-import { Cart } from 'model/restaurant'
-import React from 'react'
-import styled from 'styled-components'
+import { getCookie } from 'Api/cartCookie'
+import { Menu, useRestaurantState } from 'Context/restaurantContext'
+import React, { useEffect, useState } from 'react'
+import MenuPriceCard from './MenuPriceCard'
+import TotalPrice from './TotalPrice'
 
-interface OwnProps {
-  cartprice: Cart
-}
-const StyledContainer = styled.div`
-  background-color: lightgray;
-  font-size: 30px;
-  border-radius: 25px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
-const StyledLargeContainer = styled.div`
-  align-items: center;
-  justify-content: center;
-`
-const StyledH2 = styled.h2`
-  margin: 30px;
-`
-const StyledP = styled.p`
-  margin: 30px;
-  font-size: 30px;
-  color: #ff4d00;
-  font-weight: bold;
-`
-
-const CartPrice: React.FC<OwnProps> = ({ cartprice }) => {
+const CartPrice: React.FC = () => {
+  const { data: restaurant } = useRestaurantState().restaurant
+  const cookie = getCookie(restaurant?._id as string) || {}
+  const [priceTotal, setPriceTotal] = useState(0) // state로 priceTotal 관리
+  useEffect(() => {
+    let total = 0
+    for (const [key, value] of Object.entries(cookie)) {
+      const tmp = restaurant?.menus.find((e) => e._id === key)?.price
+      total += (tmp as number) * (value as number)
+    }
+    setPriceTotal(total)
+  }, [cookie, restaurant?.menus])
+  const handlePriceTotalChange = () => {
+    const updatedCookie = getCookie(restaurant?._id as string) || {}
+    let total = 0
+    for (const [key, value] of Object.entries(updatedCookie)) {
+      const tmp = restaurant?.menus.find((e) => e._id === key)?.price
+      total += (tmp as number) * (value as number)
+    }
+    setPriceTotal(total)
+  }
   return (
-    <StyledLargeContainer>
-      <MenuPriceCard info={cartprice.menu[0]} />
-      <MenuPriceCard info={cartprice.menu[1]} />
-      <StyledContainer>
-        <StyledH2> Total </StyledH2>
-        <StyledP>{cartprice.menu[0].price + cartprice.menu[1].price}원</StyledP>
-      </StyledContainer>
-    </StyledLargeContainer>
+    <div>
+      {Object.keys(cookie).map((menuId) => (
+        <MenuPriceCard
+          key={menuId}
+          info={
+            restaurant?.menus.find((e) => {
+              return e._id === menuId
+            }) as Menu
+          }
+          cnt={cookie[menuId]}
+          handlePriceTotalChange={handlePriceTotalChange} // 콜백 함수 전달
+        />
+      ))}
+      <TotalPrice price={priceTotal} />
+    </div>
   )
 }
 export default CartPrice

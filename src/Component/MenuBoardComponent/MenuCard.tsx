@@ -1,6 +1,5 @@
-import { Menu } from 'model/restaurant'
+import { Menu } from 'Context/restaurantContext'
 import React from 'react'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { FlexAlignCSS } from 'Styles/common'
 interface OwnProps {
@@ -8,21 +7,22 @@ interface OwnProps {
 }
 
 const MenuCard: React.FC<OwnProps> = ({ info }) => {
+  const price = info.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   return (
     <div>
-      {info.img !== '' ? (
-        <MenuCardContainer to={'/menu'}>
+      {info.img ? (
+        <MenuCardContainer>
           <StyledImage src={info.img} alt="메뉴 이미지" />
-          <StyledContainer>
+          <div>
             <ImgStyledName>{info.name}</ImgStyledName>
-            <ImgStyledPrice>{info.price}원</ImgStyledPrice>
-          </StyledContainer>
+            <ImgStyledPrice>{price}원</ImgStyledPrice>
+          </div>
         </MenuCardContainer>
       ) : (
-        <MenuCardContainer to={'/menu'}>
+        <MenuCardContainer>
           <div>
             <StyledName>{info.name}</StyledName>
-            <StyledPrice>{info.price}원</StyledPrice>
+            <StyledPrice>{price}원</StyledPrice>
           </div>
         </MenuCardContainer>
       )}
@@ -31,7 +31,7 @@ const MenuCard: React.FC<OwnProps> = ({ info }) => {
 }
 export default MenuCard
 
-const MenuCardContainer = styled(Link)`
+const MenuCardContainer = styled.div`
   ${FlexAlignCSS};
   padding: 16pt 32pt;
   color: inherit;
@@ -46,22 +46,23 @@ const StyledImage = styled.img`
   height: 192pt;
   border-radius: 8pt;
 `
-const StyledContainer = styled.div``
+
 const ImgStyledName = styled.h4`
   padding: 8pt 56pt;
-
   margin: 0;
 `
+
 const ImgStyledPrice = styled.h5`
   padding: 8pt 56pt;
-
   margin: 0;
   color: ${({ theme }) => theme.COLOR.number_price};
 `
+
 const StyledName = styled.h4`
   padding: 8pt 32pt;
   margin: 0;
 `
+
 const StyledPrice = styled.h5`
   padding: 8pt 32pt;
   margin: 0;
