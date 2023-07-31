@@ -31,6 +31,7 @@ const StyledContainer = styled.div`
   display: block;
   margin-bottom: 16pt;
 `
+
 const StyledH3 = styled.h3`
   display: block;
   margin-bottom: 32pt;
@@ -38,20 +39,24 @@ const StyledH3 = styled.h3`
   border-bottom: 1px dashed;
   border-color: ${({ theme }) => theme.COLOR.sub};
 `
+
 const InnerContainer = styled.div`
   position: relative;
   display: block;
 `
+
 const StyledTitle = styled.h5`
   display: inline-block;
   vertical-align: top;
   margin: 0;
 `
+
 const StyledPrice = styled.h5`
   float: right;
   margin: 0;
   text-align: right;
 `
+
 const InnerTotalContainer = styled.div`
   margin-top: 32pt;
   padding-top: 32pt;
@@ -59,11 +64,13 @@ const InnerTotalContainer = styled.div`
   position: relative;
   display: block;
 `
+
 const StyledTotalTitle = styled.h4`
   display: inline-block;
   vertical-align: top;
   margin: 0;
 `
+
 const StyledTotalPrice = styled.h4`
   overflow: hidden;
   float: right;

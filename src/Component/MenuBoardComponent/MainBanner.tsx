@@ -57,8 +57,6 @@ const PreviousButton = styled.button`
   transform: translateY(-50%);
   background-color: transparent;
 `
-// 버튼 Styled태그 만들고, left, right는 따로 넣기
-// transition 넣어보기~
 
 const NextButton = styled.button`
   position: absolute;

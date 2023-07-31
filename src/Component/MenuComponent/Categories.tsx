@@ -22,6 +22,7 @@ const Categories = ({ ingre }: ingre) => {
 }
 
 export default Categories
+
 const Categoryul = styled.ul`
   margin: 6px;
   display: flex;

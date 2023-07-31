@@ -18,3 +18,14 @@ export const setCookie = (name: string, value: Menu, cnt: number) => {
 export const getCookie = (name: string) => {
   return cartCookie.get(name)
 }
+export const removeCookie = (name: string, menuId: string) => {
+  const cookie = getCookie(name) || {}
+
+  if (cookie[menuId]) {
+    delete cookie[menuId]
+    const date = new Date()
+    date.setHours(date.getHours() + 1)
+    return cartCookie.set(name, JSON.stringify(cookie), { path: '/', expires: date })
+  }
+  return cartCookie.set(name, JSON.stringify(cookie), { path: '/' })
+}
