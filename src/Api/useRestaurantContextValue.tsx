@@ -7,7 +7,7 @@ export const useRestaurantContextValue = (id: string) => {
 
   useEffect(() => {
     const getRestaurant = async (id: string) => {
-      const res = await axios.get(`http://localhost:3001/restaurants/${id}`, {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/restaurants/${id}`, {
         headers: { Authorization: 'Basic YWRtaW46c3dtMTRwb3Jlc3QhIQ==' },
       })
       setRestaurant(res.data)

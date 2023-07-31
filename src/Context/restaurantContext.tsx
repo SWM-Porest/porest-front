@@ -139,7 +139,7 @@ export const useRestauranDispatch = () => {
 export const getRestaurant = async (dispatch: React.Dispatch<RestaurantActionT>, id: string) => {
   dispatch({ type: 'GET_RESTAURANT' })
   try {
-    const response = await axios.get<Restaurant>(`http://localhost:3001/restaurants/${id}`, {
+    const response = await axios.get<Restaurant>(`${process.env.REACT_APP_API_URL}/restaurants/${id}`, {
       headers: { Authorization: 'Basic YWRtaW46c3dtMTRwb3Jlc3QhIQ==' },
     })
     dispatch({ type: 'GET_RESTAURANT_SUCCESS', data: response.data })
