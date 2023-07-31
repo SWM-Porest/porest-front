@@ -137,10 +137,9 @@ export const useRestauranDispatch = () => {
 }
 
 export const getRestaurant = async (dispatch: React.Dispatch<RestaurantActionT>, id: string) => {
-  const apiUrl = process.env.NODE_ENV === 'production' ? 'api.pocketrestaurant.net' : 'http://localhost:3001'
   dispatch({ type: 'GET_RESTAURANT' })
   try {
-    const response = await axios.get<Restaurant>(`${apiUrl}/restaurants/${id}`, {
+    const response = await axios.get<Restaurant>(`http://localhost:3001/restaurants/${id}`, {
       headers: { Authorization: 'Basic YWRtaW46c3dtMTRwb3Jlc3QhIQ==' },
     })
     dispatch({ type: 'GET_RESTAURANT_SUCCESS', data: response.data })

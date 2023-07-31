@@ -4,11 +4,10 @@ import { useEffect, useState } from 'react'
 
 export const useRestaurantContextValue = (id: string) => {
   const [restaurant, setRestaurant] = useState<Restaurant>()
-  const apiUrl = process.env.NODE_ENV === 'production' ? 'api.pocketrestaurant.net' : 'http://localhost:3001'
 
   useEffect(() => {
     const getRestaurant = async (id: string) => {
-      const res = await axios.get(`${apiUrl}/restaurants/${id}`, {
+      const res = await axios.get(`http://localhost:3001/restaurants/${id}`, {
         headers: { Authorization: 'Basic YWRtaW46c3dtMTRwb3Jlc3QhIQ==' },
       })
       setRestaurant(res.data)
