@@ -137,9 +137,10 @@ export const useRestauranDispatch = () => {
 }
 
 export const getRestaurant = async (dispatch: React.Dispatch<RestaurantActionT>, id: string) => {
+  const apiUrl = process.env.NODE_ENV === 'production' ? 'api.pocketrestaurant.net' : 'http://localhost:3001' // 개발 환경의 경우 로컬 API 서버 주소
   dispatch({ type: 'GET_RESTAURANT' })
   try {
-    const response = await axios.get<Restaurant>(`${process.env.REACT_APP_API_URL}/restaurants/${id}`, {
+    const response = await axios.get<Restaurant>(`${apiUrl}/restaurants/${id}`, {
       headers: { Authorization: 'Basic YWRtaW46c3dtMTRwb3Jlc3QhIQ==' },
     })
     dispatch({ type: 'GET_RESTAURANT_SUCCESS', data: response.data })
