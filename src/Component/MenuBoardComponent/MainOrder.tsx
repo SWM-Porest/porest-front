@@ -125,7 +125,7 @@ const StyledUl = styled.ul`
 const StyledLi = styled.li<{ $active: boolean }>`
   // active props 추가
   display: inline-block;
-  padding: 0;
+  padding: 16pt 40pt 0 0;
   font-weight: bold;
   color: ${(props) => (props.$active ? '#343434' : '#A9A9A9')}; // active props에 따라 색상 변경
 `
