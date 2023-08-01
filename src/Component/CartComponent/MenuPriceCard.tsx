@@ -96,10 +96,10 @@ const OuterContainer = styled.div`
 `
 
 const InnerContainer = styled.div`
-  overflow: hidden;
   margin-top: 16pt;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `
 
 const StyledName = styled.h4`
@@ -114,8 +114,8 @@ const StyledPrice = styled.h5`
 `
 
 const StyledAmountContainer = styled.div`
-  float: left;
   margin-top: 16pt;
+  display: flex;
 `
 
 const StyledTotalPrice = styled.h5`
