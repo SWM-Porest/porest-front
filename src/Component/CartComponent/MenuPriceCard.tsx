@@ -50,12 +50,14 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }
         <StyledImage src={defaultImg} alt="메뉴 이미지" />
       )}
       <OuterContainer>
-        <CloseButtonContainer>
-          <CloseButton icon={faXmark} onClick={handleRemoveMenu} size="2xl" />
-        </CloseButtonContainer>
-        <StyledName>{info.name}</StyledName>
+        <TopContainer>
+          <StyledName>{info.name}</StyledName>
+          <CloseButtonContainer>
+            <CloseButton icon={faXmark} onClick={handleRemoveMenu} size="2xl" />
+          </CloseButtonContainer>
+        </TopContainer>
 
-        <StyledPrice>{price}</StyledPrice>
+        <StyledPrice>{price}원</StyledPrice>
         <InnerContainer>
           <StyledAmountContainer>
             <AmountCheck count={count} handleQuantity={handleQuantity} />
@@ -70,7 +72,6 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }
 export default MenuPriceCard
 
 const StyledContainer = styled.div`
-  display: block;
   position: relative;
   padding: 24pt 48pt;
   border-top: ridge;
@@ -86,27 +87,28 @@ const StyledImage = styled.img`
   border-radius: 8pt;
   margin-right: 32pt;
 `
-
+const TopContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
 const OuterContainer = styled.div`
-  display: block;
   overflow: hidden;
 `
 
 const InnerContainer = styled.div`
   overflow: hidden;
   margin-top: 16pt;
-  display: block;
+  display: flex;
+  justify-content: space-between;
 `
 
 const StyledName = styled.h4`
-  display: block;
-  padding-right: 48pt;
+  display: flex;
+  align-items: center;
   margin: 0;
 `
 
 const StyledPrice = styled.h5`
-  display: block;
-  padding-right: 48pt;
   margin: 0;
   padding: 16pt 0;
 `
