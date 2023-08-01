@@ -78,7 +78,7 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
             <StyledAmountContainer>
               <AmountCheck count={count} handleQuantity={handleQuantity} />
             </StyledAmountContainer>
-            <AddCart menu={menu ? menu : null} cnt={count} />
+            <AddCart menu={menu ? menu : null} cnt={count} openModalHandler={openModalHandler} />
           </ContentContainer>
         </ModalView>
       </ModalContainer>
@@ -123,5 +123,5 @@ const ModalView = styled.div<{ $load: boolean }>`
 `
 const ContentContainer = styled.div`
   overflow-y: auto;
-  max-height: calc(100% - 60px); /* 헤더의 높이만큼 화면 높이에서 뺍니다. */
+  max-height: calc(100% - 72px - 72pt); /* 헤더의 높이만큼 화면 높이에서 뺍니다. */
 `

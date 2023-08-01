@@ -37,12 +37,13 @@ const MinusButton = styled.button`
   border-top-left-radius: 8pt;
   border-bottom-left-radius: 8pt;
   font-size: ${({ theme }) => theme.FONT_SIZE.small};
+  transition: 0.4s;
   &:hover {
-    background-color: #008937;
-    border: 1px solid #eee;
+    background-color: ${({ theme }) => theme.COLOR.main};
     color: #fff;
-    box-shadow: 0px 0px 15px 5px #008937;
+    box-shadow: 0px 0px 16px 0 ${({ theme }) => theme.COLOR.main};
     outline: none;
+    transition: 0.4s;
   }
 `
 
@@ -56,12 +57,13 @@ const PlusButton = styled.button`
   border-top-right-radius: 8pt;
   border-bottom-right-radius: 8pt;
   font-size: ${({ theme }) => theme.FONT_SIZE.small};
-  &:active {
-    background-color: #008937;
-    border: 1px solid #eee;
+  transition: 0.4s;
+  &:hover {
+    background-color: ${({ theme }) => theme.COLOR.main};
     color: #fff;
-    box-shadow: 0px 0px 15px 5px #008937;
+    box-shadow: 0px 0px 16px 0 ${({ theme }) => theme.COLOR.main};
     outline: none;
+    transition: 0.4s;
   }
 `
 
