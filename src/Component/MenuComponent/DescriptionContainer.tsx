@@ -7,7 +7,7 @@ interface OwnProps {
 }
 
 const DescriptionContainer: React.FC<OwnProps> = ({ title, price, description, img }) => {
-  const defaultImg = '/img/포레스트로고.png'
+  const defaultImg = '/img/회색.png'
   return (
     <div style={{ display: 'block' }}>
       <DContainerImg>
