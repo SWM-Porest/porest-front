@@ -33,7 +33,7 @@ export default MenuCard
 
 const MenuCardContainer = styled.div`
   ${FlexAlignCSS};
-  padding: 16pt 32pt;
+  padding: 24pt 48pt;
   color: inherit;
   text-decoration: none;
   border-top: ridge;

@@ -6,7 +6,6 @@ import AddCart from './AddCart'
 import Categories from './Categories'
 import ContainerBox from './ContainerBox'
 import DescriptionContainer from './DescriptionContainer'
-import MenuHeader from './MenuHeader'
 interface OwnProps {
   id: string
   isOpen: boolean
@@ -49,7 +48,6 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
           }}
         />
         <ModalView $load={isOpen} onClick={(e) => e.stopPropagation()}>
-          <MenuHeader name={restaurant ? restaurant.name : ''} />
           <DescriptionContainer
             title={menu ? menu.name : ''}
             price={menu ? menu.price : 0}

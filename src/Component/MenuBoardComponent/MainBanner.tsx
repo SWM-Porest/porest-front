@@ -24,7 +24,7 @@ export default MainBanner
 
 const SliderWrapper = styled.div`
   position: relative;
-  margin: 32pt;
+  margin: 24pt 48pt;
 `
 
 const SliderImage = styled.img`

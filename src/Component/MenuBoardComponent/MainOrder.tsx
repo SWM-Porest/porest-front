@@ -116,7 +116,7 @@ const StyledUl = styled.ul`
   top: 0;
   background-color: #fff;
   list-style: none;
-  padding: 16pt;
+  padding: 24pt 48pt;
   display: block;
   border-bottom: solid;
   border-color: ${({ theme }) => theme.COLOR.common.gray[600]};
@@ -125,18 +125,17 @@ const StyledUl = styled.ul`
 const StyledLi = styled.li<{ $active: boolean }>`
   // active props 추가
   display: inline-block;
-  padding: 16pt 12pt;
+  padding: 0;
   font-weight: bold;
   color: ${(props) => (props.$active ? '#343434' : '#A9A9A9')}; // active props에 따라 색상 변경
 `
 
 const MenuCardsContainer = styled.div`
   align-items: center;
-  padding: 16pt;
 `
 
 const StyledLiEach = styled.li`
-  padding: 16pt 32pt;
+  padding: 24pt 48pt;
   font-weight: bold;
 `
 
@@ -145,6 +144,7 @@ const DisclaimerContainer = styled.div`
   width: 100%;
   justify-content: center;
   background-color: #f2f2f2;
+  font-family: 'Noto Sans KR', sans-serif;
 `
 
 const Disclaimer = styled.div`
