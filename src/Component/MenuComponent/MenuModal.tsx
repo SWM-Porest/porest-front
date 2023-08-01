@@ -1,3 +1,4 @@
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import AmountCheck from 'Component/AmountCheck'
 import { useRestaurantState } from 'Context/restaurantContext'
 import { useEffect, useState } from 'react'
@@ -6,6 +7,8 @@ import AddCart from './AddCart'
 import Categories from './Categories'
 import ContainerBox from './ContainerBox'
 import DescriptionContainer from './DescriptionContainer'
+import Header from 'Component/Header'
+import { CloseButton, CloseButtonContainer } from 'Component/Modal/CartModal'
 interface OwnProps {
   id: string
   isOpen: boolean
@@ -48,19 +51,37 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
           }}
         />
         <ModalView $load={isOpen} onClick={(e) => e.stopPropagation()}>
-          <DescriptionContainer
-            title={menu ? menu.name : ''}
-            price={menu ? menu.price : 0}
-            description={menu ? menu.description : ''}
-            img={menu ? menu.img : ''}
-          ></DescriptionContainer>
-          <ContainerBox>
-            <Categories ingre={menu ? menu.ingre : []}></Categories>
-          </ContainerBox>
-          <StyledAmountContainer>
-            <AmountCheck count={count} handleQuantity={handleQuantity} />
-          </StyledAmountContainer>
-          <AddCart menu={menu ? menu : null} cnt={count} />
+          <Header
+            HeaderName={''}
+            Right={
+              <CloseButtonContainer>
+                <CloseButton
+                  icon={faXmark}
+                  onClick={() => {
+                    openModalHandler(menu ? menu._id : '')
+                  }}
+                  size="2xl"
+                />
+              </CloseButtonContainer>
+            }
+          ></Header>
+          <ContentContainer>
+            <DescriptionContainer
+              title={menu ? menu.name : ''}
+              price={menu ? menu.price : 0}
+              description={menu ? menu.description : ''}
+              img={menu ? menu.img : ''}
+              menuId={menu ? menu._id : ''}
+              openModalHandler={openModalHandler}
+            ></DescriptionContainer>
+            <ContainerBox>
+              <Categories ingre={menu ? menu.ingre : []}></Categories>
+            </ContainerBox>
+            <StyledAmountContainer>
+              <AmountCheck count={count} handleQuantity={handleQuantity} />
+            </StyledAmountContainer>
+            <AddCart menu={menu ? menu : null} cnt={count} />
+          </ContentContainer>
         </ModalView>
       </ModalContainer>
     </>
@@ -102,4 +123,8 @@ const ModalView = styled.div<{ $load: boolean }>`
   background-color: #ffffff;
   transition: all 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
   transform: ${(props) => (props.$load ? 'translateY(0)' : 'translateY(105%)')};
+`
+const ContentContainer = styled.div`
+  overflow-y: auto;
+  max-height: calc(100% - 60px); /* 헤더의 높이만큼 화면 높이에서 뺍니다. */
 `
