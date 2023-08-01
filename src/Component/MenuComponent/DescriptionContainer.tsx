@@ -7,14 +7,16 @@ interface OwnProps {
 }
 
 const DescriptionContainer: React.FC<OwnProps> = ({ title, price, description, img }) => {
+  const defaultImg = '/img/포레스트로고.png'
   return (
     <div style={{ display: 'block' }}>
-      {img && (
-        <DContainerImg>
+      <DContainerImg>
+        {img ? (
           <StyledImage src={`${img}`} alt="메뉴 이미지" />
-        </DContainerImg>
-      )}
-
+        ) : (
+          <StyledImage src={`${defaultImg}`} alt="메뉴 이미지" />
+        )}
+      </DContainerImg>
       <DContainerDes>
         <TitleBox>
           <TitleInner>
@@ -37,6 +39,7 @@ export default DescriptionContainer
 const DContainerImg = styled.div`
   position: relative;
   z-index: 10;
+  margin: 24pt;
 `
 const DContainerDes = styled.div`
   position: relative;
