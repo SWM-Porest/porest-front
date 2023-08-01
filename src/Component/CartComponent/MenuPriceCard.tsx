@@ -17,7 +17,7 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }
   const [count, setCount] = useState(cnt)
   const [totalprice, setTotalPrice] = useState((info.price * count).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','))
   const price = info.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-  const defaultImg = '/img/포레스트로고.png'
+  const defaultImg = '/img/회색.png'
 
   const handleQuantity = (type: string) => {
     let newCount
@@ -125,8 +125,8 @@ const StyledTotalPrice = styled.h5`
 `
 
 const CloseButtonContainer = styled.div`
-  width: 72px;
-  height: 72px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
   justify-content: center;
   align-items: center;
@@ -148,4 +148,5 @@ const CloseButton = styled(FontAwesomeIcon)`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: auto;
 `
