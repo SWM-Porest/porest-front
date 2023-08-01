@@ -85,7 +85,6 @@ export const CloseButtonContainer = styled.div`
   justify-content: center;
   align-items: center;
   transition: background 0.3s ease-in-out; /* hover 시 배경색 변경 애니메이션 */
-
   &:hover {
     background: #1d9255; /* hover 시 색상 변경 */
   }
