@@ -40,6 +40,9 @@ const PlusMinusButton = styled.button`
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   flex: 1;
   height: 64pt;
   font-size: ${({ theme }) => theme.FONT_SIZE.small};
