@@ -4,11 +4,9 @@ interface OwnProps {
   price: number
   description: string
   img: string
-  menuId: string
-  openModalHandler: (menuId: string) => void
 }
 
-const DescriptionContainer: React.FC<OwnProps> = ({ title, price, description, img, menuId, openModalHandler }) => {
+const DescriptionContainer: React.FC<OwnProps> = ({ title, price, description, img }) => {
   return (
     <div style={{ display: 'block' }}>
       <DContainerImg>{img ? <StyledImage src={`${img}`} alt="메뉴 이미지" /> : <BackDiv></BackDiv>}</DContainerImg>

@@ -71,8 +71,6 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
               price={menu ? menu.price : 0}
               description={menu ? menu.description : ''}
               img={menu ? menu.img : ''}
-              menuId={menu ? menu._id : ''}
-              openModalHandler={openModalHandler}
             ></DescriptionContainer>
             <ContainerBox>
               <Categories ingre={menu ? menu.ingre : []}></Categories>
@@ -80,7 +78,7 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
             <StyledAmountContainer>
               <AmountCheck count={count} handleQuantity={handleQuantity} />
             </StyledAmountContainer>
-            <AddCart menu={menu ? menu : null} cnt={count} />
+            <AddCart menu={menu ? menu : null} cnt={count} openModalHandler={openModalHandler} />
           </ContentContainer>
         </ModalView>
       </ModalContainer>
@@ -119,12 +117,11 @@ const ModalView = styled.div<{ $load: boolean }>`
   border-radius: 40px 40px 0px 0px;
   width: 100%;
   height: 80%;
-  overflow-y: auto;
   background-color: #ffffff;
   transition: all 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
   transform: ${(props) => (props.$load ? 'translateY(0)' : 'translateY(105%)')};
 `
 const ContentContainer = styled.div`
   overflow-y: auto;
-  max-height: calc(100% - 60px); /* 헤더의 높이만큼 화면 높이에서 뺍니다. */
+  max-height: calc(100% - 72px - 72pt); /* 헤더의 높이만큼 화면 높이에서 뺍니다. */
 `

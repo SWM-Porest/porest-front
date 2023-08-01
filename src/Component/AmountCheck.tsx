@@ -38,12 +38,13 @@ const PlusMinusButton = styled.button`
   height: 64pt;
   font-size: ${({ theme }) => theme.FONT_SIZE.small};
   padding: 0;
-  &:active {
-    background-color: #008937;
-    border: 1px solid #eee;
+  transition: 0.4s;
+  &:hover {
+    background-color: ${({ theme }) => theme.COLOR.main};
     color: #fff;
-    box-shadow: 0px 0px 15px 5px #008937;
+    box-shadow: 0px 0px 16px 0 ${({ theme }) => theme.COLOR.main};
     outline: none;
+    transition: 0.4s;
   }
 `
 
