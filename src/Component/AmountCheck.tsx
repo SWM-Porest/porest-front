@@ -47,13 +47,13 @@ const PlusMinusButton = styled.button`
   height: 64pt;
   font-size: ${({ theme }) => theme.FONT_SIZE.small};
   padding: 0;
-  transition: 0.2s;
+  transition: 0.4s;
   &:active {
     background-color: ${({ theme }) => theme.COLOR.main};
     color: #fff;
     box-shadow: 0px 0px 16px 0 ${({ theme }) => theme.COLOR.main};
     outline: none;
-    transition: 0.2s;
+    transition: 0.4s;
   }
 `
 
