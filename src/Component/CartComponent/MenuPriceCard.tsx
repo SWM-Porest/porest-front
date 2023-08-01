@@ -125,8 +125,8 @@ const StyledTotalPrice = styled.h5`
 `
 
 const CloseButtonContainer = styled.div`
-  width: 72px;
-  height: 72px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
   justify-content: center;
   align-items: center;
@@ -148,5 +148,5 @@ const CloseButton = styled(FontAwesomeIcon)`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 auto;
+  margin: auto;
 `
