@@ -37,7 +37,7 @@ const MinusButton = styled.button`
   border-top-left-radius: 8pt;
   border-bottom-left-radius: 8pt;
   font-size: ${({ theme }) => theme.FONT_SIZE.small};
-  &:active {
+  &:hover {
     background-color: #008937;
     border: 1px solid #eee;
     color: #fff;

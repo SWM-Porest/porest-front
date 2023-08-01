@@ -71,8 +71,6 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
               price={menu ? menu.price : 0}
               description={menu ? menu.description : ''}
               img={menu ? menu.img : ''}
-              menuId={menu ? menu._id : ''}
-              openModalHandler={openModalHandler}
             ></DescriptionContainer>
             <ContainerBox>
               <Categories ingre={menu ? menu.ingre : []}></Categories>
@@ -119,7 +117,6 @@ const ModalView = styled.div<{ $load: boolean }>`
   border-radius: 40px 40px 0px 0px;
   width: 100%;
   height: 80%;
-  overflow-y: auto;
   background-color: #ffffff;
   transition: all 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
   transform: ${(props) => (props.$load ? 'translateY(0)' : 'translateY(105%)')};
