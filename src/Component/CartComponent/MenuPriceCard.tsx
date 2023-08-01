@@ -1,7 +1,7 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { removeCookie, setCookie } from 'Api/cartCookie'
 import AmountCheck from 'Component/AmountCheck'
+import { CloseButton, CloseButtonContainer } from 'Component/Modal/CartModal'
 import { Menu, useRestaurantState } from 'Context/restaurantContext'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
@@ -122,31 +122,4 @@ const StyledTotalPrice = styled.h5`
   display: block;
   margin-top: 24pt;
   color: ${({ theme }) => theme.COLOR.number_price};
-`
-
-const CloseButtonContainer = styled.div`
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  justify-content: center;
-  align-items: center;
-  transition: background 0.3s ease-in-out;
-  float: right;
-  text-align: right;
-  display: block;
-  &:hover {
-    background: #1d9255;
-  }
-`
-
-const CloseButton = styled(FontAwesomeIcon)`
-  border: none;
-  cursor: pointer;
-  width: 54px;
-  height: 54px;
-  color: #c5c9cc;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: auto;
 `
