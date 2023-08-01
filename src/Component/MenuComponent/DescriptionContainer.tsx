@@ -4,19 +4,14 @@ interface OwnProps {
   price: number
   description: string
   img: string
+  menuId: string
+  openModalHandler: (menuId: string) => void
 }
 
-const DescriptionContainer: React.FC<OwnProps> = ({ title, price, description, img }) => {
-  const defaultImg = '/img/포레스트로고.png'
+const DescriptionContainer: React.FC<OwnProps> = ({ title, price, description, img, menuId, openModalHandler }) => {
   return (
     <div style={{ display: 'block' }}>
-      <DContainerImg>
-        {img ? (
-          <StyledImage src={`${img}`} alt="메뉴 이미지" />
-        ) : (
-          <StyledImage src={`${defaultImg}`} alt="메뉴 이미지" />
-        )}
-      </DContainerImg>
+      <DContainerImg>{img ? <StyledImage src={`${img}`} alt="메뉴 이미지" /> : <BackDiv></BackDiv>}</DContainerImg>
       <DContainerDes>
         <TitleBox>
           <TitleInner>
@@ -39,7 +34,7 @@ export default DescriptionContainer
 const DContainerImg = styled.div`
   position: relative;
   z-index: 10;
-  margin: 24pt;
+  margin: 0pt 0pt 24pt 0pt;
 `
 const DContainerDes = styled.div`
   position: relative;
@@ -67,10 +62,13 @@ const PriceSpan = styled.span`
 `
 const StyledImage = styled.img`
   width: 100%;
-  padding: 25px 0px 0px;
 `
 const DescriptionSpan = styled.p`
   margin: 0;
   color: ${({ theme }) => theme.COLOR.common.gray[400]};
   font-size: 2rem;
+`
+const BackDiv = styled.div`
+  background-color: #c4c4c4;
+  height: 128pt;
 `
