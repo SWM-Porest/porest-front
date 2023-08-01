@@ -77,7 +77,7 @@ const ModalContent = styled.div`
   overflow: auto;
 `
 
-const CloseButtonContainer = styled.div`
+export const CloseButtonContainer = styled.div`
   right: 20pt;
   width: 72px; /* 원하는 크기 조정 */
   height: 72px; /* 원하는 크기 조정 */
@@ -91,7 +91,7 @@ const CloseButtonContainer = styled.div`
     background: #1d9255; /* hover 시 색상 변경 */
   }
 `
-const CloseButton = styled(FontAwesomeIcon)`
+export const CloseButton = styled(FontAwesomeIcon)`
   border: none;
   cursor: pointer;
   width: 54px;
