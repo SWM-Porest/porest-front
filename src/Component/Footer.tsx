@@ -27,7 +27,7 @@ const ParentContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
+  font-family: 'Noto Sans KR', sans-serif;
   width: 100%;
 `
 const StyledLink = styled(Link)`

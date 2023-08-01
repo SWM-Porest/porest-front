@@ -17,7 +17,7 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }
   const [count, setCount] = useState(cnt)
   const [totalprice, setTotalPrice] = useState((info.price * count).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','))
   const price = info.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-  const defaultImg = '/img/food.png'
+  const defaultImg = '/img/포레스트로고.png'
 
   const handleQuantity = (type: string) => {
     let newCount
