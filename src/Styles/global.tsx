@@ -48,6 +48,9 @@ p {
     font-family: 'Noto Sans KR', sans-serif;
     font-size:${({ theme }) => theme.FONT_SIZE.tiny};
 }
+div {
+    font-family: 'Noto Sans KR', sans-serif;
+}
 
 
 `
