@@ -113,13 +113,12 @@ const ModalView = styled.div<{ $load: boolean }>`
   z-index: 31;
   height: 100%;
   position: fixed;
-  bottom: 0;
+  bottom: ${(props) => (props.$load ? '0' : '-100%')};
   border-radius: 40px 40px 0px 0px;
   width: 100%;
   height: 80%;
   background-color: #ffffff;
   transition: all 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
-  transform: ${(props) => (props.$load ? 'translateY(0)' : 'translateY(105%)')};
 `
 const ContentContainer = styled.div`
   overflow-y: auto;
