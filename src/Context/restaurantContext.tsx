@@ -86,6 +86,7 @@ const restauarntReducer = (state: RestaurantStateT, action: RestaurantActionT): 
         restaurant: {
           ...state.restaurant,
           loading: true,
+          error: null, // 요청 시작 시 에러 초기화
         },
       }
     case 'GET_RESTAURANT_SUCCESS':
