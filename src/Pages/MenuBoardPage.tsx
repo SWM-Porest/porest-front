@@ -14,6 +14,7 @@ import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import CartModal from '../Component/Modal/CartModal'
 import { FlexAlignCSS } from 'Styles/common'
+import { Spin } from 'antd'
 
 const MenuBoardPage: React.FC = () => {
   // const images = ['img/교동짬뽕.jpeg', 'img/메뉴판.jpeg', 'img/내부.jpeg']
@@ -30,7 +31,13 @@ const MenuBoardPage: React.FC = () => {
 
   const { openModal, isModalOpen } = useCartModal()
 
-  if (loading) return <div>로딩중...</div>
+  if (!loading) {
+    return (
+      <StyledSpin tip="Loading" size="large">
+        <div className="content" />
+      </StyledSpin>
+    )
+  }
   if (error) return <div>에러가 발생했습니다.</div>
   return (
     <div className="MenuBoard">
@@ -72,4 +79,11 @@ const StyledButton = styled.button`
   padding: 0;
   border: none;
   background: none;
+`
+const StyledSpin = styled(Spin)`
+  &&& {
+    height: 100vh;
+    max-height: 100vh;
+    font-size: 3000px;
+  }
 `

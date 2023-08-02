@@ -47,7 +47,6 @@ const PlusMinusButton = styled.button`
   height: 64pt;
   font-size: ${({ theme }) => theme.FONT_SIZE.small};
   padding: 0;
-  transition: 0.4s;
   color: ${({ theme }) => theme.COLOR.common.black};
   &:active {
     background-color: ${({ theme }) => theme.COLOR.main};
@@ -55,7 +54,6 @@ const PlusMinusButton = styled.button`
     box-shadow: 0px 0px 16px 0 ${({ theme }) => theme.COLOR.main};
     color: ${({ theme }) => theme.COLOR.common.white};
     outline: none;
-    transition: 0.4s;
   }
 `
 
