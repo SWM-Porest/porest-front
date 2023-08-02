@@ -31,7 +31,7 @@ const MenuBoardPage: React.FC = () => {
 
   const { openModal, isModalOpen } = useCartModal()
 
-  if (!loading) {
+  if (loading) {
     return (
       <StyledSpin tip="Loading" size="large">
         <div className="content" />
