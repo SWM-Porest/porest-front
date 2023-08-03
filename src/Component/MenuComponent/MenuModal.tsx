@@ -99,11 +99,11 @@ const ModalBackdrop = styled.div<{ $load: boolean }>`
   z-index: 30;
   height: 100%;
   position: fixed;
-  bottom: ${(props) => (props.$load ? '0' : '-100%')};
   display: flex;
   justify-content: center;
   align-items: end;
   background-color: rgba(0, 0, 0, 0.4);
+  transform: ${(props) => (props.$load ? 'translateY(0)' : 'translateY(105%)')};
   top: 0;
   left: 0;
   right: 0;
