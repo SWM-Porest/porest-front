@@ -9,11 +9,12 @@ import {
   useRestauranDispatch,
   useRestaurantState,
 } from 'Context/restaurantContext'
+import { FlexAlignCSS } from 'Styles/common'
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import CartModal from '../Component/Modal/CartModal'
-import { FlexAlignCSS } from 'Styles/common'
+import ErrorPage from './ErrorPage'
 
 const MenuBoardPage: React.FC = () => {
   // const images = ['img/교동짬뽕.jpeg', 'img/메뉴판.jpeg', 'img/내부.jpeg']
@@ -31,7 +32,7 @@ const MenuBoardPage: React.FC = () => {
   const { openModal, isModalOpen } = useCartModal()
 
   if (loading) return <div>로딩중...</div>
-  if (error) return <div>에러가 발생했습니다.</div>
+  if (error) return <ErrorPage errorCode={500} />
   return (
     <div className="MenuBoard">
       {isModalOpen && <CartModal></CartModal>}
