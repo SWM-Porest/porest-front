@@ -104,10 +104,7 @@ const ModalBackdrop = styled.div<{ $load: boolean }>`
   justify-content: center;
   align-items: end;
   background-color: rgba(0, 0, 0, 0.4);
-  transform: ${(props) => (props.$load ? 'translateY(0)' : 'translateY(105%)')};
-  top: 0;
-  left: 0;
-  right: 0;
+  ${(props) => (props.$load ? 'top: 0; left: 0; right: 0;' : '')};
 `
 
 const ModalView = styled.div<{ $load: boolean }>`
