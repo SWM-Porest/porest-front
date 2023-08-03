@@ -64,7 +64,6 @@ export default MenuBoardPage
 const StyledContainer = styled.div`
   background-color: #fff;
 `
-
 const StyledBanner = styled(MainBanner)`
   margin: 0px;
   padding: 0px;
@@ -80,10 +79,11 @@ const StyledButton = styled.button`
   border: none;
   background: none;
 `
-const StyledSpin = styled(Spin)`
+export const StyledSpin = styled(Spin)`
   &&& {
-    height: 100vh;
-    max-height: 100vh;
-    font-size: 3000px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(4);
   }
 `

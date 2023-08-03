@@ -9,6 +9,7 @@ import ContainerBox from './ContainerBox'
 import DescriptionContainer from './DescriptionContainer'
 import Header from 'Component/Header'
 import { CloseButton, CloseButtonContainer } from 'Component/Modal/CartModal'
+
 interface OwnProps {
   id: string
   isOpen: boolean
@@ -27,7 +28,7 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
     document.body.style.overflow = 'auto'
   }
 
-  if (loading) return <div>로딩중...</div>
+  if (loading) return <div>로딩중 ... </div>
   if (error) return <div>에러가 발생했습니다.</div>
   const [count, setCount] = useState(1)
   const handleQuantity = (type: string) => {
@@ -40,7 +41,7 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
   }
   useEffect(() => {
     setCount(1)
-  }, [id])
+  }, [openModalHandler])
   return (
     <>
       <ModalContainer>
