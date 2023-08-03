@@ -27,22 +27,22 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
   // Ref 배열을 동적 생성
   const contentRefs = uniqueMenuTypes.map(() => useRef<HTMLDivElement>(null))
 
-  const [activeMenu, setActiveMenu] = useState(0) // activeMenu state 추가
+  const [activeMenuIndex, setActiveMenuIndex] = useState(0)
+
   useEffect(() => {
     const handleScroll = () => {
       const menuSections = contentRefs.map((ref) => ref.current)
-      let activeIndex = 0
+      let activeIndex = menuSections.length - 1 // 가장 마지막 인덱스로 초기화해서 더 내려갔을 때 index0이 밝혀지지 않도록
       for (let i = 0; i < menuSections.length; i++) {
         const section = menuSections[i]
         if (section) {
           const rect = section.getBoundingClientRect()
-          if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
+          if (rect.top >= 0 && rect.top <= window.innerHeight) {
             activeIndex = i
-            break
           }
         }
       }
-      setActiveMenu(activeIndex)
+      setActiveMenuIndex(activeIndex)
     }
 
     // 스크롤 이벤트 리스너 등록
@@ -60,7 +60,7 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
         {uniqueMenuTypes.map((menuType, index) => (
           <StyledLi
             key={index}
-            $active={activeMenu === index}
+            $active={activeMenuIndex === index}
             onClick={() => contentRefs[index].current?.scrollIntoView({ behavior: 'smooth' })}
           >
             {menuType}
