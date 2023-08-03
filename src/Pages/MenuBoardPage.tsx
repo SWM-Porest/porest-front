@@ -14,7 +14,10 @@ import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import CartModal from '../Component/Modal/CartModal'
+import { FlexAlignCSS } from 'Styles/common'
+import { Spin } from 'antd'
 import ErrorPage from './ErrorPage'
+
 
 const MenuBoardPage: React.FC = () => {
   // const images = ['img/교동짬뽕.jpeg', 'img/메뉴판.jpeg', 'img/내부.jpeg']
@@ -31,7 +34,13 @@ const MenuBoardPage: React.FC = () => {
 
   const { openModal, isModalOpen } = useCartModal()
 
-  if (loading) return <div>로딩중...</div>
+  if (loading) {
+    return (
+      <StyledSpin tip="Loading" size="large">
+        <div className="content" />
+      </StyledSpin>
+    )
+  }
   if (error) return <ErrorPage errorCode={500} />
   return (
     <div className="MenuBoard">
@@ -58,7 +67,6 @@ export default MenuBoardPage
 const StyledContainer = styled.div`
   background-color: #fff;
 `
-
 const StyledBanner = styled(MainBanner)`
   margin: 0px;
   padding: 0px;
@@ -73,4 +81,12 @@ const StyledButton = styled.button`
   padding: 0;
   border: none;
   background: none;
+`
+export const StyledSpin = styled(Spin)`
+  &&& {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(4);
+  }
 `
