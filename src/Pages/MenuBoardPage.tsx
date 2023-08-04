@@ -1,3 +1,4 @@
+import { getTotalCartItems } from 'Api/cartCookie'
 import Footer from 'Component/Footer'
 import Header from 'Component/Header'
 import MainBanner from 'Component/MenuBoardComponent/MainBanner'
@@ -10,13 +11,12 @@ import {
   useRestaurantState,
 } from 'Context/restaurantContext'
 import { FlexAlignCSS } from 'Styles/common'
+import { Badge, Spin } from 'antd'
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import CartModal from '../Component/Modal/CartModal'
-import { Spin } from 'antd'
 import ErrorPage from './ErrorPage'
-
 const MenuBoardPage: React.FC = () => {
   // const images = ['img/교동짬뽕.jpeg', 'img/메뉴판.jpeg', 'img/내부.jpeg']
 
@@ -40,6 +40,8 @@ const MenuBoardPage: React.FC = () => {
     )
   }
   if (error) return <ErrorPage errorCode={500} />
+  const totalCartItems = getTotalCartItems(restaurant?._id as string)
+
   return (
     <div className="MenuBoard">
       {isModalOpen && <CartModal></CartModal>}
@@ -47,9 +49,11 @@ const MenuBoardPage: React.FC = () => {
         <Header
           HeaderName={restaurant ? restaurant.name : ''}
           Right={
-            <StyledButton onClick={openModal}>
-              <h5 style={{ margin: 0 }}>주문내역</h5>
-            </StyledButton>
+            <Badge count={totalCartItems}>
+              <StyledButton onClick={openModal}>
+                <h5 style={{ margin: 0 }}>주문내역</h5>
+              </StyledButton>
+            </Badge>
           }
         />
         <StyledBanner images={restaurant ? restaurant.banner_image_urls : []} />
