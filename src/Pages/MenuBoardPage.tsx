@@ -9,7 +9,6 @@ import {
   useRestauranDispatch,
   useRestaurantState,
 } from 'Context/restaurantContext'
-import { FlexAlignCSS } from 'Styles/common'
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
@@ -17,7 +16,6 @@ import CartModal from '../Component/Modal/CartModal'
 import { FlexAlignCSS } from 'Styles/common'
 import { Spin } from 'antd'
 import ErrorPage from './ErrorPage'
-
 
 const MenuBoardPage: React.FC = () => {
   // const images = ['img/교동짬뽕.jpeg', 'img/메뉴판.jpeg', 'img/내부.jpeg']
@@ -54,7 +52,15 @@ const MenuBoardPage: React.FC = () => {
             </StyledButton>
           }
         />
-        <StyledBanner images={restaurant ? restaurant.banner_image_urls : []} />
+        <StyledBanner
+          images={
+            restaurant
+              ? restaurant.banner_images.map((banner_image) => {
+                  return process.env.REACT_APP_STATIC_URL + banner_image.path
+                })
+              : []
+          }
+        />
         <StyledOrder info={restaurant ? restaurant : restaurantContextDefaultValue} />
       </StyledContainer>
       <Footer />

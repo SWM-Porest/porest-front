@@ -44,8 +44,8 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }
 
   return (
     <StyledContainer>
-      {info.img !== '' ? (
-        <StyledImage src={info.img} alt="메뉴 이미지" />
+      {info.img.path !== '' ? (
+        <StyledImage src={process.env.REACT_APP_STATIC_URL + info.img.path} alt="메뉴 이미지" />
       ) : (
         <StyledImage src={defaultImg} alt="메뉴 이미지" />
       )}
