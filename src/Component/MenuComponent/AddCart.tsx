@@ -1,5 +1,6 @@
 import { setCookie } from 'Api/cartCookie'
 import { Menu, useRestaurantState } from 'Context/restaurantContext'
+import { message } from 'antd'
 import { styled } from 'styled-components'
 
 interface Ownprops {
@@ -17,6 +18,7 @@ const AddCart: React.FC<Ownprops> = ({ menu, cnt, openModalHandler }) => {
         onClick={() => {
           openModalHandler('')
           setCookie(restaurant?._id as string, menu as Menu, cnt)
+          message.success('장바구니에 추가되었습니다.', 1.5)
         }}
       >
         장바구니 담기
