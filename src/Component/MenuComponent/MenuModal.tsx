@@ -98,7 +98,7 @@ const ModalContainer = styled.div`
 const ModalBackdrop = styled.div<{ $load: boolean }>`
   z-index: 30;
   height: 100%;
-  bottom: ${(props) => (props.$load ? '0' : '-100%')};
+  bottom: ${(props) => (props.$load ? '0' : '-120%')};
   position: fixed;
   display: flex;
   justify-content: center;
