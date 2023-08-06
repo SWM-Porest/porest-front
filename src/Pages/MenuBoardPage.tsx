@@ -12,7 +12,7 @@ import {
 } from 'Context/restaurantContext'
 import { FlexAlignCSS } from 'Styles/common'
 import { Badge, Spin } from 'antd'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import CartModal from '../Component/Modal/CartModal'
@@ -30,6 +30,17 @@ const MenuBoardPage: React.FC = () => {
     getRestaurant(dispatch, id)
   }, [dispatch, id])
 
+  const [totalCartItems, setTotalCartItems] = useState(0)
+
+  useEffect(() => {
+    const updateTotalCartItems = () => {
+      const totalItems = getTotalCartItems(restaurant?._id as string)
+      setTotalCartItems(totalItems)
+    }
+    updateTotalCartItems()
+    const intervalId = setInterval(updateTotalCartItems, 1000)
+    return () => clearInterval(intervalId)
+  }, [restaurant])
   const { openModal, isModalOpen } = useCartModal()
 
   if (loading) {
@@ -40,7 +51,6 @@ const MenuBoardPage: React.FC = () => {
     )
   }
   if (error) return <ErrorPage errorCode={500} />
-  const totalCartItems = getTotalCartItems(restaurant?._id as string)
 
   return (
     <div className="MenuBoard">
