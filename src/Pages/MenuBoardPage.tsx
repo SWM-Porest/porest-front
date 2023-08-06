@@ -51,7 +51,7 @@ const MenuBoardPage: React.FC = () => {
           Right={
             <Badge count={totalCartItems}>
               <StyledButton onClick={openModal}>
-                <h5 style={{ margin: 0 }}>주문내역</h5>
+                <h5 style={{ margin: 0 }}>장바구니</h5>
               </StyledButton>
             </Badge>
           }
