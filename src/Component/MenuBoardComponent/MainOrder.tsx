@@ -11,6 +11,7 @@ interface OwnProps {
 const MainOrder: React.FC<OwnProps> = ({ info }) => {
   const [menuId, setMenuId] = useState('')
   const [isOpen, setIsOpen] = useState(false)
+
   const openModalHandler = (id: string) => {
     setMenuId(id)
     setIsOpen(!isOpen)
@@ -30,27 +31,27 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
   const [activeMenuIndex, setActiveMenuIndex] = useState(0)
 
   useEffect(() => {
-    const handleScroll = () => {
-      const menuSections = contentRefs.map((ref) => ref.current)
-      let activeIndex = menuSections.length - 1 // 가장 마지막 인덱스로 초기화해서 더 내려갔을 때 index0이 밝혀지지 않도록
-      for (let i = 0; i < menuSections.length; i++) {
-        const section = menuSections[i]
-        if (section) {
-          const rect = section.getBoundingClientRect()
-          if (rect.top >= 0 && rect.top <= window.innerHeight) {
-            activeIndex = i
-          }
+    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const index = contentRefs.findIndex((ref) => ref.current === entry.target)
+          setActiveMenuIndex(index)
         }
-      }
-      setActiveMenuIndex(activeIndex)
+      })
     }
-
-    // 스크롤 이벤트 리스너 등록
-    window.addEventListener('scroll', handleScroll)
-
-    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    // IntersectionObserver
+    const observer = new IntersectionObserver(handleIntersection, {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.5,
+    })
+    contentRefs.forEach((ref) => {
+      if (ref.current) {
+        observer.observe(ref.current)
+      }
+    })
     return () => {
-      window.removeEventListener('scroll', handleScroll)
+      observer.disconnect()
     }
   }, [])
 
@@ -81,17 +82,19 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
               <StyledLiEach>{menuType}</StyledLiEach>
             </div>
 
-            {info.menus.map((menu) =>
-              menu.menutype === menuType && menu._id ? ( // menu._id가 유효한 경우에만 렌더링
-                <div
-                  key={`menu_${menu._id}`}
-                  onClick={() => {
-                    openModalHandler(menu._id)
-                  }}
-                >
-                  <MenuCard key={menu._id} info={menu} />
-                </div>
-              ) : null,
+            {info.menus.map(
+              (menu) =>
+                menu.menutype === menuType &&
+                menu._id && (
+                  <div
+                    key={`menu_${menu._id}`}
+                    onClick={() => {
+                      openModalHandler(menu._id)
+                    }}
+                  >
+                    <MenuCard key={menu._id} info={menu} />
+                  </div>
+                ),
             )}
           </MenuCardsContainer>
         </div>
@@ -127,7 +130,7 @@ const StyledLi = styled.li<{ $active: boolean }>`
   display: inline-block;
   padding: 16pt 40pt 0 0;
   font-weight: bold;
-  color: ${(props) => (props.$active ? '#343434' : '#A9A9A9')}; // active props에 따라 색상 변경
+  color: ${(props) => (props.$active ? '#343434' : '#A9A9A9')};
 `
 
 const MenuCardsContainer = styled.div`
