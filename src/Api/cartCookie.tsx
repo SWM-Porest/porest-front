@@ -29,3 +29,15 @@ export const removeCookie = (name: string, menuId: string) => {
   }
   return cartCookie.set(name, JSON.stringify(cookie), { path: '/' })
 }
+export const getTotalCartItems = (name: string): number => {
+  const cookie = getCookie(name) || {}
+  let totalItems = 0
+
+  Object.values(cookie).forEach((value) => {
+    if (typeof value === 'number') {
+      totalItems += value
+    }
+  })
+
+  return totalItems
+}
