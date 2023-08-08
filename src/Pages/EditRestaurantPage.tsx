@@ -160,7 +160,7 @@ const EditRestaurantPage: React.FC = () => {
                     <Form.Item label="카테고리" name={field.name} key={field.key}>
                       <Input />
                     </Form.Item>
-                    <Button onClick={() => remove(field.name)}>삭제</Button>
+                    <Button onClick={() => remove(field.name)}>카태고리 삭제</Button>
                   </>
                 ))}
                 <Button onClick={() => add()}>카테고리 추가</Button>
@@ -172,16 +172,26 @@ const EditRestaurantPage: React.FC = () => {
               <>
                 {fields.map((field) => (
                   <>
-                    <Form.Item label="메뉴 이름" name={[field.name, 'name']} key={field.key}>
+                    <Form.Item
+                      label="메뉴 이름"
+                      name={[field.name, 'name']}
+                      key={field.key}
+                      rules={[{ required: true }]}
+                    >
                       <Input />
                     </Form.Item>
                     <Form.Item label="메뉴 영어 이름" name={[field.name, 'en_name']} key={field.key}>
                       <Input />
                     </Form.Item>
-                    <Form.Item label="메뉴 가격" name={[field.name, 'price']} key={field.key}>
+                    <Form.Item
+                      label="메뉴 가격"
+                      name={[field.name, 'price']}
+                      key={field.key}
+                      rules={[{ required: true }]}
+                    >
                       <Input />
                     </Form.Item>
-                    <Form.Item label="메뉴 메뉴 타입" name={[field.name, 'menu_type']} key={field.key}>
+                    <Form.Item label="메뉴 메뉴 타입" name={[field.name, 'menutype']} key={field.key}>
                       <Input />
                     </Form.Item>
                     <Form.Item label="메뉴 카테고리" name={[field.name, 'category']} key={field.key}>
@@ -201,14 +211,14 @@ const EditRestaurantPage: React.FC = () => {
                               <Form.Item label="재료" name={field.name} key={field.key}>
                                 <Input />
                               </Form.Item>
-                              <Button onClick={() => remove(field.name)}>삭제</Button>
+                              <Button onClick={() => remove(field.name)}>재료 삭제</Button>
                             </>
                           ))}
                           <Button onClick={() => add()}>재료 추가</Button>
                         </>
                       )}
                     </Form.List>
-                    <Button onClick={() => remove(field.name)}>삭제</Button>
+                    <Button onClick={() => remove(field.name)}>메뉴 삭제</Button>
                   </>
                 ))}
                 <Button onClick={() => add()}>메뉴 추가</Button>
