@@ -12,6 +12,7 @@ const EditRestaurantPage: React.FC = () => {
   if (id === undefined) throw new Error('id가 없습니다.')
 
   const dispatch = useRestauranDispatch()
+
   const { data: restaurant, loading, error } = useRestaurantState().restaurant
 
   const [restaurantImageList, setRestaurantImageList] = useState<UploadFile[]>([])
@@ -31,14 +32,22 @@ const EditRestaurantPage: React.FC = () => {
     setRestaurantImageList(newFileList)
   }
 
-  const handleSubmit = async (restaurant: Restaurant) => {
+  const handleSubmit = async (updatedRestaurant: Restaurant) => {
     try {
-      console.log(restaurant)
-      if (restaurant && restaurant.category == undefined) {
-        restaurant.category = []
+      console.log(updatedRestaurant)
+      if (updatedRestaurant && updatedRestaurant.category == undefined) {
+        updatedRestaurant.category = []
+      }
+
+      if (restaurant && restaurant.banner_images) {
+        updatedRestaurant.banner_images = restaurant.banner_images.filter((banner_image) => {
+          return restaurantImageList?.find((file) => {
+            return file.name === banner_image.filename
+          })
+        })
       }
       const formData = new FormData()
-      formData.append('updateRestaurantsDto', JSON.stringify(restaurant))
+      formData.append('updateRestaurantsDto', JSON.stringify(updatedRestaurant))
 
       if (restaurantImageList?.length) {
         restaurantImageList.forEach((file) => {
@@ -157,7 +166,7 @@ const EditRestaurantPage: React.FC = () => {
               <>
                 {fields.map((field) => (
                   <>
-                    <Form.Item label="카테고리" name={field.name} key={field.key}>
+                    <Form.Item label="카테고리" name={field.name}>
                       <Input />
                     </Form.Item>
                     <Button onClick={() => remove(field.name)}>카태고리 삭제</Button>
@@ -175,40 +184,38 @@ const EditRestaurantPage: React.FC = () => {
                     <Form.Item
                       label="메뉴 이름"
                       name={[field.name, 'name']}
-                      key={field.key}
-                      rules={[{ required: true }]}
+                      rules={[{ required: true, message: '메뉴 이름을 입력해주세요.' }]}
                     >
                       <Input />
                     </Form.Item>
-                    <Form.Item label="메뉴 영어 이름" name={[field.name, 'en_name']} key={field.key}>
+                    <Form.Item label="메뉴 영어 이름" name={[field.name, 'en_name']}>
                       <Input />
                     </Form.Item>
                     <Form.Item
                       label="메뉴 가격"
                       name={[field.name, 'price']}
-                      key={field.key}
-                      rules={[{ required: true }]}
+                      rules={[{ required: true, message: '메뉴 가격을 입력해주세요.' }]}
                     >
                       <Input />
                     </Form.Item>
-                    <Form.Item label="메뉴 메뉴 타입" name={[field.name, 'menutype']} key={field.key}>
+                    <Form.Item label="메뉴 메뉴 타입" name={[field.name, 'menutype']}>
                       <Input />
                     </Form.Item>
-                    <Form.Item label="메뉴 카테고리" name={[field.name, 'category']} key={field.key}>
+                    <Form.Item label="메뉴 카테고리" name={[field.name, 'category']}>
                       <Input />
                     </Form.Item>
-                    <Form.Item label="메뉴 설명" name={[field.name, 'description']} key={field.key}>
+                    <Form.Item label="메뉴 설명" name={[field.name, 'description']}>
                       <Input />
                     </Form.Item>
-                    <Form.Item label="메뉴 이미지" name={[field.name, 'img']} key={field.key}>
+                    <Form.Item label="메뉴 이미지" name={[field.name, 'img']}>
                       <Input />
                     </Form.Item>
-                    <Form.List name={[field.name, 'ingre']} key={field.key}>
+                    <Form.List name={[field.name, 'ingre']}>
                       {(fields, { add, remove }) => (
                         <>
                           {fields.map((field) => (
                             <>
-                              <Form.Item label="재료" name={field.name} key={field.key}>
+                              <Form.Item label="재료" name={field.name}>
                                 <Input />
                               </Form.Item>
                               <Button onClick={() => remove(field.name)}>재료 삭제</Button>
