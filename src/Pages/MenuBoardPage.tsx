@@ -54,7 +54,7 @@ const MenuBoardPage: React.FC = () => {
         />
         <StyledBanner
           images={
-            restaurant
+            restaurant && restaurant.banner_images
               ? restaurant.banner_images.map((banner_image) => {
                   return process.env.REACT_APP_STATIC_URL + banner_image.path
                 })
