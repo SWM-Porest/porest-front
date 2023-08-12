@@ -18,8 +18,6 @@ import styled from 'styled-components'
 import CartModal from '../Component/Modal/CartModal'
 import ErrorPage from './ErrorPage'
 const MenuBoardPage: React.FC = () => {
-  // const images = ['img/교동짬뽕.jpeg', 'img/메뉴판.jpeg', 'img/내부.jpeg']
-
   const { id } = useParams()
   if (id === undefined) throw new Error('id가 없습니다.')
 
@@ -59,11 +57,12 @@ const MenuBoardPage: React.FC = () => {
         <Header
           HeaderName={restaurant ? restaurant.name : ''}
           Right={
-            <StyledBadge count={totalCartItems}>
+            <>
+              <StyledBadge count={totalCartItems}></StyledBadge>
               <StyledButton onClick={openModal}>
                 <h5 style={{ margin: 0 }}>장바구니</h5>
               </StyledButton>
-            </StyledBadge>
+            </>
           }
         />
         <StyledBanner images={restaurant ? restaurant.banner_image_urls : []} />
@@ -79,14 +78,17 @@ export default MenuBoardPage
 const StyledContainer = styled.div`
   background-color: #fff;
 `
+
 const StyledBanner = styled(MainBanner)`
   margin: 0px;
   padding: 0px;
 `
+
 const StyledOrder = styled(MainOrder)`
   margin: 0px;
   padding: 0px;
 `
+
 const StyledButton = styled.button`
   ${FlexAlignCSS};
   color: inherit;
@@ -94,6 +96,7 @@ const StyledButton = styled.button`
   border: none;
   background: none;
 `
+
 export const StyledSpin = styled(Spin)`
   &&& {
     position: fixed;
@@ -102,12 +105,14 @@ export const StyledSpin = styled(Spin)`
     transform: translate(-50%, -50%) scale(4);
   }
 `
+
 const StyledBadge = styled(Badge)`
   .ant-badge-count {
-    width: 24pt;
-    height: 24pt;
-    line-height: 24pt;
+    height: 32pt;
+    width: 32pt;
+    line-height: 32pt;
     font-size: 1.5rem;
     border-radius: 50%;
   }
+  transform: translate(400%, -40%) scale(1.3);
 `
