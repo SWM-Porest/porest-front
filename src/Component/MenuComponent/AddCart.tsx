@@ -14,7 +14,7 @@ const AddCart: React.FC<Ownprops> = ({ menu, cnt, openModalHandler }) => {
 
   return (
     <div style={{ display: 'flex' }}>
-      <StyeldButton
+      <StyledButton
         onClick={() => {
           openModalHandler('')
           setCookie(restaurant?._id as string, menu as Menu, cnt)
@@ -22,14 +22,14 @@ const AddCart: React.FC<Ownprops> = ({ menu, cnt, openModalHandler }) => {
         }}
       >
         장바구니 담기
-      </StyeldButton>
+      </StyledButton>
     </div>
   )
 }
 
 export default AddCart
 
-const StyeldButton = styled.button`
+const StyledButton = styled.button`
   cursor: pointer;
   font-size: ${({ theme }) => theme.FONT_SIZE.small};
   font-weight: bold;
