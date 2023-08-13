@@ -123,6 +123,7 @@ const StyledUl = styled.ul`
   display: block;
   border-bottom: solid;
   border-color: ${({ theme }) => theme.COLOR.common.gray[600]};
+  cursor: pointer;
 `
 
 const StyledLi = styled.li<{ $active: boolean }>`
@@ -140,6 +141,7 @@ const MenuCardsContainer = styled.div`
 const StyledLiEach = styled.li`
   padding: 24pt 48pt;
   font-weight: bold;
+  cursor: default;
 `
 
 const DisclaimerContainer = styled.div`
@@ -148,10 +150,12 @@ const DisclaimerContainer = styled.div`
   justify-content: center;
   background-color: #f2f2f2;
   font-family: 'Noto Sans KR', sans-serif;
+  cursor: default;
+  padding: 0 8pt;
 `
 
 const Disclaimer = styled.div`
-  font-size: 24px;
+  font-size: 1.5rem;
   color: #777;
-  margin-top: 10px;
+  margin-top: 8pt;
 `

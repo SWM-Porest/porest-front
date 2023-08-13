@@ -76,6 +76,7 @@ const StyledContainer = styled.div`
   padding: 24pt 48pt;
   border-top: ridge;
   border-color: ${({ theme }) => theme.COLOR.common.gray[600]};
+  cursor: default;
 `
 
 const StyledImage = styled.img`

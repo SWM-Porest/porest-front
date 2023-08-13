@@ -27,15 +27,16 @@ const ParentContainer = styled.div`
   justify-content: center;
   font-family: 'Noto Sans KR', sans-serif;
   width: 100%;
+  cursor: default;
 `
 
 const Copyright = styled.p`
-  font-size: 24px;
+  font-size: 1.5rem;
   color: #777;
-  margin-top: 10px;
+  margin-top: 8pt;
   text-align: center;
 `
 
 const BottomSpacing = styled.div`
-  height: 32px; /* Adjust the height as needed for the desired spacing */
+  height: 32pt;
 `

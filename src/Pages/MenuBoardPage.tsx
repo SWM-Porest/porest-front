@@ -95,6 +95,7 @@ const StyledButton = styled.button`
   padding: 0;
   border: none;
   background: none;
+  cursor: pointer;
 `
 
 export const StyledSpin = styled(Spin)`

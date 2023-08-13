@@ -55,6 +55,7 @@ const PlusMinusButton = styled.button`
     color: ${({ theme }) => theme.COLOR.common.white};
     outline: none;
   }
+  cursor: pointer;
 `
 
 const PlusButton = styled(PlusMinusButton)`
@@ -73,6 +74,7 @@ const CountContainer = styled.div`
   flex: 1;
   justify-content: center;
   align-items: center;
+  cursor: default;
 `
 
 export default AmountCheck

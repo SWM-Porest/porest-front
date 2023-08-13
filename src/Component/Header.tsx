@@ -48,4 +48,5 @@ const RightDiv = styled.div`
 
 const HeaderNameText = styled.h2`
   margin: 0;
+  cursor: default;
 `
