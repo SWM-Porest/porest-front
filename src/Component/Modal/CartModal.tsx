@@ -7,6 +7,10 @@ import React, { useEffect } from 'react'
 import { styled } from 'styled-components'
 
 const CartModal: React.FC = () => {
+  const showAlert = () => {
+    alert(`현재 준비중인 기능입니다.\n직원을 호출해주세요.`)
+  }
+
   const { isModalOpen, closeModal } = useCartModal()
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
@@ -48,6 +52,9 @@ const CartModal: React.FC = () => {
           }
         ></Header>
         <CartPrice />
+        <div style={{ display: 'flex' }}>
+          <StyledButton onClick={showAlert}>주문하기</StyledButton>
+        </div>
       </ModalContent>
     </ModalOverlay>
   )
@@ -98,4 +105,26 @@ export const CloseButton = styled(FontAwesomeIcon)`
   display: flex;
   justify-content: center;
   align-items: center;
+`
+const StyledButton = styled.button`
+  cursor: pointer;
+  font-size: ${({ theme }) => theme.FONT_SIZE.small};
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  background-color: ${({ theme }) => theme.COLOR.main};
+  color: ${({ theme }) => theme.COLOR.common.white};
+  padding: 20px;
+  width: 90%;
+  height: 100%;
+  margin: auto;
+  margin-bottom: 40pt;
+  border-radius: 10pt;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.3);
+  border: none;
+  transition: 0.4s;
+  &:hover {
+    box-shadow: 0px 0px 16px 0 ${({ theme }) => theme.COLOR.main};
+    transition: 0.4s;
+  }
 `
