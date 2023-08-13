@@ -44,8 +44,14 @@ const RightDiv = styled.div`
   flex: 1; /* 동등한 공간 차지 */
   display: flex;
   justify-content: end; /* 가운데 정렬 */
+  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
 `
 
 const HeaderNameText = styled.h2`
   margin: 0;
+  cursor: default;
+  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+  @media screen and (max-width: 440pt) {
+    font-size: 2.3rem;
+  }
 `
