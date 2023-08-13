@@ -59,11 +59,11 @@ const MenuBoardPage: React.FC = () => {
         <Header
           HeaderName={restaurant ? restaurant.name : ''}
           Right={
-            <Badge count={totalCartItems}>
+            <StyledBadge count={totalCartItems}>
               <StyledButton onClick={openModal}>
                 <h5 style={{ margin: 0 }}>장바구니</h5>
               </StyledButton>
-            </Badge>
+            </StyledBadge>
           }
         />
         <StyledBanner images={restaurant ? restaurant.banner_image_urls : []} />
@@ -100,5 +100,14 @@ export const StyledSpin = styled(Spin)`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(4);
+  }
+`
+const StyledBadge = styled(Badge)`
+  .ant-badge-count {
+    width: 24pt;
+    height: 24pt;
+    line-height: 24pt;
+    font-size: 1.5rem;
+    border-radius: 50%;
   }
 `
