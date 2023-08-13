@@ -60,7 +60,7 @@ const MenuBoardPage: React.FC = () => {
             <>
               <StyledBadge count={totalCartItems}></StyledBadge>
               <StyledButton onClick={openModal}>
-                <h5 style={{ margin: 0 }}>장바구니</h5>
+                <StyledH5>장바구니</StyledH5>
               </StyledButton>
             </>
           }
@@ -116,4 +116,11 @@ const StyledBadge = styled(Badge)`
     border-radius: 50%;
   }
   transform: translate(400%, -40%) scale(1.3);
+`
+
+const StyledH5 = styled.h5`
+  margin: 0;
+  @media screen and (max-width: 440pt) {
+    font-size: 2rem;
+  }
 `
