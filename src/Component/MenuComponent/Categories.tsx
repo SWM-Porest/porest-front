@@ -1,6 +1,4 @@
-import React from 'react'
 import { styled } from 'styled-components'
-
 interface ingre {
   ingre: string[]
 }
@@ -14,17 +12,17 @@ const Categories = ({ ingre }: ingre) => {
   }
 
   return (
-    <React.Fragment>
-      <h2 style={{ fontSize: '2rem', margin: '16px' }}>주요 재료</h2>
+    <div style={{ cursor: 'default' }}>
+      <h2 style={{ fontSize: '2rem', margin: '16pt' }}>주요 재료</h2>
       <Categoryul>{ulelem}</Categoryul>
-    </React.Fragment>
+    </div>
   )
 }
 
 export default Categories
 
 const Categoryul = styled.ul`
-  margin: 6px;
+  margin: 8pt;
   display: flex;
   padding: 0;
 `
@@ -37,7 +35,7 @@ const Categoryli = styled.li`
   color: #fff;
   position: realtive;
   padding: 8pt 16pt;
-  margin: 6px;
+  margin: 8pt;
   letter-spacing: -0.3px;
   text-align: center;
   background-color: #424242;
