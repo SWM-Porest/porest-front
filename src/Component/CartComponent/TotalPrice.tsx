@@ -30,6 +30,7 @@ const StyledContainer = styled.div`
   padding: 48pt;
   display: block;
   margin-bottom: 16pt;
+  cursor: default;
 `
 
 const StyledH3 = styled.h3`

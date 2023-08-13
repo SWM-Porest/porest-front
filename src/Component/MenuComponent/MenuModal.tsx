@@ -1,5 +1,7 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import AmountCheck from 'Component/AmountCheck'
+import Header from 'Component/Header'
+import { CloseButton, CloseButtonContainer } from 'Component/Modal/CartModal'
 import { useRestaurantState } from 'Context/restaurantContext'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
@@ -7,8 +9,6 @@ import AddCart from './AddCart'
 import Categories from './Categories'
 import ContainerBox from './ContainerBox'
 import DescriptionContainer from './DescriptionContainer'
-import Header from 'Component/Header'
-import { CloseButton, CloseButtonContainer } from 'Component/Modal/CartModal'
 
 interface OwnProps {
   id: string

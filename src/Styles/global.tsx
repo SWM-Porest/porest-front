@@ -3,10 +3,12 @@ import { createGlobalStyle } from 'styled-components'
 export const GlobalStyles = createGlobalStyle`
 html {
 font-size: 100%;
-    @media screen and (max-width:820px) {
-        font-size: 80%;
-    } // 820너비 지점에서 fon-size 변경
-}
+    @media screen and (max-width:720pt) {
+        font-size: 85%;
+    } 
+    @media screen and (max-width:576pt) {
+        font-size: 65%;
+    } 
 
 body {
     padding: 0;
