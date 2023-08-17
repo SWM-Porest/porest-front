@@ -62,7 +62,7 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
           <StyledLi
             key={index}
             $active={activeMenuIndex === index}
-            onClick={() => contentRefs[index].current?.scrollIntoView()}
+            onClick={() => contentRefs[index].current?.scrollIntoView({ behavior: 'smooth' })}
           >
             {menuType}
           </StyledLi>
