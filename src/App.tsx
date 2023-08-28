@@ -20,7 +20,7 @@ const App: React.FC = () => {
         <CartModalProvider>
           <RestaurantProvider>
             <Routes>
-              <Route path="/restaurants/:id/login" element={<LoginPage />} />
+              <Route path="/login" element={<LoginPage />} />
               <Route path="/restaurants/:id" element={<MenuBoardPage />} />
               <Route path="*" element={<ErrorPage errorCode={errorCode} />} />
             </Routes>
