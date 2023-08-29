@@ -365,7 +365,7 @@ const EditRestaurantPage: React.FC = () => {
                 {fields.map((field, index) => (
                   <Card
                     title={`메뉴 ${index + 1}`}
-                    style={{ minWidth: 500, marginRight: 16 }}
+                    style={{ minWidth: 500, marginBottom: '8pt' }}
                     key={field.key}
                     extra={
                       <Button
@@ -509,7 +509,7 @@ const EditRestaurantPage: React.FC = () => {
                 <ButtonContainer>
                   <Button
                     onClick={() => add()}
-                    style={{ border: 'dashed 1px', marginTop: '8pt', marginBottom: '8pt', height: 'fit-content' }}
+                    style={{ border: 'dashed 1px', marginBottom: '8pt', height: 'fit-content' }}
                     block
                   >
                     메뉴 추가
@@ -547,7 +547,6 @@ const CardContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow-x: auto;
-  padding-bottom: 16px; /* Add some padding to the bottom to improve spacing */
 `
 
 const ButtonContainer = styled.div`
