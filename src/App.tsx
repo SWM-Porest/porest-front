@@ -20,20 +20,19 @@ const App: React.FC = () => {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
         <GlobalStyles />
-        <div>
-          <CartModalProvider>
-            <RestaurantProvider>
-              <Routes>
-                <Route path="/restaurants/:id/login" element={<LoginPage />} />
-                <Route path="/restaurants/:id" element={<MenuBoardPage />} />
-                <Route path="/restaurants/:id/edit" element={<EditRestaurantPage />} />
-                <Route path="*" element={<ErrorPage errorCode={errorCode} />} />
-              </Routes>
-            </RestaurantProvider>
-          </CartModalProvider>
-        </div>
+        <CartModalProvider>
+          <RestaurantProvider>
+            <Routes>
+              <Route path="/restaurants/:id/login" element={<LoginPage />} />
+              <Route path="/restaurants/:id" element={<MenuBoardPage />} />
+              <Route path="/restaurants/:id/edit" element={<EditRestaurantPage />} />
+              <Route path="*" element={<ErrorPage errorCode={errorCode} />} />
+            </Routes>
+          </RestaurantProvider>
+        </CartModalProvider>
       </ThemeProvider>
-    </QueryClientProvider>  )
+    </QueryClientProvider>
+  )
 }
 
 export default App
