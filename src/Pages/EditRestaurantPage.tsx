@@ -377,7 +377,7 @@ const EditRestaurantPage: React.FC = () => {
                       </Button>
                     }
                   >
-                    <Upload
+                    <StyledUpload
                       listType="picture-card"
                       accept="image/png, image/jpeg, image/jpg"
                       fileList={menuImageList[index]}
@@ -407,7 +407,7 @@ const EditRestaurantPage: React.FC = () => {
                       }}
                     >
                       {menuImageList[index] && menuImageList[index].length >= 1 ? null : uploadButton}
-                    </Upload>
+                    </StyledUpload>
                     <Form.Item
                       label="메뉴 이름"
                       name={[field.name, 'name']}
@@ -558,5 +558,8 @@ const StyledUpload = styled(Upload)`
   overflow-x: auto; /* 가로 스크롤 생성 */
   white-space: nowrap; /* 아이템들이 한 줄에 나열되도록 설정 */
   width: 100%;
-  height: fit-content;
+  & > * > * {
+    width: 200px !important;
+    height: 200px !important;
+  }
 `
