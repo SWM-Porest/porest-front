@@ -8,7 +8,7 @@ interface OwnProps {
 
 const DescriptionContainer: React.FC<OwnProps> = ({ title, price, description, img }) => {
   return (
-    <div style={{ display: 'block' }}>
+    <div style={{ display: 'block', cursor: 'default' }}>
       <DContainerImg>{img ? <StyledImage src={`${img}`} alt="메뉴 이미지" /> : <BackDiv></BackDiv>}</DContainerImg>
       <DContainerDes>
         <TitleBox>

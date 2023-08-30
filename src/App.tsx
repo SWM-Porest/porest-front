@@ -9,6 +9,7 @@ import React from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import LoginPage from './Pages/LoginPage'
 
 const App: React.FC = () => {
   const location = useLocation()
@@ -23,6 +24,7 @@ const App: React.FC = () => {
           <CartModalProvider>
             <RestaurantProvider>
               <Routes>
+                <Route path="/restaurants/:id/login" element={<LoginPage />} />
                 <Route path="/restaurants/:id" element={<MenuBoardPage />} />
                 <Route path="/restaurants/:id/edit" element={<EditRestaurantPage />} />
                 <Route path="*" element={<ErrorPage errorCode={errorCode} />} />
@@ -31,8 +33,7 @@ const App: React.FC = () => {
           </CartModalProvider>
         </div>
       </ThemeProvider>
-    </QueryClientProvider>
-  )
+    </QueryClientProvider>  )
 }
 
 export default App

@@ -38,6 +38,7 @@ const MenuCardContainer = styled.div`
   text-decoration: none;
   border-top: ridge;
   border-color: ${({ theme }) => theme.COLOR.common.gray[600]};
+  cursor: pointer;
 `
 
 const StyledImage = styled.img`

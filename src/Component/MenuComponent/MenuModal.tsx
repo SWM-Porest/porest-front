@@ -1,5 +1,7 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import AmountCheck from 'Component/AmountCheck'
+import Header from 'Component/Header'
+import { CloseButton, CloseButtonContainer } from 'Component/Modal/CartModal'
 import { useRestaurantState } from 'Context/restaurantContext'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
@@ -7,8 +9,6 @@ import AddCart from './AddCart'
 import Categories from './Categories'
 import ContainerBox from './ContainerBox'
 import DescriptionContainer from './DescriptionContainer'
-import Header from 'Component/Header'
-import { CloseButton, CloseButtonContainer } from 'Component/Modal/CartModal'
 
 interface OwnProps {
   id: string
@@ -97,22 +97,18 @@ const ModalContainer = styled.div`
 `
 const ModalBackdrop = styled.div<{ $load: boolean }>`
   z-index: 30;
-  height: 100%;
+  height: 100vh;
+  bottom: ${(props) => (props.$load ? '0' : '-100lvh')};
   position: fixed;
   display: flex;
   justify-content: center;
   align-items: end;
   background-color: rgba(0, 0, 0, 0.4);
-  transform: ${(props) => (props.$load ? 'translateY(0)' : 'translateY(105%)')};
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  ${(props) => (props.$load ? 'top: 0; left: 0; right: 0;' : '')};
 `
 
 const ModalView = styled.div<{ $load: boolean }>`
   z-index: 31;
-  height: 100%;
   position: fixed;
   bottom: ${(props) => (props.$load ? '0' : '-100%')};
   border-radius: 40px 40px 0px 0px;
