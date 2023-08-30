@@ -7,7 +7,7 @@ import { useCartModal } from 'Context/CartModalContext'
 import {
   getRestaurant,
   restaurantContextDefaultValue,
-  useRestauranDispatch,
+  useRestaurantDispatch,
   useRestaurantState,
 } from 'Context/restaurantContext'
 import { FlexAlignCSS } from 'Styles/common'
@@ -18,12 +18,12 @@ import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import CartModal from '../Component/Modal/CartModal'
 import ErrorPage from './ErrorPage'
-  
+
 const MenuBoardPage: React.FC = () => {
   const { id } = useParams()
   if (id === undefined) throw new Error('id가 없습니다.')
 
-  const dispatch = useRestauranDispatch()
+  const dispatch = useRestaurantDispatch()
   const { data: restaurant, loading, error } = useRestaurantState().restaurant
 
   useEffect(() => {

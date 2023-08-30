@@ -141,7 +141,7 @@ export const useRestaurantState = () => {
   return restaurantState
 }
 
-export const useRestauranDispatch = () => {
+export const useRestaurantDispatch = () => {
   const restaurantDispatch = useContext(RestaurantDispatchContext)
   if (!restaurantDispatch) throw new Error('Can not find restaurantDispatchProvider')
   return restaurantDispatch

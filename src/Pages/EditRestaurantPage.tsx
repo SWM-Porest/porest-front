@@ -24,8 +24,8 @@ const EditRestaurantPage: React.FC = () => {
   const fetchRestaurantData = async () => {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/restaurants/${id}`, {
       auth: {
-        username: process.env.REAT_APP_BASIC_AUTH_USERNAME ? process.env.REAT_APP_BASIC_AUTH_USERNAME : 'myusername',
-        password: process.env.REAT_APP_BASIC_AUTH_PASSWORD ? process.env.REAT_APP_BASIC_AUTH_PASSWORD : 'password123',
+        username: process.env.REACT_APP_BASIC_AUTH_USERNAME ? process.env.REACT_APP_BASIC_AUTH_USERNAME : 'myusername',
+        password: process.env.REACT_APP_BASIC_AUTH_PASSWORD ? process.env.REACT_APP_BASIC_AUTH_PASSWORD : 'password123',
       },
     })
     return response.data
@@ -62,8 +62,12 @@ const EditRestaurantPage: React.FC = () => {
     (formData: FormData) => {
       return axios.patch(`${process.env.REACT_APP_API_URL}/restaurants/${id}`, formData, {
         auth: {
-          username: process.env.REAT_APP_BASIC_AUTH_USERNAME ? process.env.REAT_APP_BASIC_AUTH_USERNAME : 'myusername',
-          password: process.env.REAT_APP_BASIC_AUTH_PASSWORD ? process.env.REAT_APP_BASIC_AUTH_PASSWORD : 'password123',
+          username: process.env.REACT_APP_BASIC_AUTH_USERNAME
+            ? process.env.REACT_APP_BASIC_AUTH_USERNAME
+            : 'myusername',
+          password: process.env.REACT_APP_BASIC_AUTH_PASSWORD
+            ? process.env.REACT_APP_BASIC_AUTH_PASSWORD
+            : 'password123',
         },
       })
     },
@@ -87,8 +91,12 @@ const EditRestaurantPage: React.FC = () => {
     (formData: FormData) => {
       return axios.patch(`${process.env.REACT_APP_API_URL}/restaurants/${id}/menus`, formData, {
         auth: {
-          username: process.env.REAT_APP_BASIC_AUTH_USERNAME ? process.env.REAT_APP_BASIC_AUTH_USERNAME : 'myusername',
-          password: process.env.REAT_APP_BASIC_AUTH_PASSWORD ? process.env.REAT_APP_BASIC_AUTH_PASSWORD : 'password123',
+          username: process.env.REACT_APP_BASIC_AUTH_USERNAME
+            ? process.env.REACT_APP_BASIC_AUTH_USERNAME
+            : 'myusername',
+          password: process.env.REACT_APP_BASIC_AUTH_PASSWORD
+            ? process.env.REACT_APP_BASIC_AUTH_PASSWORD
+            : 'password123',
         },
       })
     },
@@ -112,8 +120,12 @@ const EditRestaurantPage: React.FC = () => {
     (menuId: string) => {
       return axios.delete(`${process.env.REACT_APP_API_URL}/restaurants/${id}/menus/${menuId}`, {
         auth: {
-          username: process.env.REAT_APP_BASIC_AUTH_USERNAME ? process.env.REAT_APP_BASIC_AUTH_USERNAME : 'myusername',
-          password: process.env.REAT_APP_BASIC_AUTH_PASSWORD ? process.env.REAT_APP_BASIC_AUTH_PASSWORD : 'password123',
+          username: process.env.REACT_APP_BASIC_AUTH_USERNAME
+            ? process.env.REACT_APP_BASIC_AUTH_USERNAME
+            : 'myusername',
+          password: process.env.REACT_APP_BASIC_AUTH_PASSWORD
+            ? process.env.REACT_APP_BASIC_AUTH_PASSWORD
+            : 'password123',
         },
       })
     },
