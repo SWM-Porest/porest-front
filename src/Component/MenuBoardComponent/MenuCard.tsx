@@ -12,7 +12,7 @@ const MenuCard: React.FC<OwnProps> = ({ info }) => {
     <div>
       {info.img ? (
         <MenuCardContainer>
-          <StyledImage src={info.img} alt="메뉴 이미지" />
+          <StyledImage src={process.env.REACT_APP_STATIC_URL + info.img.path} alt="메뉴 이미지" />
           <div>
             <ImgStyledName>{info.name}</ImgStyledName>
             <ImgStyledPrice>{price}원</ImgStyledPrice>

@@ -7,21 +7,23 @@ import { useCartModal } from 'Context/CartModalContext'
 import {
   getRestaurant,
   restaurantContextDefaultValue,
-  useRestauranDispatch,
+  useRestaurantDispatch,
   useRestaurantState,
 } from 'Context/restaurantContext'
 import { FlexAlignCSS } from 'Styles/common'
 import { Badge, Spin } from 'antd'
 import React, { useEffect, useState } from 'react'
+
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import CartModal from '../Component/Modal/CartModal'
 import ErrorPage from './ErrorPage'
+
 const MenuBoardPage: React.FC = () => {
   const { id } = useParams()
   if (id === undefined) throw new Error('id가 없습니다.')
 
-  const dispatch = useRestauranDispatch()
+  const dispatch = useRestaurantDispatch()
   const { data: restaurant, loading, error } = useRestaurantState().restaurant
 
   useEffect(() => {
@@ -65,7 +67,15 @@ const MenuBoardPage: React.FC = () => {
             </>
           }
         />
-        <StyledBanner images={restaurant ? restaurant.banner_image_urls : []} />
+        <StyledBanner
+          images={
+            restaurant && restaurant.banner_images
+              ? restaurant.banner_images.map((banner_image) => {
+                  return process.env.REACT_APP_STATIC_URL + banner_image.path
+                })
+              : []
+          }
+        />
         <StyledOrder info={restaurant ? restaurant : restaurantContextDefaultValue} />
       </StyledContainer>
       <Footer />
