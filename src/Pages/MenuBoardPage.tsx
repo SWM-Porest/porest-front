@@ -1,4 +1,5 @@
 import { getTotalCartItems } from 'Api/cartCookie'
+import BurgerMenu from 'Component/BurgerMenu'
 import Footer from 'Component/Footer'
 import Header from 'Component/Header'
 import MainBanner from 'Component/MenuBoardComponent/MainBanner'
@@ -57,6 +58,7 @@ const MenuBoardPage: React.FC = () => {
       {isModalOpen && <CartModal></CartModal>}
       <StyledContainer>
         <Header
+          Left={<BurgerMenu />}
           HeaderName={restaurant ? restaurant.name : ''}
           Right={
             <>

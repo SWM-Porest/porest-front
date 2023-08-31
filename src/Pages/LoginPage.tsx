@@ -1,6 +1,6 @@
 import Header from 'Component/Header'
 
-const LoginPage = (): JSX.Element => {
+const LoginPage = () => {
   return (
     <div>
       <Header HeaderName="Login" Right={''} />
