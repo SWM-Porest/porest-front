@@ -2,13 +2,12 @@ import { MenuOutlined } from '@ant-design/icons'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { CloseButton, CloseButtonContainer } from 'Component/Modal/CartModal'
 import { useCartModal } from 'Context/CartModalContext'
+import { useRestaurantState } from 'Context/restaurantContext'
 import { useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import Header from './Header'
-
 const BurgerMenu = () => {
-  const { id } = useParams()
   const { openModal } = useCartModal()
 
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -16,6 +15,10 @@ const BurgerMenu = () => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
   }
+  const restaurantState = useRestaurantState()
+
+  // restaurantState에서 레스토랑 ID에 접근
+  const restaurantId = restaurantState.restaurant.data?._id
 
   return (
     <BurgerMenuContainer>
@@ -35,10 +38,11 @@ const BurgerMenu = () => {
                 </>
               }
             />
-            <LinkPage to={`/restaurants/${id}/info`}>레스토랑</LinkPage>
-            <LinkPage to={`/restaurants/${id}`}>메뉴</LinkPage>
+            <LinkPage to={`/restaurants/${restaurantId}/info`}>레스토랑</LinkPage>
+            <LinkPage to={`/restaurants/${restaurantId}`}>메뉴</LinkPage>
             <LinkPage to="/mypage">회원 정보</LinkPage>
-            <LinkModal onClick={openModal}>장바구니</LinkModal>
+            <LinkModal onClick={openModal}>장바구니</LinkModal>{' '}
+            {/* 장바구니 모달 회원정보나 레스토랑 안내 페이지에서 열 수 없음.. */}
           </MenuView>
         </MenuList>
       )}

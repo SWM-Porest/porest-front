@@ -5,6 +5,7 @@ import EditRestaurantPage from 'Pages/EditRestaurantPage'
 import ErrorPage from 'Pages/ErrorPage'
 import MenuBoardPage from 'Pages/MenuBoardPage'
 import MyPage from 'Pages/MyPage'
+import RestaurantPage from 'Pages/RestaurantPage'
 import { GlobalStyles } from 'Styles/global'
 import { theme } from 'Styles/theme'
 import React from 'react'
@@ -26,8 +27,9 @@ const App: React.FC = () => {
           <CartModalProvider>
             <RestaurantProvider>
               <Routes>
-                <Route path="/restaurants/:id/login" element={<LoginPage />} />
+                <Route path="/login" element={<LoginPage />} />
                 <Route path="/restaurants/:id" element={<MenuBoardPage />} />
+                <Route path="/restaurants/:id/info" element={<RestaurantPage />} />
                 <Route path="/restaurants/:id/edit" element={<EditRestaurantPage />} />
                 <Route path="/mypage" element={<MyPage />} />
                 <Route path="*" element={<ErrorPage errorCode={errorCode} />} />
