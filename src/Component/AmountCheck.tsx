@@ -5,19 +5,20 @@ import styled from 'styled-components'
 
 interface AmountContainerProps {
   count: number
-  handleQuantity: (type: string) => void
+  handleIncrement: () => void
+  handleDecrement: () => void
 }
 
-const AmountCheck: React.FC<AmountContainerProps> = ({ count, handleQuantity }) => {
+const AmountCheck: React.FC<AmountContainerProps> = ({ count, handleIncrement, handleDecrement }) => {
   return (
     <Container>
-      <MinusButton onClick={() => handleQuantity('minus')}>
+      <MinusButton onClick={handleDecrement}>
         <FontAwesomeIcon icon={faMinus}></FontAwesomeIcon>
       </MinusButton>
       <CountContainer>
         <CountSpan>{count}</CountSpan>
       </CountContainer>
-      <PlusButton onClick={() => handleQuantity('plus')}>
+      <PlusButton onClick={handleIncrement}>
         <FontAwesomeIcon icon={faPlus}></FontAwesomeIcon>
       </PlusButton>
     </Container>

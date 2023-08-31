@@ -20,21 +20,25 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }
 
   const defaultImg = '/img/회색.png'
 
-  const handleQuantity = (type: string) => {
-    let newCount
-    if (type === 'plus') {
-      newCount = count + 1
-    } else {
-      newCount = count > 1 ? count - 1 : 1
-    }
+  const handleIncrement = () => {
+    const newCount = count + 1
     setCount(newCount)
-    if (type !== 'plus' && count === 1) {
-      removeCookie(restaurant?._id as string, info._id)
-    } else {
-      setCookie(restaurant?._id as string, info, type === 'plus' ? 1 : -1)
-    }
+    setCookie(restaurant?._id as string, info, 1)
     handlePriceTotalChange()
   }
+
+  const handleDecrement = () => {
+    if (count > 1) {
+      const newCount = count - 1
+      setCount(newCount)
+      setCookie(restaurant?._id as string, info, -1)
+      handlePriceTotalChange()
+    } else {
+      removeCookie(restaurant?._id as string, info._id)
+      handlePriceTotalChange()
+    }
+  }
+
   const handleRemoveMenu = () => {
     removeCookie(restaurant?._id as string, info._id)
     handlePriceTotalChange()
@@ -61,7 +65,7 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }
         <StyledPrice>{price}원</StyledPrice>
         <InnerContainer>
           <StyledAmountContainer>
-            <AmountCheck count={count} handleQuantity={handleQuantity} />
+            <AmountCheck count={count} handleIncrement={handleIncrement} handleDecrement={handleDecrement} />
           </StyledAmountContainer>
           <StyledTotalPrice>{totalprice}원</StyledTotalPrice>
         </InnerContainer>
