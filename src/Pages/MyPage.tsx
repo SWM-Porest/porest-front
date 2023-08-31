@@ -1,3 +1,4 @@
+import BurgerMenu from 'Component/BurgerMenu'
 import { useAuth } from 'Context/AuthContext'
 import Header from '../Component/Header'
 
@@ -6,7 +7,7 @@ const MyPage = () => {
 
   return (
     <div>
-      <Header HeaderName="마이 페이지" Right={''} />
+      <Header Left={<BurgerMenu />} HeaderName="마이 페이지" Right={''} />
     </div>
   )
 }
