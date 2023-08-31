@@ -16,7 +16,7 @@ const DescriptionContainer: React.FC<OwnProps> = ({ title, price, description, i
             <span>{title}</span>
           </TitleInner>
           <TitleInner>
-            <PriceSpan>{price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</PriceSpan>
+            <PriceSpan>{price.toLocaleString()}원</PriceSpan>
           </TitleInner>
           <TitleInner>
             <DescriptionSpan>{description}</DescriptionSpan>

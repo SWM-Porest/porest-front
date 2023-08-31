@@ -7,7 +7,7 @@ interface OwnProps {
 }
 
 const MenuCard: React.FC<OwnProps> = ({ info }) => {
-  const price = info.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  const price = info.price.toLocaleString()
   return (
     <div>
       {info.img ? (

@@ -15,8 +15,9 @@ interface OwnProps {
 const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }) => {
   const { data: restaurant } = useRestaurantState().restaurant
   const [count, setCount] = useState(cnt)
-  const [totalprice, setTotalPrice] = useState((info.price * count).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','))
-  const price = info.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  const [totalprice, setTotalPrice] = useState((info.price * count).toLocaleString())
+  const price = info.price.toLocaleString()
+
   const defaultImg = '/img/회색.png'
 
   const handleQuantity = (type: string) => {
@@ -39,7 +40,7 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }
     handlePriceTotalChange()
   }
   useEffect(() => {
-    setTotalPrice((info.price * count).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','))
+    setTotalPrice((info.price * count).toLocaleString())
   }, [count, info.price])
 
   return (
