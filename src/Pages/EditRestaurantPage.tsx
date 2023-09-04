@@ -1,6 +1,6 @@
 import Header from 'Component/Header'
 import { Restaurant } from 'Context/restaurantContext'
-import { Button, Card, Form, Input, Upload, UploadFile, message } from 'antd'
+import { Button, Card, Form, Input, InputNumber, Modal, Switch, Upload, UploadFile, message } from 'antd'
 import { PlusOutlined, EyeOutlined } from '@ant-design/icons'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -17,6 +17,8 @@ const EditRestaurantPage: React.FC = () => {
   if (id === undefined) throw new Error('id가 없습니다.')
 
   const [form] = Form.useForm()
+
+  const [menuOptionForm] = Form.useForm()
 
   const queryClient = useQueryClient()
 
@@ -36,9 +38,18 @@ const EditRestaurantPage: React.FC = () => {
     data: restaurant,
     isLoading,
     isError,
+    isFetching,
   }: UseQueryResult<Restaurant> = useQuery(['restaurant', id], fetchRestaurantData)
 
+  const [selectedIndex, setSelectedIndex] = useState({ menu: 0, option: 0 })
+
   const [confirmLoading, setConfirmLoading] = useState(false)
+
+  const [selectedLanguage, setSelectedLanguage] = useState('ko')
+
+  const [maxOptionsSelect, setMaxOptionsSelect] = useState(1)
+
+  const [isMenuOptionModalOpen, setIsMenuOptionModalOpen] = useState(false)
 
   const [restaurantImageList, setRestaurantImageList] = useState<UploadFile[]>([])
   const [menuImageList, setMenuImageList] = useState<UploadFile[][]>([])
@@ -75,7 +86,6 @@ const EditRestaurantPage: React.FC = () => {
       onSuccess: async (data) => {
         // Update the query data with the updated restaurant data
         queryClient.setQueryData(['restaurant', id], data)
-
         // Trigger a manual query refetch to ensure the updated data is fetched
         await queryClient.refetchQueries(['restaurant', id])
         // Show a success message
@@ -104,7 +114,6 @@ const EditRestaurantPage: React.FC = () => {
       onSuccess: async (data) => {
         // Update the query data with the updated restaurant data
         queryClient.setQueryData(['restaurant', id], data)
-
         // Trigger a manual query refetch to ensure the updated data is fetched
         await queryClient.refetchQueries(['restaurant', id])
         // Show a success message
@@ -112,7 +121,7 @@ const EditRestaurantPage: React.FC = () => {
       },
       onError: () => {
         // Show an error message
-        message.error('매장 정보 업데이트에 실패하였습니다. 새로고침 후 진행해주세요.')
+        message.error('매뉴 정보 업데이트에 실패하였습니다. 새로고침 후 진행해주세요.')
       },
     },
   )
@@ -133,7 +142,6 @@ const EditRestaurantPage: React.FC = () => {
       onSuccess: async (data) => {
         // Update the query data with the updated restaurant data
         queryClient.setQueryData(['restaurant', id], data)
-
         // Trigger a manual query refetch to ensure the updated data is fetched
         await queryClient.refetchQueries(['restaurant', id])
         // Show a success message
@@ -240,6 +248,13 @@ const EditRestaurantPage: React.FC = () => {
     </div>
   )
 
+  const formItemLayoutWithOutLabel = {
+    wrapperCol: {
+      xs: { span: 24, offset: 0 },
+      sm: { span: 20, offset: 0 },
+    },
+  }
+
   useEffect(() => {
     // 초기 이미지 세팅
     if (restaurant && restaurant.banner_images) {
@@ -285,7 +300,7 @@ const EditRestaurantPage: React.FC = () => {
 
   return (
     <div>
-      <Header HeaderName={restaurant?.name + ' 관리'}></Header>
+      <Header HeaderName={restaurant?.name ?? '' + ' 관리'}></Header>
       <Container>
         <StyledUpload
           listType="picture-card"
@@ -361,11 +376,12 @@ const EditRestaurantPage: React.FC = () => {
                   </div>
                 ))}
                 <Button
-                  type={'primary'}
+                  type={'link'}
                   onClick={() => add()}
                   style={{ height: 'fit-content', marginBottom: '8pt' }}
                   block
                 >
+                  <PlusOutlined />
                   카테고리 추가
                 </Button>
               </>
@@ -374,109 +390,200 @@ const EditRestaurantPage: React.FC = () => {
           <Form.List name="menus">
             {(fields, { add, remove }) => (
               <CardContainer>
-                {fields.map((field, index) => (
-                  <Card
-                    title={`메뉴 ${index + 1}`}
-                    style={{ minWidth: 500, marginBottom: '8pt' }}
-                    key={field.key}
-                    extra={
-                      <Button
-                        style={{ height: 'fit-content' }}
-                        icon={<EyeOutlined />}
-                        onClick={() => setShowDetails((prev) => ({ ...prev, [index]: !prev[index] }))}
-                      >
-                        {showDetails[index] ? '간략히 보기' : '자세히 보기'}
-                      </Button>
-                    }
-                  >
-                    <StyledUpload
-                      listType="picture-card"
-                      accept="image/png, image/jpeg, image/jpg"
-                      fileList={menuImageList[index]}
-                      multiple={true}
-                      onChange={({ fileList: newFileList }: { fileList: UploadFile[] }) => {
-                        newFileList.forEach((file) => {
-                          if (file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg') {
-                            return {
-                              name: file.name,
-                              status: file.status,
-                              url: file.url,
-                              type: file.type,
+                {fields.map((field, menuIndex) => (
+                  <div key={field.key}>
+                    <Card
+                      title={`메뉴 ${menuIndex + 1}`}
+                      style={{ minWidth: 500, marginBottom: '8pt' }}
+                      extra={
+                        <Button
+                          style={{ height: 'fit-content' }}
+                          icon={<EyeOutlined />}
+                          onClick={() => setShowDetails((prev) => ({ ...prev, [menuIndex]: !prev[menuIndex] }))}
+                        >
+                          {showDetails[menuIndex] ? '간략히 보기' : '자세히 보기'}
+                        </Button>
+                      }
+                    >
+                      <StyledUpload
+                        listType="picture-card"
+                        accept="image/png, image/jpeg, image/jpg"
+                        fileList={menuImageList[menuIndex]}
+                        multiple={true}
+                        onChange={({ fileList: newFileList }: { fileList: UploadFile[] }) => {
+                          newFileList.forEach((file) => {
+                            if (file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg') {
+                              return {
+                                name: file.name,
+                                status: file.status,
+                                url: file.url,
+                                type: file.type,
+                              }
                             }
-                          }
-                          throw new Error('이미지 파일만 업로드 가능합니다.')
-                        })
-                        setMenuImageList((prev) => {
-                          const newMenuImageList = [...prev]
-                          newMenuImageList[index] = newFileList
-                          return newMenuImageList
-                        })
-                      }}
-                      showUploadList={{
-                        showPreviewIcon: false,
-                        showRemoveIcon: true,
-                        showDownloadIcon: false,
-                      }}
-                    >
-                      {menuImageList[index] && menuImageList[index].length >= 1 ? null : uploadButton}
-                    </StyledUpload>
-                    <Form.Item
-                      label="메뉴 이름"
-                      name={[field.name, 'name']}
-                      rules={[{ required: true, message: '메뉴 이름을 입력해주세요.' }]}
-                    >
-                      <Input />
-                    </Form.Item>
-                    <Form.Item label="메뉴 영어 이름" name={[field.name, 'en_name']}>
-                      <Input />
-                    </Form.Item>
-                    <Form.Item
-                      label="메뉴 가격"
-                      name={[field.name, 'price']}
-                      rules={[{ required: true, message: '메뉴 가격을 입력해주세요.' }]}
-                    >
-                      <Input />
-                    </Form.Item>
+                            throw new Error('이미지 파일만 업로드 가능합니다.')
+                          })
+                          setMenuImageList((prev) => {
+                            const newMenuImageList = [...prev]
+                            newMenuImageList[menuIndex] = newFileList
+                            return newMenuImageList
+                          })
+                        }}
+                        showUploadList={{
+                          showPreviewIcon: false,
+                          showRemoveIcon: true,
+                          showDownloadIcon: false,
+                        }}
+                      >
+                        {menuImageList[menuIndex] && menuImageList[menuIndex].length >= 1 ? null : uploadButton}
+                      </StyledUpload>
+                      <Form.Item
+                        label="메뉴 이름"
+                        name={[field.name, 'name']}
+                        rules={[{ required: true, message: '메뉴 이름을 입력해주세요.' }]}
+                      >
+                        <Input />
+                      </Form.Item>
+                      <Form.Item label="메뉴 영어 이름" name={[field.name, 'en_name']}>
+                        <Input />
+                      </Form.Item>
+                      <Form.Item
+                        label="메뉴 가격"
+                        name={[field.name, 'price']}
+                        rules={[{ required: true, message: '메뉴 가격을 입력해주세요.' }]}
+                      >
+                        <Input />
+                      </Form.Item>
 
-                    {showDetails[index] && (
-                      <>
-                        <Form.Item label="메뉴 메뉴 타입" name={[field.name, 'menutype']}>
-                          <Input />
-                        </Form.Item>
-                        <Form.Item label="메뉴 카테고리" name={[field.name, 'category']}>
-                          <Input />
-                        </Form.Item>
-                        <Form.Item label="메뉴 설명" name={[field.name, 'description']}>
-                          <Input />
-                        </Form.Item>
-                        <Form.List name={[field.name, 'ingre']}>
-                          {(fields, { add, remove }) => (
-                            <>
-                              {fields.map((field, index) => (
-                                <div key={field.key} style={{ display: 'flex' }}>
-                                  <Form.Item
-                                    label={`재료 ${index + 1}`}
-                                    name={field.name}
-                                    style={{ marginRight: '8pt' }}
-                                  >
-                                    <Input />
-                                  </Form.Item>
-                                  <Button onClick={() => remove(field.name)} style={{ height: 'fit-content' }} danger>
-                                    재료 삭제
-                                  </Button>
-                                </div>
-                              ))}
-                              <Button
-                                type={'primary'}
-                                onClick={() => add()}
-                                style={{ height: 'fit-content', marginBottom: '8pt' }}
-                                block
-                              >
-                                재료 추가
-                              </Button>
-                            </>
-                          )}
-                        </Form.List>
+                      {showDetails[menuIndex] && (
+                        <>
+                          <Form.Item label="메뉴 메뉴 타입" name={[field.name, 'menutype']}>
+                            <Input />
+                          </Form.Item>
+                          <Form.Item label="메뉴 카테고리" name={[field.name, 'category']}>
+                            <Input />
+                          </Form.Item>
+                          <Form.Item label="메뉴 설명" name={[field.name, 'description']}>
+                            <Input />
+                          </Form.Item>
+                          <Form.List name={[field.name, 'ingre']}>
+                            {(fields, { add, remove }) => (
+                              <>
+                                {fields.map((field, igreIndex) => (
+                                  <div key={field.key} style={{ display: 'flex' }}>
+                                    <Form.Item
+                                      label={`재료 ${igreIndex + 1}`}
+                                      name={field.name}
+                                      style={{ marginRight: '8pt' }}
+                                      rules={[{ required: true, message: '재료를 입력해주세요.' }]}
+                                    >
+                                      <Input />
+                                    </Form.Item>
+                                    <Button onClick={() => remove(field.name)} style={{ height: 'fit-content' }} danger>
+                                      재료 삭제
+                                    </Button>
+                                  </div>
+                                ))}
+                                <Button
+                                  type={'link'}
+                                  onClick={() => add()}
+                                  style={{ height: 'fit-content', marginBottom: '8pt' }}
+                                  block
+                                >
+                                  <PlusOutlined />
+                                  재료 추가
+                                </Button>
+                              </>
+                            )}
+                          </Form.List>
+                          <Form.List name={[field.name, 'menuOptions']}>
+                            {(fields, { add, remove }) => (
+                              <>
+                                {fields.map((field, menuOptionIndex) => (
+                                  <div key={field.key}>
+                                    <Card
+                                      title={
+                                        isFetching
+                                          ? ''
+                                          : restaurant?.menus[menuIndex]?.menuOptions[menuOptionIndex]?.name?.language[
+                                              selectedLanguage
+                                            ] ?? ''
+                                      }
+                                      style={{ marginBottom: '8pt' }}
+                                      actions={[
+                                        <Button
+                                          onClick={() => remove(field.name)}
+                                          style={{ height: 'fit-content', marginBottom: '8pt' }}
+                                          danger
+                                        >
+                                          옵션 삭제
+                                        </Button>,
+                                      ]}
+                                    >
+                                      <Form.Item label={`옵션 ${menuOptionIndex + 1}`} colon={false}></Form.Item>
+                                      <Form.List name={[field.name, 'items']}>
+                                        {(fields, { add, remove }) => (
+                                          <>
+                                            {fields.map((field, itemIndex) => (
+                                              <div key={field.key} style={{ display: 'flex' }}>
+                                                <Form.Item
+                                                  label={`옵션 항목 이름`}
+                                                  name={[field.name, 'name', 'language', 'ko']}
+                                                  style={{ marginRight: '8pt' }}
+                                                >
+                                                  <Input disabled={true} />
+                                                </Form.Item>
+                                                <Form.Item
+                                                  label={`옵션 항목 가격 ${itemIndex + 1}`}
+                                                  name={[field.name, 'price']}
+                                                  style={{ marginRight: '8pt' }}
+                                                >
+                                                  <Input disabled={true} />
+                                                </Form.Item>
+                                              </div>
+                                            ))}
+                                          </>
+                                        )}
+                                      </Form.List>
+                                      <Form.Item
+                                        label="필수 여부"
+                                        name={[field.name, 'isRequired']}
+                                        valuePropName="checked"
+                                      >
+                                        <Switch disabled={true} />
+                                      </Form.Item>
+                                      <Form.Item
+                                        label="품절 여부"
+                                        name={[field.name, 'isSoldOut']}
+                                        valuePropName="checked"
+                                      >
+                                        <Switch />
+                                      </Form.Item>
+                                      <Form.Item label="최대 선택 수량" name={[field.name, 'maxSelect']}>
+                                        <InputNumber min={1} max={maxOptionsSelect} disabled={true} />
+                                      </Form.Item>
+                                    </Card>
+                                  </div>
+                                ))}
+                                <Button
+                                  type={'primary'}
+                                  onClick={() => {
+                                    setIsMenuOptionModalOpen(true)
+                                    setSelectedIndex({
+                                      menu: menuIndex,
+                                      option: restaurant?.menus[menuIndex]?.menuOptions?.length ?? 0,
+                                    })
+                                  }}
+                                  style={{ height: 'fit-content', marginBottom: '8pt' }}
+                                  block
+                                >
+                                  옵션 추가
+                                </Button>
+                              </>
+                            )}
+                          </Form.List>
+                        </>
+                      )}
+                      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                         <Button
                           style={{ height: 'fit-content', marginRight: '8pt' }}
                           loading={confirmLoading}
@@ -484,14 +591,14 @@ const EditRestaurantPage: React.FC = () => {
                             try {
                               setConfirmLoading(true)
 
-                              if (restaurant?.menus[index] && restaurant?.menus[index]._id) {
-                                const menuId = restaurant?.menus[index]._id
+                              if (restaurant?.menus[menuIndex] && restaurant?.menus[menuIndex]._id) {
+                                const menuId = restaurant?.menus[menuIndex]._id
                                 await deleteMenuMutation.mutateAsync(menuId)
                               }
                               remove(field.name)
                               setMenuImageList((prev) => {
                                 const newMenuImageList = [...prev]
-                                newMenuImageList.splice(index, 1)
+                                newMenuImageList.splice(menuIndex, 1)
                                 return newMenuImageList
                               })
 
@@ -508,22 +615,24 @@ const EditRestaurantPage: React.FC = () => {
                         </Button>
                         <Button
                           type="primary"
-                          onClick={() => updateMenu(index)}
+                          onClick={() => updateMenu(menuIndex)}
                           loading={confirmLoading}
                           style={{ height: 'fit-content' }}
                         >
-                          메뉴 수정
+                          {isFetching || restaurant?.menus[menuIndex]?._id ? '메뉴 수정' : '메뉴 등록'}
                         </Button>
-                      </>
-                    )}
-                  </Card>
+                      </div>
+                    </Card>
+                  </div>
                 ))}
                 <ButtonContainer>
                   <Button
+                    type="link"
                     onClick={() => add()}
-                    style={{ border: 'dashed 1px', marginBottom: '8pt', height: 'fit-content' }}
+                    style={{ marginBottom: '8pt', height: 'fit-content' }}
                     block
                   >
+                    <PlusOutlined />
                     메뉴 추가
                   </Button>
                 </ButtonContainer>
@@ -540,6 +649,131 @@ const EditRestaurantPage: React.FC = () => {
             수정하기
           </Button>
         </Form>
+
+        <Modal
+          title="메뉴 옵션 추가"
+          open={isMenuOptionModalOpen}
+          onCancel={() => {
+            setIsMenuOptionModalOpen(false)
+            menuOptionForm.resetFields()
+            setMaxOptionsSelect(1)
+          }}
+          width={1000}
+          okText="추가하기"
+          cancelText="취소"
+          confirmLoading={confirmLoading}
+          onOk={() => {
+            setConfirmLoading(true)
+            menuOptionForm
+              .validateFields()
+              .then((values) => {
+                // 이름 언어별로 저장
+                values.name = {
+                  language: {
+                    ko: values.name,
+                  },
+                }
+                values.items.forEach((item: any) => {
+                  item.name = {
+                    language: {
+                      ko: item.name,
+                    },
+                  }
+                })
+
+                if (restaurant && restaurant.menus[selectedIndex.menu].menuOptions === undefined) {
+                  restaurant.menus[selectedIndex.menu].menuOptions = []
+                }
+
+                if (restaurant) {
+                  restaurant?.menus[selectedIndex.menu].menuOptions.push(values)
+
+                  form.setFieldValue('menus', restaurant.menus)
+                }
+
+                setIsMenuOptionModalOpen(false)
+                menuOptionForm.resetFields()
+              })
+              .catch((error) => {
+                console.log(error)
+              })
+            setConfirmLoading(false)
+          }}
+        >
+          <Form form={menuOptionForm} layout="vertical">
+            <Form.Item label="옵션 이름" name="name" rules={[{ required: true, message: '옵션 이름을 입력해주세요!' }]}>
+              <Input />
+            </Form.Item>
+            <Form.List name="items">
+              {(fields, { add, remove }) => (
+                <>
+                  <div style={{ marginBottom: '8pt' }}>옵션 항목</div>
+                  {fields.map((field, index) => (
+                    <div key={field.key}>
+                      <Form.Item {...formItemLayoutWithOutLabel}>
+                        <Form.Item
+                          name={[field.name, 'name']}
+                          validateTrigger={['onChange', 'onBlur']}
+                          rules={[
+                            {
+                              required: true,
+                              whitespace: true,
+                              message: '항목 이름을 입력해주세요!',
+                            },
+                          ]}
+                          noStyle
+                        >
+                          <Input placeholder="항목 이름" style={{ width: '40%' }} />
+                        </Form.Item>
+                        <Form.Item
+                          name={[field.name, 'price']}
+                          validateTrigger={['onChange', 'onBlur']}
+                          rules={[
+                            {
+                              required: true,
+                              whitespace: true,
+                              message: '항목 가격을 입력해주세요!',
+                            },
+                          ]}
+                          noStyle
+                        >
+                          <Input placeholder="항목 가격" style={{ width: '40%' }} suffix="원" />
+                        </Form.Item>
+                        {fields.length > 1 ? (
+                          <Button
+                            type="default"
+                            style={{ height: 'fit-content' }}
+                            onClick={() => {
+                              remove(field.name)
+                              if (maxOptionsSelect > 1) setMaxOptionsSelect(maxOptionsSelect - 1)
+                            }}
+                          >
+                            삭제
+                          </Button>
+                        ) : null}
+                      </Form.Item>
+                    </div>
+                  ))}
+                  <Button
+                    type="link"
+                    onClick={() => {
+                      add()
+                      setMaxOptionsSelect(menuOptionForm.getFieldValue('items').length)
+                    }}
+                  >
+                    <PlusOutlined /> 옵션 항목 추가하기
+                  </Button>
+                </>
+              )}
+            </Form.List>
+            <Form.Item label="필수 여부" name="isRequired" valuePropName="checked">
+              <Switch />
+            </Form.Item>
+            <Form.Item label="주문할 때 최대 몇개를 선택할까요?" name="maxSelect" initialValue={1}>
+              <InputNumber min={1} max={maxOptionsSelect} />
+            </Form.Item>
+          </Form>
+        </Modal>
       </Container>
       <Footer />
     </div>

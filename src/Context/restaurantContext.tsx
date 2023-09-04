@@ -33,8 +33,28 @@ export interface Menu {
   img: Image
   ingre: string[]
   _id: string
+  menuOptions: MenuOption[]
+}
+interface Language {
+  ko: string
+  en: string
+  [key: string]: string
+}
+interface Name {
+  language: Language
 }
 
+export interface Item {
+  name: Name
+  price: number
+}
+export interface MenuOption {
+  _id: string
+  name: Name
+  items: Item[]
+  isSoldOut: boolean
+  isRequired: boolean
+}
 export const restaurantContextDefaultValue: Restaurant = {
   _id: '',
   name: '',
@@ -63,6 +83,30 @@ export const restaurantContextDefaultValue: Restaurant = {
         type: 'string',
       },
       ingre: ['string'],
+      menuOptions: [
+        {
+          _id: 'string',
+          name: {
+            language: {
+              ko: 'string',
+              en: 'string',
+            },
+          },
+          items: [
+            {
+              name: {
+                language: {
+                  ko: 'string',
+                  en: 'string',
+                },
+              },
+              price: 0,
+            },
+          ],
+          isSoldOut: false,
+          isRequired: false,
+        },
+      ],
     },
   ],
 }
