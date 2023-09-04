@@ -14,38 +14,38 @@ interface Order {
   items: Item[]
 }
 
-interface UserData {
-  name: string
-  orders: Order[]
-}
+// interface UserData {
+//   name: string
+//   orders: Order[]
+// }
 
-const defaultUserData: UserData = {
-  name: '최지영',
-  orders: [
-    {
-      restaurant: '이삭토스트 서울 중랑역점',
-      date: '21년 5월 1일 토요일 오전 10시 50분',
-      items: [{ menu_name: '햄치즈 토스트', price: 3000 }],
-    },
-    {
-      restaurant: '파리바게트 서울 선릉점',
-      date: '22년 4월 3일 토요일 오전 10시 50분',
-      items: [
-        { menu_name: '크로와상', price: 4000 },
-        { menu_name: '빵', price: 7000 },
-      ],
-    },
-    {
-      restaurant: '파리바게트 서울 선릉점',
-      date: '22년 4월 5일 토요일 오전 10시 50분',
-      items: [
-        { menu_name: '크로와상', price: 4000 },
-        { menu_name: '크로와상', price: 4000 },
-        { menu_name: '크로와상', price: 4000 },
-      ],
-    },
-  ],
-}
+// const defaultUserData: UserData = {
+//   name: '최지영',
+//   orders: [
+//     {
+//       restaurant: '이삭토스트 서울 중랑역점',
+//       date: '21년 5월 1일 토요일 오전 10시 50분',
+//       items: [{ menu_name: '햄치즈 토스트', price: 3000 }],
+//     },
+//     {
+//       restaurant: '파리바게트 서울 선릉점',
+//       date: '22년 4월 3일 토요일 오전 10시 50분',
+//       items: [
+//         { menu_name: '크로와상', price: 4000 },
+//         { menu_name: '빵', price: 7000 },
+//       ],
+//     },
+//     {
+//       restaurant: '파리바게트 서울 선릉점',
+//       date: '22년 4월 5일 토요일 오전 10시 50분',
+//       items: [
+//         { menu_name: '크로와상', price: 4000 },
+//         { menu_name: '크로와상', price: 4000 },
+//         { menu_name: '크로와상', price: 4000 },
+//       ],
+//     },
+//   ],
+// }
 
 const OrderList = () => {
   // const orderListState = useOrderListState()
