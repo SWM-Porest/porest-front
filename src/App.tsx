@@ -4,7 +4,8 @@ import { RestaurantProvider } from 'Context/restaurantContext'
 import EditRestaurantPage from 'Pages/EditRestaurantPage'
 import ErrorPage from 'Pages/ErrorPage'
 import MenuBoardPage from 'Pages/MenuBoardPage'
-import MyPage from 'Pages/MyPage'
+import ProfilePage from 'Pages/ProfilePage'
+import RestaurantListPage from 'Pages/RestaurantListPage'
 import RestaurantPage from 'Pages/RestaurantPage'
 import { GlobalStyles } from 'Styles/global'
 import { theme } from 'Styles/theme'
@@ -28,10 +29,11 @@ const App: React.FC = () => {
             <RestaurantProvider>
               <Routes>
                 <Route path="/login" element={<LoginPage />} />
+                <Route path="/restaurants/list" element={<RestaurantListPage />} />
                 <Route path="/restaurants/:id" element={<MenuBoardPage />} />
                 <Route path="/restaurants/:id/info" element={<RestaurantPage />} />
                 <Route path="/restaurants/:id/edit" element={<EditRestaurantPage />} />
-                <Route path="/mypage" element={<MyPage />} />
+                <Route path="/mypage" element={<ProfilePage />} />
                 <Route path="*" element={<ErrorPage errorCode={errorCode} />} />
               </Routes>
             </RestaurantProvider>
