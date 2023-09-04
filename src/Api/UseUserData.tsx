@@ -16,10 +16,10 @@ const fetchUserData = async (userId: string, page: number, pageSize: number, sor
 }
 
 // 사용자 데이터를 가져오는 React Query 훅을 사용합니다.
-const UseUserData = (userId: string, page: number, pageSize: number, sort: string, accessToken: string) => {
+const useUserData = (userId: string, page: number, pageSize: number, sort: string, accessToken: string) => {
   return useQuery(['userData', userId, page, pageSize, sort], () =>
     fetchUserData(userId, page, pageSize, sort, accessToken),
   )
 }
 
-export default UseUserData
+export default useUserData
