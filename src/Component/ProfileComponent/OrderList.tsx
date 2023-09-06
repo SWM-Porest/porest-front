@@ -1,5 +1,5 @@
+import { useAccessToken } from 'Api/tokenCookie'
 import useUserData from 'Api/useUserData'
-import { useAuth } from 'Context/AuthContext'
 import { Table } from 'antd'
 import styled from 'styled-components'
 interface Item {
@@ -14,12 +14,12 @@ interface Order {
 }
 
 const OrderList = () => {
-  const userId = 'your_user_id' // userId 변수 정의
   const page = 1 // page 변수 정의
   const pageSize = 10 // pageSize 변수 정의
   const sort = 'asc' // sort 변수 정의
-  const accessToken = useAuth().accessToken // accessToken 변수 정의
-  const { data: userData, isLoading, isError } = useUserData(userId, page, pageSize, sort, accessToken)
+
+  const [accessToken, setAccessToken] = useAccessToken()
+  const { data: userData, isLoading, isError } = useUserData(page, pageSize, sort, accessToken)
 
   if (isLoading) {
     return <div>Loading...</div>
