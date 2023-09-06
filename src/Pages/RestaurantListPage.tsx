@@ -128,12 +128,12 @@ const LoadingContainer = styled.div`
 `
 
 const LoadingIcon = styled(LoadingOutlined)`
-  font-size: 48px;
-  margin-right: 8px;
+  font-size: 2rem;
+  margin-right: 8pt;
 `
 
 const NoDataMessage = styled.div`
   text-align: center;
-  margin-top: 16px;
+  margin-top: 16pt;
   font-size: 1.2rem;
 `
