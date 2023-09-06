@@ -1,3 +1,5 @@
+import { atom, useRecoilState } from 'recoil'
+
 export const getCookie = (name: string) => {
   const cookies = document.cookie.split(';')
   for (const cookie of cookies) {
@@ -7,4 +9,13 @@ export const getCookie = (name: string) => {
     }
   }
   return undefined
+}
+
+export const accessTokenState = atom({
+  key: 'accessTokenState',
+  default: getCookie('access_token') || '',
+})
+
+export const useAccessToken = () => {
+  return useRecoilState(accessTokenState)
 }
