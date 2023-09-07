@@ -71,7 +71,7 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
               title={menu ? menu.name : ''}
               price={menu ? menu.price : 0}
               description={menu ? menu.description : ''}
-              img={menu ? menu.img : ''}
+              img={menu && menu.img ? process.env.REACT_APP_STATIC_URL + menu.img.path : ''}
             ></DescriptionContainer>
             <ContainerBox>
               <Categories ingre={menu ? menu.ingre : []}></Categories>
