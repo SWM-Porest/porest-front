@@ -38,10 +38,9 @@ const BurgerMenu = () => {
                 </>
               }
             />
-            <LinkPage to={`/restaurants/${restaurantId}/info`}>레스토랑</LinkPage>
-            <LinkPage to={`/restaurants/${restaurantId}`}>메뉴</LinkPage>
+            <LinkPage to={`/restaurants`}>레스토랑</LinkPage>
             <LinkPage to="/mypage">회원 정보</LinkPage>
-            <LinkModal onClick={openModal}>장바구니</LinkModal>{' '}
+            {/* <LinkModal onClick={openModal}>장바구니</LinkModal>{' '} */}
             {/* 장바구니 모달 회원정보나 레스토랑 안내 페이지에서 열 수 없음.. */}
           </MenuView>
         </MenuList>

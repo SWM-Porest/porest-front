@@ -31,13 +31,14 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
   if (loading) return <div>로딩중 ... </div>
   if (error) return <div>에러가 발생했습니다.</div>
   const [count, setCount] = useState(1)
-  const handleQuantity = (type: string) => {
-    if (type === 'plus') {
-      setCount(count + 1)
-    } else {
-      if (count === 1) return
-      setCount(count - 1)
-    }
+
+  const handleIncrement = () => {
+    setCount(count + 1)
+  }
+
+  const handleDecrement = () => {
+    if (count === 1) return
+    setCount(count - 1)
   }
   useEffect(() => {
     setCount(1)
@@ -77,7 +78,7 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
               <Categories ingre={menu ? menu.ingre : []}></Categories>
             </ContainerBox>
             <StyledAmountContainer>
-              <AmountCheck count={count} handleQuantity={handleQuantity} />
+              <AmountCheck count={count} handleIncrement={handleIncrement} handleDecrement={handleDecrement} />
             </StyledAmountContainer>
             <AddCart menu={menu ? menu : null} cnt={count} openModalHandler={openModalHandler} />
           </ContentContainer>

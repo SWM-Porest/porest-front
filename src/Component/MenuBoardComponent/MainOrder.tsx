@@ -11,6 +11,7 @@ interface OwnProps {
 const MainOrder: React.FC<OwnProps> = ({ info }) => {
   const [menuId, setMenuId] = useState('')
   const [isOpen, setIsOpen] = useState(false)
+  const [activeMenuIndex, setActiveMenuIndex] = useState(0)
 
   const openModalHandler = (id: string) => {
     setMenuId(id)
@@ -27,8 +28,6 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
 
   // Ref 배열을 동적 생성
   const contentRefs = uniqueMenuTypes.map(() => useRef<HTMLDivElement>(null))
-
-  const [activeMenuIndex, setActiveMenuIndex] = useState(0)
 
   useEffect(() => {
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
