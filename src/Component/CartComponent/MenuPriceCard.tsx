@@ -2,6 +2,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { removeCookie, setCookie } from 'Api/cartCookie'
 import AmountCheck from 'Component/AmountCheck'
 import { CloseButton, CloseButtonContainer } from 'Component/Modal/CartModal'
+import getImageSrc from 'Component/getImageSrc'
 import { Menu, useRestaurantState } from 'Context/restaurantContext'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
@@ -17,8 +18,6 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }
   const [count, setCount] = useState(cnt)
   const [totalprice, setTotalPrice] = useState((info.price * count).toLocaleString())
   const price = info.price.toLocaleString()
-
-  const defaultImg = '/img/회색.png'
 
   const handleIncrement = () => {
     const newCount = count + 1
@@ -49,11 +48,7 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }
 
   return (
     <StyledContainer>
-      {info.img && info.img.path !== '' ? (
-        <StyledImage src={process.env.REACT_APP_STATIC_URL + info.img.path} alt="메뉴 이미지" />
-      ) : (
-        <StyledImage src={defaultImg} alt="메뉴 이미지" />
-      )}
+      <StyledImage src={getImageSrc(info.img)} alt="메뉴 이미지" />
       <OuterContainer>
         <TopContainer>
           <StyledName>{info.name}</StyledName>
