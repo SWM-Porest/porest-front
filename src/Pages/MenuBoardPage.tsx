@@ -21,6 +21,7 @@ import CartModal from '../Component/Modal/CartModal'
 import ErrorPage from './ErrorPage'
 
 const MenuBoardPage: React.FC = () => {
+  const [totalCartItems, setTotalCartItems] = useState(0)
   const { id } = useParams()
   if (id === undefined) throw new Error('id가 없습니다.')
 
@@ -30,8 +31,6 @@ const MenuBoardPage: React.FC = () => {
   useEffect(() => {
     getRestaurant(dispatch, id)
   }, [dispatch, id])
-
-  const [totalCartItems, setTotalCartItems] = useState(0)
 
   useEffect(() => {
     const updateTotalCartItems = () => {
