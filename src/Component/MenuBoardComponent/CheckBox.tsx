@@ -46,7 +46,7 @@ const StyledH3 = styled.h3`
   margin: 0px;
   font-family: 'Noto Serif KR', serif;
   text-align: center;
-  background-color: #ecebeb;
+  background-color: ${({ theme }) => theme.COLOR.common.gray[700]};
   border-radius: 20px 20px 0 0;
 `
 
@@ -58,12 +58,12 @@ const StyledMiniContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #f1f1f1;
+  background-color: ${({ theme }) => theme.COLOR.common.gray[700]};
   border-radius: 0 0 20px 20px;
 `
 
 const BoxContainer = styled.div`
-  background-color: white;
+  background-color: ${({ theme }) => theme.COLOR.common.white};
   font-size: 35px;
   border-radius: 20px;
   margin: 10px;

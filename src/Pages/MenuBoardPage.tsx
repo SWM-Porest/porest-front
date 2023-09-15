@@ -87,7 +87,7 @@ const MenuBoardPage: React.FC = () => {
 export default MenuBoardPage
 
 const StyledContainer = styled.div`
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.COLOR.common.white};
 `
 
 const StyledBanner = styled(MainBanner)`

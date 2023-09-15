@@ -67,6 +67,6 @@ const DescriptionSpan = styled.p`
   font-size: 2rem;
 `
 const BackDiv = styled.div`
-  background-color: #c4c4c4;
+  background-color: ${({ theme }) => theme.COLOR.common.gray[700]};
   height: 128pt;
 `
