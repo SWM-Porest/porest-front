@@ -2,6 +2,7 @@ import { useAccessToken } from 'Api/tokenCookie'
 import useUserData from 'Api/useUserData'
 import useUserOrderData from 'Api/useUserOrderData'
 import OrderModal from 'Component/Modal/OrderModal'
+import formatDate from 'Component/formatDate'
 import getImageSrc from 'Component/getImageSrc'
 import { Image } from 'Context/restaurantContext'
 import { Table } from 'antd'
@@ -15,12 +16,14 @@ interface Menu {
 }
 
 interface Order {
-  restaurant_id: number
+  restaurant_id: string
   restaurant_name: string
+  restaurant_address: string
   updated_at: string
   _id: string
-  menus: Menu[]
+  menus: { [menuId: string]: Menu }
   status: number
+  status_updated_at: { [status: string]: string }
 }
 
 const OrderList = () => {
@@ -38,11 +41,6 @@ const OrderList = () => {
   const openModalHandler = (id: string) => {
     setOrderId(id)
     setIsOpen(!isOpen)
-  }
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
   }
 
   if (isLoading) {
