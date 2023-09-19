@@ -2,7 +2,7 @@ const COLOR = {
   main: '#008937', //Porest 색
   sub: '#739A77',
   focus: '#F0FDF0',
-  hover: '#F6EDD9',
+  hover: '#F3F3EA',
   number_price: '#ff5757',
   common: {
     white: '#FFF', //제목, 이름, 기본
