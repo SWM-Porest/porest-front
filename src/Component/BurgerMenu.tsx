@@ -67,7 +67,7 @@ const MenuList = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: ${({ theme }) => theme.COLOR.common.gray[600]};
   z-index: 2;
 `
 
@@ -77,14 +77,14 @@ const MenuView = styled.div<{ $load: boolean }>`
   left: ${({ $load }) => ($load ? '0' : '-100%')};
   width: 60%;
   height: 100%;
-  background-color: #ffffff;
+  background-color: ${({ theme }) => theme.COLOR.common.white};
   z-index: 3;
   padding: 24pt;
 `
 
 const LinkPage = styled(Link)`
   text-decoration: none;
-  color: #333;
+  color: ${({ theme }) => theme.COLOR.common.black};
   font-size: 2.5rem;
   font-weight: bold;
   margin: 0 40pt 0 16pt;
@@ -93,22 +93,6 @@ const LinkPage = styled(Link)`
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #f0f0f0;
-  }
-`
-
-const LinkModal = styled.div`
-  text-decoration: none;
-  color: #333;
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin: 0 40pt 0 16pt;
-  padding: 8pt;
-  cursor: pointer;
-  display: block;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #f0f0f0;
+    background-color: ${({ theme }) => theme.COLOR.common.gray[700]};
   }
 `

@@ -116,12 +116,12 @@ export default MainOrder
 const StyledUl = styled.ul`
   position: sticky;
   top: 0;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.COLOR.common.white};
   list-style: none;
   padding: 24pt 48pt;
   display: block;
   border-bottom: solid;
-  border-color: ${({ theme }) => theme.COLOR.common.gray[600]};
+  border-color: ${({ theme }) => theme.COLOR.common.gray[700]};
   cursor: pointer;
 `
 
@@ -130,7 +130,7 @@ const StyledLi = styled.li<{ $active: boolean }>`
   display: inline-block;
   padding: 16pt 40pt 0 0;
   font-weight: bold;
-  color: ${(props) => (props.$active ? '#343434' : '#A9A9A9')};
+  color: ${(props) => (props.$active ? props.theme.COLOR.common.black : props.theme.COLOR.common.gray[500])};
 `
 
 const MenuCardsContainer = styled.div`
@@ -147,7 +147,7 @@ const DisclaimerContainer = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
-  background-color: #f2f2f2;
+  background-color: ${({ theme }) => theme.COLOR.common.gray[700]};
   font-family: 'Noto Sans KR', sans-serif;
   cursor: default;
   padding: 0 8pt;
@@ -155,6 +155,6 @@ const DisclaimerContainer = styled.div`
 
 const Disclaimer = styled.div`
   font-size: 1.5rem;
-  color: #777;
+  color: ${({ theme }) => theme.COLOR.common.gray[400]};
   margin-top: 8pt;
 `

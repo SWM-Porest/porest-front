@@ -104,7 +104,7 @@ const ModalBackdrop = styled.div<{ $load: boolean }>`
   display: flex;
   justify-content: center;
   align-items: end;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: ${({ theme }) => theme.COLOR.common.gray[600]};
   ${(props) => (props.$load ? 'top: 0; left: 0; right: 0;' : '')};
 `
 
@@ -115,7 +115,7 @@ const ModalView = styled.div<{ $load: boolean }>`
   border-radius: 40px 40px 0px 0px;
   width: 100%;
   height: 80%;
-  background-color: #ffffff;
+  background-color: ${({ theme }) => theme.COLOR.common.white};
   transition: all 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
 `
 const ContentContainer = styled.div`

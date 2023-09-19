@@ -25,6 +25,8 @@ const AmountCheck: React.FC<AmountContainerProps> = ({ count, handleIncrement, h
   )
 }
 
+export default AmountCheck
+
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
@@ -51,7 +53,7 @@ const PlusMinusButton = styled.button`
   color: ${({ theme }) => theme.COLOR.common.black};
   &:active {
     background-color: ${({ theme }) => theme.COLOR.main};
-    color: #fff;
+    color: ${({ theme }) => theme.COLOR.common.white};
     box-shadow: 0px 0px 16px 0 ${({ theme }) => theme.COLOR.main};
     color: ${({ theme }) => theme.COLOR.common.white};
     outline: none;
@@ -77,5 +79,3 @@ const CountContainer = styled.div`
   align-items: center;
   cursor: default;
 `
-
-export default AmountCheck
