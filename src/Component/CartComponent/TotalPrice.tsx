@@ -6,7 +6,7 @@ interface OwnProps {
 }
 
 const TotalPrice: React.FC<OwnProps> = (price) => {
-  const totalprice = price.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  const totalprice = price.price.toLocaleString()
 
   return (
     <div>

@@ -7,7 +7,7 @@ interface OwnProps {
 }
 
 const MenuCard: React.FC<OwnProps> = ({ info }) => {
-  const price = info.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  const price = info.price.toLocaleString()
   return (
     <div>
       {info.img ? (
@@ -37,7 +37,7 @@ const MenuCardContainer = styled.div`
   color: inherit;
   text-decoration: none;
   border-top: ridge;
-  border-color: ${({ theme }) => theme.COLOR.common.gray[600]};
+  border-color: ${({ theme }) => theme.COLOR.common.gray[700]};
   cursor: pointer;
 `
 

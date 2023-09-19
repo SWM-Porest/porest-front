@@ -16,7 +16,7 @@ const DescriptionContainer: React.FC<OwnProps> = ({ title, price, description, i
             <span>{title}</span>
           </TitleInner>
           <TitleInner>
-            <PriceSpan>{price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</PriceSpan>
+            <PriceSpan>{price.toLocaleString()}원</PriceSpan>
           </TitleInner>
           <TitleInner>
             <DescriptionSpan>{description}</DescriptionSpan>
@@ -67,6 +67,6 @@ const DescriptionSpan = styled.p`
   font-size: 2rem;
 `
 const BackDiv = styled.div`
-  background-color: #c4c4c4;
+  background-color: ${({ theme }) => theme.COLOR.common.gray[700]};
   height: 128pt;
 `

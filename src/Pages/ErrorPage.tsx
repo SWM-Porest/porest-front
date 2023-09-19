@@ -2,7 +2,7 @@ import { Result } from 'antd'
 import React from 'react'
 
 interface ErrorProps {
-  errorCode: number
+  errorCode?: number
 }
 
 interface ErrorInfo {
@@ -20,7 +20,7 @@ const errorMessages: { [key: number]: ErrorInfo } = {
 }
 
 const ErrorPage: React.FC<ErrorProps> = ({ errorCode }) => {
-  const errorInfo = errorMessages[errorCode] || {
+  const errorInfo = errorMessages[errorCode || 404] || {
     title: '클라이언트 에러',
     subTitle: '클라이언트에서 에러가 발생했습니다.',
     status: 'error', // 기본 값 error

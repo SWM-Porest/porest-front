@@ -68,7 +68,7 @@ const ModalOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${({ theme }) => theme.COLOR.common.gray[600]};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -76,7 +76,7 @@ const ModalOverlay = styled.div`
 `
 
 const ModalContent = styled.div`
-  background-color: #ffffff;
+  background-color: ${({ theme }) => theme.COLOR.common.white};
   position: relative;
   width: 100%;
   height: 100%;
@@ -93,7 +93,7 @@ export const CloseButtonContainer = styled.div`
   align-items: center;
   transition: background 0.3s ease-in-out; /* hover 시 배경색 변경 애니메이션 */
   &:hover {
-    background: #1d9255; /* hover 시 색상 변경 */
+    background: ${({ theme }) => theme.COLOR.main}; /* hover 시 색상 변경 */
   }
 `
 export const CloseButton = styled(FontAwesomeIcon)`
@@ -101,7 +101,7 @@ export const CloseButton = styled(FontAwesomeIcon)`
   cursor: pointer;
   width: 54px;
   height: 54px;
-  color: #c5c9cc; /* 아이콘 색상 */
+  color: ${({ theme }) => theme.COLOR.common.gray[700]}; /* 아이콘 색상 */
   display: flex;
   justify-content: center;
   align-items: center;
