@@ -8,11 +8,23 @@ import { Image } from 'Context/restaurantContext'
 import { Table } from 'antd'
 import { useState } from 'react'
 import styled from 'styled-components'
-interface Menu {
+
+interface OptionItem {
+  name: string
+  price: number
+}
+
+interface MenuOption {
+  name: string
+  items: OptionItem[]
+}
+
+interface OrderMenu {
   menu_name: string
   price: number
   quantity: number
   img: Image
+  options: MenuOption[]
 }
 
 interface Order {
@@ -21,9 +33,9 @@ interface Order {
   restaurant_address: string
   updated_at: string
   _id: string
-  menus: { [menuId: string]: Menu }
+  menus: { [menuId: string]: OrderMenu }
   status: number
-  status_updated_at: { [status: string]: string }
+  status_updated_at: { [status: number]: string }
 }
 
 const OrderList = () => {
@@ -123,7 +135,7 @@ const OrderList = () => {
                   <MenuImageContainer>
                     {Object.values(order.menus)
                       .slice(0, 1)
-                      .map((menu: Menu, menuIndex: number) => (
+                      .map((menu: OrderMenu, menuIndex: number) => (
                         <MenuImage key={menuIndex} src={getImageSrc(menu.img)} alt="메뉴 이미지" />
                       ))}
                   </MenuImageContainer>
@@ -135,7 +147,7 @@ const OrderList = () => {
                   >
                     {Object.values(order.menus)
                       .slice(0, 1)
-                      .map((menu: Menu, menuIndex: number) => (
+                      .map((menu: OrderMenu, menuIndex: number) => (
                         <MenuNameContainer key={menuIndex}>
                           <div>
                             {Object.values(order.menus).length > 1 ? (
@@ -156,7 +168,7 @@ const OrderList = () => {
                         <RestaurantNameContainer>{order.restaurant_name}</RestaurantNameContainer>
                         <ColoredText>
                           {Object.values(order.menus)
-                            .reduce((menuTotal: number, menu: Menu) => menuTotal + menu.price * menu.quantity, 0)
+                            .reduce((menuTotal: number, menu: OrderMenu) => menuTotal + menu.price * menu.quantity, 0)
                             .toLocaleString()}
                           원
                         </ColoredText>
