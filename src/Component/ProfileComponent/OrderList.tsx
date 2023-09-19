@@ -1,5 +1,5 @@
 import { useAccessToken } from 'Api/tokenCookie'
-import useUserData from 'Api/useUserData'
+import useUserData from 'Api/UseUserData'
 import useUserOrderData from 'Api/useUserOrderData'
 import OrderModal from 'Component/Modal/OrderModal'
 import getImageSrc from 'Component/getImageSrc'
@@ -7,16 +7,17 @@ import { Image } from 'Context/restaurantContext'
 import { Table } from 'antd'
 import { useState } from 'react'
 import styled from 'styled-components'
-interface Menu {
+export interface Menu {
   menu_name: string
   price: number
   quantity: number
   img: Image
 }
 
-interface Order {
+export interface Order {
   restaurant_id: number
   restaurant_name: string
+  created_at: string
   updated_at: string
   _id: string
   menus: Menu[]

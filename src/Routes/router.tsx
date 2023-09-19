@@ -4,6 +4,7 @@ import LoginPage from 'Pages/LoginPage'
 import MenuBoardPage from 'Pages/MenuBoardPage'
 import ProfilePage from 'Pages/ProfilePage'
 import RestaurantListPage from 'Pages/RestaurantListPage'
+import RestaurantOrderPage from 'Pages/RestaurantOrderPage'
 import RestaurantPage from 'Pages/RestaurantPage'
 import { createBrowserRouter } from 'react-router-dom'
 import PrivateRoute from 'Routes/private'
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: '/restaurants/:id',
         element: <MenuBoardPage />,
+      },
+      {
+        path: '/restaurants/:id/orders',
+        element: <RestaurantOrderPage />,
       },
       {
         path: '/restaurants/:id/info',

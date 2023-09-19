@@ -34,6 +34,8 @@ export interface Menu {
   ingre: string[]
   _id: string
   menuOptions: MenuOption[]
+  created_date: Date
+  updated_date: Date
 }
 interface Language {
   ko: string
@@ -107,6 +109,8 @@ export const restaurantContextDefaultValue: Restaurant = {
           isRequired: false,
         },
       ],
+      created_date: new Date(),
+      updated_date: new Date(),
     },
   ],
 }

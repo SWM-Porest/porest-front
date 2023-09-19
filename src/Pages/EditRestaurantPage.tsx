@@ -6,11 +6,11 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useMutation } from 'react-query'
 import axios from 'axios'
-import { StyledSpin } from './MenuBoardPage'
 import ErrorPage from './ErrorPage'
 import { useQueryClient, useQuery, UseQueryResult } from 'react-query'
 import { styled } from 'styled-components'
 import Footer from 'Component/Footer'
+import Loading from 'Component/Loading'
 
 const EditRestaurantPage: React.FC = () => {
   const { id } = useParams()
@@ -290,11 +290,7 @@ const EditRestaurantPage: React.FC = () => {
   }, [restaurant])
 
   if (isLoading) {
-    return (
-      <StyledSpin tip="Loading" size="large">
-        <div className="content" />
-      </StyledSpin>
-    )
+    return <Loading />
   }
   if (isError) return <ErrorPage errorCode={500} />
 

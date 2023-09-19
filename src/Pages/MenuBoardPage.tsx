@@ -19,6 +19,7 @@ import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import CartModal from '../Component/Modal/CartModal'
 import ErrorPage from './ErrorPage'
+import Loading from 'Component/Loading'
 
 const MenuBoardPage: React.FC = () => {
   const [totalCartItems, setTotalCartItems] = useState(0)
@@ -44,11 +45,7 @@ const MenuBoardPage: React.FC = () => {
   const { openModal, isModalOpen } = useCartModal()
 
   if (loading) {
-    return (
-      <StyledSpin tip="Loading" size="large">
-        <div className="content" />
-      </StyledSpin>
-    )
+    return <Loading />
   }
   if (error) return <ErrorPage errorCode={500} />
 
@@ -107,15 +104,6 @@ const StyledButton = styled.button`
   border: none;
   background: none;
   cursor: pointer;
-`
-
-export const StyledSpin = styled(Spin)`
-  &&& {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(4);
-  }
 `
 
 const StyledBadge = styled(Badge)`
