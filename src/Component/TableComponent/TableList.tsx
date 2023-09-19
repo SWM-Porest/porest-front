@@ -6,18 +6,7 @@ const TableList = () => {
     {
       name: '1번 테이블',
 
-      orders: [
-        {
-          menuName: '아메리카노',
-          menuPrice: 3000,
-          menuCount: 1,
-        },
-        {
-          menuName: '카페라떼',
-          menuPrice: 4000,
-          menuCount: 1,
-        },
-      ],
+      orders: [],
       isOccupied: true,
       isDisabled: false,
     },
@@ -26,14 +15,39 @@ const TableList = () => {
 
       orders: [
         {
-          menuName: '아메리카노',
-          menuPrice: 3000,
-          menuCount: 1,
-        },
-        {
-          menuName: '카페라떼',
-          menuPrice: 4000,
-          menuCount: 1,
+          restaurant_id: '1',
+          restaurant_name: 'test',
+          restaurant_address: 'test',
+          updated_at: new Date().toString(),
+          menus: {
+            1: {
+              menu_name: '아메리카노',
+              price: 3000,
+              quantity: 1,
+              img: {
+                filename: 'string',
+                path: 'string',
+                type: 'string',
+              },
+              options: [],
+            },
+            2: {
+              menu_name: '카페라떼',
+              price: 5000,
+              quantity: 1,
+              img: {
+                filename: 'string',
+                path: 'string',
+                type: 'string',
+              },
+              options: [],
+            },
+          },
+          status: 1,
+          status_updated_at: {
+            1: new Date().toString(),
+          },
+          _id: '1',
         },
       ],
       isOccupied: true,
@@ -44,68 +58,82 @@ const TableList = () => {
 
       orders: [
         {
-          menuName: '아메리카노',
-          menuPrice: 3000,
-          menuCount: 1,
-        },
-        {
-          menuName: '카페라떼',
-          menuPrice: 4000,
-          menuCount: 1,
-        },
-      ],
-      isOccupied: true,
-      isDisabled: false,
-    },
-    {
-      name: '4번 테이블',
-
-      orders: [
-        {
-          menuName: '아메리카노',
-          menuPrice: 3000,
-          menuCount: 1,
-        },
-        {
-          menuName: '카페라떼',
-          menuPrice: 4000,
-          menuCount: 1,
-        },
-      ],
-      isOccupied: true,
-      isDisabled: false,
-    },
-    {
-      name: '5번 테이블',
-
-      orders: [
-        {
-          menuName: '아메리카노',
-          menuPrice: 3000,
-          menuCount: 1,
-        },
-        {
-          menuName: '카페라떼',
-          menuPrice: 4000,
-          menuCount: 1,
+          restaurant_id: '1',
+          restaurant_name: 'test',
+          restaurant_address: 'test',
+          updated_at: new Date().toString(),
+          menus: {
+            1: {
+              menu_name: '아메리카노',
+              price: 3000,
+              quantity: 1,
+              img: {
+                filename: 'string',
+                path: 'string',
+                type: 'string',
+              },
+              options: [],
+            },
+            2: {
+              menu_name: '카페라떼',
+              price: 5000,
+              quantity: 1,
+              img: {
+                filename: 'string',
+                path: 'string',
+                type: 'string',
+              },
+              options: [],
+            },
+          },
+          status: 2,
+          status_updated_at: {
+            1: new Date().toString(),
+          },
+          _id: '1',
         },
       ],
       isOccupied: true,
       isDisabled: false,
     },
     {
-      name: '6번 테이블',
+      name: '1번 테이블',
 
       orders: [
         {
-          menuName: '아메리카노',
-          menuPrice: 3000,
-          menuCount: 2,
-        },
-        {
-          menuName: '카페라떼',
-          menuPrice: 4000,
-          menuCount: 1,
+          restaurant_id: '1',
+          restaurant_name: 'test',
+          restaurant_address: 'test',
+          updated_at: new Date().toString(),
+          menus: {
+            1: {
+              menu_name: '아메리카노',
+              price: 3000,
+              quantity: 1,
+              img: {
+                filename: 'string',
+                path: 'string',
+                type: 'string',
+              },
+              options: [],
+            },
+            2: {
+              menu_name: '카페라떼',
+              price: 5000,
+              quantity: 1,
+              img: {
+                filename: 'string',
+                path: 'string',
+                type: 'string',
+              },
+              options: [],
+            },
+          },
+          status: 3,
+          status_updated_at: {
+            1: new Date().toString(),
+          },
+          _id: '1',
         },
       ],
       isOccupied: true,

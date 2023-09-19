@@ -1,16 +1,25 @@
 import Footer from 'Component/Footer'
 import Header from 'Component/Header'
 import TableList from 'Component/TableComponent/TableList'
-import { Layout } from 'antd'
+
+import { styled } from 'styled-components'
 
 const RestaurantTablePage = () => {
   return (
-    <Layout>
+    <div>
       <Header HeaderName="테이블 관리" />
       <TableList />
-      <Footer />
-    </Layout>
+      <FooterContainer>
+        <Footer />
+      </FooterContainer>
+    </div>
   )
 }
 
 export default RestaurantTablePage
+
+const FooterContainer = styled.div`
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+`
