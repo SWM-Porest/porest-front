@@ -3,16 +3,40 @@ import Header from 'Component/Header'
 import { CloseButton, CloseButtonContainer } from 'Component/Modal/CartModal'
 import formatDate from 'Component/formatDate'
 import { Image } from 'Context/restaurantContext'
-import { Steps } from 'antd'
+import type { StepsProps } from 'antd'
+import { Popover, Steps } from 'antd'
 import React from 'react'
 import styled from 'styled-components'
-const { Step } = Steps
 
-interface Menu {
+const { Step } = Steps
+const customDot: StepsProps['progressDot'] = (dot, { status, index }) => (
+  <Popover
+    content={
+      <span>
+        step {index} status: {status}
+      </span>
+    }
+  >
+    {dot}
+  </Popover>
+)
+
+interface OptionItem {
+  name: string
+  price: number
+}
+
+interface MenuOption {
+  name: string
+  items: OptionItem[]
+}
+
+interface OrderMenu {
   menu_name: string
   price: number
   quantity: number
   img: Image
+  options: MenuOption[]
 }
 
 interface Order {
@@ -21,9 +45,9 @@ interface Order {
   restaurant_address: string
   updated_at: string
   _id: string
-  menus: { [menuId: string]: Menu }
+  menus: { [menuId: string]: OrderMenu }
   status: number
-  status_updated_at: { [status: string]: string }
+  status_updated_at: { [status: number]: string }
 }
 
 interface OwnProps {
@@ -58,6 +82,25 @@ const OrderModal: React.FC<OwnProps> = ({ order, isOpen, openModalHandler }) => 
   const shouldShowStep = (stepStatus: number) => {
     return order.status >= stepStatus
   }
+  const calculateTotalPrice = (menu: OrderMenu) => {
+    let totalPrice = menu.price * menu.quantity
+
+    // Calculate the total price of menu options
+    menu.options.forEach((option) => {
+      if (Array.isArray(option.items)) {
+        option.items.forEach((item) => {
+          totalPrice += item.price
+        })
+      }
+    })
+
+    return totalPrice
+  }
+
+  const orderTotalPrice = Object.values(order.menus).reduce(
+    (orderTotal: number, menu: OrderMenu) => orderTotal + calculateTotalPrice(menu),
+    0,
+  )
 
   return (
     <>
@@ -86,7 +129,7 @@ const OrderModal: React.FC<OwnProps> = ({ order, isOpen, openModalHandler }) => 
           ></Header>
 
           <ContentContainer>
-            <CustomSteps direction="vertical" current={order.status - 1}>
+            <CustomSteps direction="vertical" current={order.status - 1} progressDot={customDot}>
               {shouldShowStep(1) && (
                 <Step title={getStatusText(1)} description={formatDate(`${order.status_updated_at[1]}`)} />
               )}
@@ -113,20 +156,37 @@ const OrderModal: React.FC<OwnProps> = ({ order, isOpen, openModalHandler }) => 
                 </OrderInfoValue>
               </div>
               {Object.values(order.menus).map((menu, index) => (
-                <MenuItem key={index}>
+                <div key={index}>
                   <MenuName>{menu.menu_name}</MenuName>
-                  <MenuPrice>{menu.price.toLocaleString()}원</MenuPrice>
-                  <MenuQuantity>x {menu.quantity}</MenuQuantity>
-                </MenuItem>
+                  <MenuItem>
+                    <MenuPrice>{menu.price.toLocaleString()}원</MenuPrice>
+                    <MenuPrice>{menu.quantity} 개</MenuPrice>
+                    <span />
+                    <MenuPrice>{(menu.price * menu.quantity).toLocaleString()}원</MenuPrice>
+                  </MenuItem>
+                  {menu.options.map((option) => (
+                    <div key={option.name}>
+                      {Array.isArray(option.items) && option.items.length > 0 ? (
+                        <OptionContainer>
+                          {option.items.map((item) => (
+                            <MenuItem key={item.name}>
+                              <OptionName>{option.name}</OptionName>
+                              <OptionName>{item.name} </OptionName>
+                              <span />
+                              <OptionPrice>{item.price.toLocaleString()}원</OptionPrice>
+                            </MenuItem>
+                          ))}
+                        </OptionContainer>
+                      ) : (
+                        <p>옵션이 없습니다.</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
               ))}
               <TotalPrice>
                 <div>총 금액: </div>
-                <ColoredText>
-                  {Object.values(order.menus)
-                    .reduce((menuTotal: number, menu: Menu) => menuTotal + menu.price * menu.quantity, 0)
-                    .toLocaleString()}
-                  원
-                </ColoredText>
+                <ColoredText>{orderTotalPrice.toLocaleString()}원</ColoredText>
               </TotalPrice>
             </OrderInfoContainer>
           </ContentContainer>
@@ -169,86 +229,115 @@ const ModalView = styled.div<{ $load: boolean }>`
 `
 
 const ContentContainer = styled.div`
+  cursor: default;
   overflow-y: auto;
   max-height: calc(100% - 72px - 72pt);
-  padding: 0 48pt;
 `
 
-const OrderInfoContainer = styled.div`
-  margin-top: 16pt;
+const CustomSteps = styled(Steps)`
+  background-color: ${({ theme }) => theme.COLOR.hover};
+  padding: 32pt 0 0 32pt;
+
+  .ant-steps-item {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: normal;
+    height: 96pt;
+  }
+  .ant-steps-item-title {
+    font-size: 2rem;
+    padding-left: 8pt;
+  }
+  .ant-steps-item-description {
+    font-size: 1.8rem;
+    padding-left: 8pt;
+  }
+  .ant-steps-item-process .ant-steps-item-title {
+    font-weight: bold;
+  }
+  .ant-steps-item-icon {
+    .ant-steps-icon {
+      .ant-steps-icon-dot {
+        background-color: ${({ theme }) => theme.COLOR.common.gray[400]} !important;
+      }
+    }
+  }
+  .ant-steps-item-active {
+    .ant-steps-icon {
+      .ant-steps-icon-dot {
+        background-color: ${({ theme }) => theme.COLOR.common.gray[200]} !important;
+      }
+    }
+  }
+
+  .ant-steps-item-finish {
+    .ant-steps-item-container {
+      .ant-steps-item-tail::after {
+        background-color: ${({ theme }) => theme.COLOR.common.gray[400]};
+      }
+    }
+  }
 `
+
+const OrderInfoContainer = styled.div``
 
 const OrderInfoLabel = styled.div`
-  padding: 8pt;
-
+  padding: 24pt 32pt;
   font-size: 2rem;
   background-color: ${({ theme }) => theme.COLOR.common.gray[700]};
 `
 
 const OrderInfoValue = styled.div`
   color: ${({ theme }) => theme.COLOR.common.gray[200]};
-  padding: 8pt;
-  border-top: 1px solid #ddd;
+  padding: 24pt 32pt;
   border-bottom: 1px solid #ddd;
 `
 const OrderRestaurantName = styled.div`
-  padding-top: 8pt;
   font-size: 2rem;
   font-weight: bold;
 `
 const OrderRestaurantAddress = styled.div`
-  padding: 4pt 0 8pt 0;
+  padding: 8pt 0;
   font-size: 1.8rem;
+`
+const MenuName = styled.div`
+  padding: 24pt 32pt;
+  font-weight: bold;
+  font-size: 2.3rem;
+  border-top: 1px solid #ddd;
 `
 
 const MenuItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8pt;
+  padding: 8pt 48pt;
   font-size: 2rem;
 `
 
-const MenuName = styled.div`
-  flex: 1;
-  color: ${({ theme }) => theme.COLOR.common.gray[200]};
-  font-weight: bold;
-`
-
 const MenuPrice = styled.div`
-  margin-left: 16pt;
-  color: ${({ theme }) => theme.COLOR.common.gray[700]};
+  color: ${({ theme }) => theme.COLOR.common.gray[400]};
+`
+const OptionContainer = styled.div`
+  padding: 8pt 0;
 `
 
-const MenuQuantity = styled.div`
-  margin-left: 16pt;
-  color: ${({ theme }) => theme.COLOR.common.gray[700]};
+const OptionName = styled.div`
+  color: ${({ theme }) => theme.COLOR.common.gray[600]};
 `
 
+const OptionPrice = styled.div`
+  color: ${({ theme }) => theme.COLOR.common.gray[600]};
+`
 const TotalPrice = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8pt;
-
-  font-size: 2rem;
+  padding: 24pt 32pt;
+  font-size: 2.3rem;
   background-color: ${({ theme }) => theme.COLOR.common.gray[700]};
-
-  border-top: 1px solid #ddd;
-
   font-weight: bold;
 `
 
 const ColoredText = styled.span`
-  color: ${({ theme }) => theme.COLOR.main};
-`
-const CustomSteps = styled(Steps)`
-  .ant-steps-item {
-    font-family: 'Noto Sans KR', sans-serif;
-    font-weight: normal;
-  }
-
-  .ant-steps-item-process .ant-steps-item-title {
-    font-weight: bold;
-  }
+  color: ${({ theme }) => theme.COLOR.sub};
 `
