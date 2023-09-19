@@ -1,5 +1,6 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useNotification } from 'Api/useNotification'
 import CartPrice from 'Component/CartComponent/CartPrice'
 import Header from 'Component/Header'
 import { useCartModal } from 'Context/CartModalContext'
@@ -53,7 +54,7 @@ const CartModal: React.FC = () => {
         ></Header>
         <CartPrice />
         <div style={{ display: 'flex' }}>
-          <StyledButton onClick={showAlert}>주문하기</StyledButton>
+          <StyledButton onClick={useNotification}>주문하기</StyledButton>
         </div>
       </ModalContent>
     </ModalOverlay>
