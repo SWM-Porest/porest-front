@@ -19,7 +19,7 @@ interface MenuOption {
   items: OptionItem[]
 }
 
-interface OrderMenu {
+export interface OrderMenu {
   menu_name: string
   price: number
   quantity: number
@@ -27,7 +27,7 @@ interface OrderMenu {
   options: MenuOption[]
 }
 
-interface Order {
+export interface Order {
   restaurant_id: string
   restaurant_name: string
   restaurant_address: string

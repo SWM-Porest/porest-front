@@ -1,15 +1,48 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { getCookie } from 'Api/cartCookie'
+import { CreateOrder, createOrder } from 'Api/createOrder'
+import { useAccessToken } from 'Api/tokenCookie'
 import { useNotification } from 'Api/useNotification'
 import CartPrice from 'Component/CartComponent/CartPrice'
 import Header from 'Component/Header'
 import { useCartModal } from 'Context/CartModalContext'
+import { useRestaurantState } from 'Context/restaurantContext'
 import React, { useEffect } from 'react'
+import { useMutation } from 'react-query'
+import { useSearchParams } from 'react-router-dom'
 import { styled } from 'styled-components'
 
 const CartModal: React.FC = () => {
-  const showAlert = () => {
-    alert(`현재 준비중인 기능입니다.\n직원을 호출해주세요.`)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const tableNumber = searchParams.get('table')
+  // if (!tableNumber) {
+  // return 테이블번호 입력 컴포넌트
+  // } // tableNumber가 없으면 입력 컴포넌트를 띄워준다.
+  const { data: restaurant, loading, error } = useRestaurantState().restaurant
+  if (loading) return <div>로딩중 ... </div>
+  if (error) return <div>에러가 발생했습니다.</div>
+  const [accessToken, setAccessToken] = useAccessToken()
+  const menus = getCookie(restaurant?._id as string) || {}
+  const order: CreateOrder = {
+    restaurant_id: restaurant?._id || '',
+    restaurant_name: restaurant?.name || '',
+    restaurant_address: restaurant?.address || '',
+    table_id: Number(tableNumber),
+    menus: menus || {},
+    token: null,
+  }
+
+  const { mutate, isLoading, isError, isSuccess } = useMutation(() => useNotification(order, accessToken))
+
+  if (isSuccess) {
+    console.log('주문 완료')
+  }
+  if (isError) {
+    console.log('주문 실패')
+  }
+  if (isLoading) {
+    console.log('주문 중')
   }
 
   const { isModalOpen, closeModal } = useCartModal()
@@ -54,7 +87,13 @@ const CartModal: React.FC = () => {
         ></Header>
         <CartPrice />
         <div style={{ display: 'flex' }}>
-          <StyledButton onClick={useNotification}>주문하기</StyledButton>
+          <StyledButton
+            onClick={() => {
+              mutate()
+            }}
+          >
+            주문하기
+          </StyledButton>
         </div>
       </ModalContent>
     </ModalOverlay>
