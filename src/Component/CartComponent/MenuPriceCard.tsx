@@ -1,9 +1,9 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { removeCookie, setCookie } from 'Api/cartCookie'
-import AmountCheck from 'Component/AmountCheck'
 import { CloseButton, CloseButtonContainer } from 'Component/Modal/CartModal'
-import getImageSrc from 'Component/getImageSrc'
 import { Menu, useRestaurantState } from 'Context/restaurantContext'
+import AmountCheck from 'Utils/AmountCheck'
+import getImageSrc from 'Utils/getImageSrc'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 

@@ -1,6 +1,6 @@
 import { LoadingOutlined } from '@ant-design/icons'
-import BurgerMenu from 'Component/BurgerMenu'
 import Header from 'Component/Header'
+import BurgerMenu from 'Component/Modal/BurgerMenu'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'

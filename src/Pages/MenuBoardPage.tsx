@@ -1,5 +1,4 @@
 import { getTotalCartItems } from 'Api/cartCookie'
-import BurgerMenu from 'Component/BurgerMenu'
 import Footer from 'Component/Footer'
 import Header from 'Component/Header'
 import MainBanner from 'Component/MenuBoardComponent/MainBanner'
@@ -15,6 +14,7 @@ import { FlexAlignCSS } from 'Styles/common'
 import { Badge, Spin } from 'antd'
 import React, { useEffect, useState } from 'react'
 
+import BurgerMenu from 'Component/Modal/BurgerMenu'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import CartModal from '../Component/Modal/CartModal'
@@ -68,7 +68,7 @@ const MenuBoardPage: React.FC = () => {
             </>
           }
         />
-        <StyledBanner
+        <MainBanner
           images={
             restaurant && restaurant.banner_images
               ? restaurant.banner_images.map((banner_image) => {
@@ -77,7 +77,7 @@ const MenuBoardPage: React.FC = () => {
               : []
           }
         />
-        <StyledOrder info={restaurant ? restaurant : restaurantContextDefaultValue} />
+        <MainOrder info={restaurant ? restaurant : restaurantContextDefaultValue} />
       </StyledContainer>
       <Footer />
     </div>
@@ -88,16 +88,6 @@ export default MenuBoardPage
 
 const StyledContainer = styled.div`
   background-color: ${({ theme }) => theme.COLOR.common.white};
-`
-
-const StyledBanner = styled(MainBanner)`
-  margin: 0px;
-  padding: 0px;
-`
-
-const StyledOrder = styled(MainOrder)`
-  margin: 0px;
-  padding: 0px;
 `
 
 const StyledButton = styled.button`
