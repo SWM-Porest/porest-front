@@ -8,10 +8,6 @@ import React, { useEffect } from 'react'
 import { styled } from 'styled-components'
 
 const CartModal: React.FC = () => {
-  const showAlert = () => {
-    alert(`현재 준비중인 기능입니다.\n직원을 호출해주세요.`)
-  }
-
   const { isModalOpen, closeModal } = useCartModal()
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
