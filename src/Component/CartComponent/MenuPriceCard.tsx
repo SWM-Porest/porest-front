@@ -9,20 +9,19 @@ import styled from 'styled-components'
 
 interface OwnProps {
   info: Menu
-  cnt: number
+  orderinfo: { count: number; options: any }
   handlePriceTotalChange: () => void
 }
 
-const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }) => {
+const MenuPriceCard: React.FC<OwnProps> = ({ info, orderinfo, handlePriceTotalChange }) => {
   const { data: restaurant } = useRestaurantState().restaurant
-  const [count, setCount] = useState(cnt)
+  const [count, setCount] = useState(orderinfo.count)
   const [totalprice, setTotalPrice] = useState((info.price * count).toLocaleString())
   const price = info.price.toLocaleString()
-
   const handleIncrement = () => {
     const newCount = count + 1
     setCount(newCount)
-    setCookie(restaurant?._id as string, info, 1)
+    setCookie(restaurant?._id as string, info, 1, orderinfo.options)
     handlePriceTotalChange()
   }
 
@@ -30,7 +29,7 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }
     if (count > 1) {
       const newCount = count - 1
       setCount(newCount)
-      setCookie(restaurant?._id as string, info, -1)
+      setCookie(restaurant?._id as string, info, -1, orderinfo.options)
       handlePriceTotalChange()
     } else {
       removeCookie(restaurant?._id as string, info._id)
@@ -40,7 +39,6 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }
 
   const handleRemoveMenu = () => {
     removeCookie(restaurant?._id as string, info._id)
-    handlePriceTotalChange()
   }
   useEffect(() => {
     setTotalPrice((info.price * count).toLocaleString())

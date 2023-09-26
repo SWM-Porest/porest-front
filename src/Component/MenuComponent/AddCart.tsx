@@ -6,14 +6,15 @@ interface Ownprops {
   menu: Menu | null
   cnt: number
   openModalHandler: (menuId: string) => void
+  selectedOptions: { [optionId: string]: { name: string; price: number }[] }
 }
 
-const AddCart: React.FC<Ownprops> = ({ menu, cnt, openModalHandler }) => {
+const AddCart: React.FC<Ownprops> = ({ menu, cnt, openModalHandler, selectedOptions }) => {
   const { data: restaurant } = useRestaurantState().restaurant
 
   const addToCart = () => {
     openModalHandler('')
-    setCookie(restaurant?._id as string, menu as Menu, cnt)
+    setCookie(restaurant?._id as string, menu as Menu, cnt, selectedOptions)
     showMessage('장바구니에 추가되었습니다.', 1500)
   }
 

@@ -9,6 +9,7 @@ import AddCart from './AddCart'
 import Categories from './Categories'
 import ContainerBox from './ContainerBox'
 import DescriptionContainer from './DescriptionContainer'
+import OptionSelector from './OptionSelector'
 
 interface OwnProps {
   id: string
@@ -31,6 +32,7 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
   if (loading) return <div>로딩중 ... </div>
   if (error) return <div>에러가 발생했습니다.</div>
   const [count, setCount] = useState(1)
+  const [selectedOptions, setSelectedOptions] = useState<{ [optionId: string]: { name: string; price: number }[] }>({})
 
   const handleIncrement = () => {
     setCount(count + 1)
@@ -42,7 +44,23 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
   }
   useEffect(() => {
     setCount(1)
+    setSelectedOptions({})
   }, [openModalHandler])
+
+  const handleOptionSelect = (optionId: string, selectedItems: string[]) => {
+    const selectedOptionObjects = selectedItems.map((item) => ({
+      name: item,
+      price:
+        menu?.options.find((option) => option._id === optionId)?.items.find((optItem) => optItem.name === item)
+          ?.price || 0,
+    }))
+
+    setSelectedOptions((prevSelectedOptions) => ({
+      ...prevSelectedOptions,
+      [optionId]: selectedOptionObjects,
+    }))
+  }
+
   return (
     <>
       <ModalContainer>
@@ -80,7 +98,20 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
             <StyledAmountContainer>
               <AmountCheck count={count} handleIncrement={handleIncrement} handleDecrement={handleDecrement} />
             </StyledAmountContainer>
-            <AddCart menu={menu ? menu : null} cnt={count} openModalHandler={openModalHandler} />
+            {menu?.options.map((option) => (
+              <OptionSelector
+                key={option._id}
+                option={option}
+                selectedItems={selectedOptions[option._id]?.map((item) => item.name) || []}
+                onSelect={(selectedItems) => handleOptionSelect(option._id, selectedItems)}
+              />
+            ))}
+            <AddCart
+              menu={menu ? menu : null}
+              cnt={count}
+              openModalHandler={openModalHandler}
+              selectedOptions={selectedOptions}
+            />
           </ContentContainer>
         </ModalView>
       </ModalContainer>
