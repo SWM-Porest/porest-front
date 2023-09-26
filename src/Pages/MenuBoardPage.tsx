@@ -12,10 +12,12 @@ import {
   useRestaurantState,
 } from 'Context/restaurantContext'
 import { FlexAlignCSS } from 'Styles/common'
-import { Badge, Spin } from 'antd'
+import { Badge, FloatButton } from 'antd'
 import React, { useEffect, useState } from 'react'
 
-import { useParams } from 'react-router-dom'
+import { QuestionCircleOutlined, CommentOutlined, BellOutlined } from '@ant-design/icons'
+
+import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import CartModal from '../Component/Modal/CartModal'
 import ErrorPage from './ErrorPage'
@@ -76,6 +78,13 @@ const MenuBoardPage: React.FC = () => {
         />
         <StyledOrder info={restaurant ? restaurant : restaurantContextDefaultValue} />
       </StyledContainer>
+      <FloatButton.Group icon={<StyledQuestionCircleOutlined />} trigger="click">
+        <FloatButton icon={<BellOutlined />} />
+        <Link to={`/restaurants/${id}/chat`}>
+          <StyledFloatButton icon={<CommentOutlined />} />
+        </Link>
+      </FloatButton.Group>
+
       <Footer />
     </div>
   )
@@ -122,4 +131,10 @@ const StyledH5 = styled.h5`
   @media screen and (max-width: 440pt) {
     font-size: 2rem;
   }
+`
+
+const StyledFloatButton = styled(FloatButton)``
+
+const StyledQuestionCircleOutlined = styled(QuestionCircleOutlined)`
+  // font-size: 20rem;
 `

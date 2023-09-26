@@ -1,3 +1,4 @@
+import ChatPage from 'Pages/ChatPage'
 import EditRestaurantPage from 'Pages/EditRestaurantPage'
 import ErrorPage from 'Pages/ErrorPage'
 import LoginPage from 'Pages/LoginPage'
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: '/restaurants/:id',
         element: <MenuBoardPage />,
+      },
+      {
+        path: '/restaurants/:id/chat',
+        element: <ChatPage />,
       },
       {
         path: '/restaurants/:id/orders',

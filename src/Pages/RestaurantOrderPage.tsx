@@ -1,7 +1,6 @@
 import BurgerMenu from 'Component/BurgerMenu'
 import Header from 'Component/Header'
 import RestaurantOrderList from 'Component/RestaurantOrder/RestaurantOrderList'
-import { styled } from 'styled-components'
 
 const RestaurantOrderPage = () => {
   return (
