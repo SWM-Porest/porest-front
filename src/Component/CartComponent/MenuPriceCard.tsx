@@ -9,11 +9,12 @@ import styled from 'styled-components'
 
 interface OwnProps {
   info: Menu
-  orderinfo: { count: number; options: any }
+  orderinfo: { count: number; menu_id: string }
   handlePriceTotalChange: () => void
 }
 
 const MenuPriceCard: React.FC<OwnProps> = ({ info, orderinfo, handlePriceTotalChange }) => {
+  console.log(info)
   const { data: restaurant } = useRestaurantState().restaurant
   const [count, setCount] = useState(orderinfo.count)
   const [totalprice, setTotalPrice] = useState((info.price * count).toLocaleString())
@@ -21,7 +22,7 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, orderinfo, handlePriceTotalCh
   const handleIncrement = () => {
     const newCount = count + 1
     setCount(newCount)
-    setCookie(restaurant?._id as string, info, 1, orderinfo.options)
+    setCookie(restaurant?._id as string, info, 1, info.options)
     handlePriceTotalChange()
   }
 
@@ -29,7 +30,7 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, orderinfo, handlePriceTotalCh
     if (count > 1) {
       const newCount = count - 1
       setCount(newCount)
-      setCookie(restaurant?._id as string, info, -1, orderinfo.options)
+      setCookie(restaurant?._id as string, info, -1, info.options)
       handlePriceTotalChange()
     } else {
       removeCookie(restaurant?._id as string, info._id)

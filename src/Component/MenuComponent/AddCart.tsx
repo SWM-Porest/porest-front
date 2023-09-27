@@ -1,3 +1,4 @@
+import { MenuOption } from 'Api/OrderInterface'
 import { setCookie } from 'Api/cartCookie'
 import { Menu, useRestaurantState } from 'Context/restaurantContext'
 import { styled } from 'styled-components'
@@ -14,7 +15,39 @@ const AddCart: React.FC<Ownprops> = ({ menu, cnt, openModalHandler, selectedOpti
 
   const addToCart = () => {
     openModalHandler('')
-    setCookie(restaurant?._id as string, menu as Menu, cnt, selectedOptions)
+    const formattedOptions: MenuOption[] = []
+
+    for (const optionId in selectedOptions) {
+      if (Object.prototype.hasOwnProperty.call(selectedOptions, optionId)) {
+        formattedOptions.push(
+          ...selectedOptions[optionId].map((item) => ({
+            _id: optionId,
+            name: menu?.options.find((option) => option._id === optionId)?.name || '',
+            isSoldOut: menu?.options.find((option) => option._id === optionId)?.isSoldOut || false,
+            maxSelect: menu?.options.find((option) => option._id === optionId)?.maxSelect || 1,
+            items: [
+              {
+                name: item.name,
+                price: item.price,
+              },
+            ],
+          })),
+        )
+      }
+    }
+
+    // 중복된 옵션 이름 병합 로직 추가
+    const mergedOptions: MenuOption[] = []
+    formattedOptions.forEach((option) => {
+      const existingOption = mergedOptions.find((merged) => merged.name === option.name)
+      if (existingOption) {
+        existingOption.items.push(...option.items)
+      } else {
+        mergedOptions.push(option)
+      }
+    })
+
+    setCookie(restaurant?._id as string, menu as Menu, cnt, mergedOptions)
     showMessage('장바구니에 추가되었습니다.', 1500)
   }
 

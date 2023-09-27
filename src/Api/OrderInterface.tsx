@@ -8,8 +8,6 @@ export interface OptionItem {
 export interface MenuOption {
   _id: string
   name: string
-  created_at: string
-  updated_at: string
   isSoldOut: boolean
   maxSelect: number
   items: OptionItem[]

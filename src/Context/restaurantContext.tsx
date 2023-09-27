@@ -68,8 +68,6 @@ export const restaurantContextDefaultValue: Restaurant = {
         {
           _id: '',
           name: 'string',
-          created_at: 'string',
-          updated_at: 'string',
           isSoldOut: false,
           maxSelect: 1,
           items: [
