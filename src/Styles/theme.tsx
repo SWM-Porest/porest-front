@@ -19,7 +19,7 @@ const COLOR = {
 }
 
 const FONT_SIZE = {
-  tiny: '1.5rem', //설명
+  tiny: '2.2rem', //설명
   small: '2.5rem', //
   medium: '3rem', //List, 버튼, link, 가격
   large: '3.5rem', //메뉴

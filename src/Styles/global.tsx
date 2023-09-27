@@ -47,7 +47,7 @@ h5 {
     font-size:${({ theme }) => theme.FONT_SIZE.small};
 }
 
-p {
+h6 {
     font-family: 'Noto Sans KR', sans-serif;
     font-size:${({ theme }) => theme.FONT_SIZE.tiny};
 }

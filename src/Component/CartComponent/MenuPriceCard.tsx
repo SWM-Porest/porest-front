@@ -41,9 +41,15 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, orderinfo, handlePriceTotalCh
     removeCookie(restaurant?._id as string, info._id)
     handlePriceTotalChange()
   }
+  const optionPricesSum = info.options.reduce((acc, option) => {
+    const itemPricesSum = option.items.reduce((itemAcc, item) => itemAcc + item.price, 0)
+    return acc + itemPricesSum
+  }, 0)
+
   useEffect(() => {
-    setTotalPrice((info.price * count).toLocaleString())
-  }, [count, info.price])
+    const newTotalPrice = ((info.price + optionPricesSum) * count).toLocaleString()
+    setTotalPrice(newTotalPrice)
+  }, [count, info.price, optionPricesSum])
 
   return (
     <StyledContainer>
@@ -55,8 +61,18 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, orderinfo, handlePriceTotalCh
             <CloseButton icon={faXmark} onClick={handleRemoveMenu} size="2xl" />
           </CloseButtonContainer>
         </TopContainer>
-
         <StyledPrice>{price}원</StyledPrice>
+        {info.options.map((option, index) => (
+          <div key={index}>
+            <h6 style={{ margin: 0, padding: '8pt 0' }}>{option.name}</h6>
+            {option.items.map((item, index) => (
+              <LargeButton key={index}>
+                <span>{item.name}</span>
+                <StyledOptionPrice>+ {item.price}</StyledOptionPrice>
+              </LargeButton>
+            ))}
+          </div>
+        ))}
         <InnerContainer>
           <StyledAmountContainer>
             <AmountCheck count={count} handleIncrement={handleIncrement} handleDecrement={handleDecrement} />
@@ -123,5 +139,13 @@ const StyledTotalPrice = styled.h5`
   text-align: right;
   display: block;
   margin-top: 24pt;
+  color: ${({ theme }) => theme.COLOR.number_price};
+`
+const LargeButton = styled.div`
+  padding: 8pt 0;
+  font-size: 1.8rem;
+`
+const StyledOptionPrice = styled.span`
+  float: right;
   color: ${({ theme }) => theme.COLOR.number_price};
 `
