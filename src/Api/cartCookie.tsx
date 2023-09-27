@@ -1,16 +1,16 @@
 import { Menu } from 'Context/restaurantContext'
 import { Cookies } from 'react-cookie'
-import { MenuOption } from './OrderInterface'
+import { MenuOption, OrderMenu } from './OrderInterface'
 
 const cartCookie = new Cookies()
 export const setCookie = (name: string, menu: Menu, cnt: number, selectedOptions: MenuOption[]) => {
   const cookie = getCookie(name) || {}
 
-  const existingMenus = Object.values(cookie)
+  const existingMenus = Object.values<OrderMenu>(cookie)
 
-  const existingMenu = existingMenus.find((item: any) => {
+  const existingMenu = existingMenus.find((item) => {
     return item.menu_name === menu.name && isEqualOptions(item.options, selectedOptions)
-  }) as any
+  })
 
   if (existingMenu) {
     existingMenu.quantity = (existingMenu.quantity || 0) + cnt
