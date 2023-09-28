@@ -6,6 +6,7 @@ import ProfilePage from 'Pages/ProfilePage'
 import RestaurantListPage from 'Pages/RestaurantListPage'
 import RestaurantOrderPage from 'Pages/RestaurantOrderPage'
 import RestaurantPage from 'Pages/RestaurantPage'
+import RestaurantTablePage from 'Pages/RestaurantTablePage'
 import { createBrowserRouter } from 'react-router-dom'
 import PrivateRoute from 'Routes/private'
 
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: '/restaurants/:id/orders',
         element: <RestaurantOrderPage />,
+      },
+      {
+        path: '/restaurants/:id/tables',
+        element: <RestaurantTablePage />,
       },
       {
         path: '/restaurants/:id/info',
