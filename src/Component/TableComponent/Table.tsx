@@ -103,11 +103,14 @@ const TableName = styled.div`
   font-weight: bold;
 `
 const StyledTable = styled.div`
-  width: 128pt;
-  height: 64pt;
+  width: 15em;
+  height: 5em;
   margin: 10pt;
   border-radius: 10pt;
   background-color: ${({ theme }) => theme.COLOR.common.white};
+  @media screen and (max-width: 768px) {
+    font-size: ${({ theme }) => theme.FONT_SIZE.medium};
+  }
 `
 const TableMenus = styled.div`
   padding: 8pt;
