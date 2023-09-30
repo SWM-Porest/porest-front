@@ -14,6 +14,7 @@ import { FlexAlignCSS } from 'Styles/common'
 import { Badge, Spin } from 'antd'
 import React, { useEffect, useState } from 'react'
 
+import FloatingButton from 'Component/FloatingButton'
 import BurgerMenu from 'Component/Modal/BurgerMenu'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
@@ -78,6 +79,7 @@ const MenuBoardPage: React.FC = () => {
           }
         />
         <MainOrder info={restaurant ? restaurant : restaurantContextDefaultValue} />
+        <FloatingButton info={restaurant ? restaurant : restaurantContextDefaultValue} />
       </StyledContainer>
       <Footer />
     </div>
