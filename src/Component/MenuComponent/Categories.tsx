@@ -32,12 +32,12 @@ const Categoryli = styled.li`
   font-size: 2rem;
   font-weight: bold;
   border-radius: 14.5px;
-  color: #fff;
+  color: ${({ theme }) => theme.COLOR.common.white};
   position: realtive;
   padding: 8pt 16pt;
   margin: 8pt;
   letter-spacing: -0.3px;
   text-align: center;
-  background-color: #424242;
+  background-color: ${({ theme }) => theme.COLOR.common.gray[100]};
   box-shadow: 0 3px 9px 0 rgba(0, 0, 0, 0.4);
 `
