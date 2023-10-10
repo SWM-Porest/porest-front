@@ -1,3 +1,4 @@
+import { useAccessToken } from 'Api/tokenCookie'
 import { Restaurant } from 'Context/restaurantContext'
 import { Modal } from 'antd'
 import React, { useState } from 'react'
@@ -15,15 +16,63 @@ const FloatingButton: React.FC<OwnProps> = ({ info }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [selectedMenu, setSelectedMenu] = useState<MenuType | null>(null)
   const [isOrderModalVisible, setIsOrderModalVisible] = useState(false)
+  const [accessToken, setAccessToken] = useAccessToken()
 
   const toggleMenu = (menu: MenuType) => {
     setSelectedMenu(menu)
     setIsOrderModalVisible(true)
   }
+  const handleOrder = async () => {
+    try {
+      // API 요청을 보내는 부분
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/orders`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          restaurant_id: info._id,
+          restaurant_name: info.name,
+          restaurant_address: info.address,
+          //테이블 아이디 어디서 받아야할지 모르겠음
+          table_id: 1,
+          menus: {
+            '': {
+              menu_name: selectedMenu?.name,
+              quantity: 1,
+              price: 0,
+              options: [
+                {
+                  isSoldOut: false,
+                  maxSelect: 1,
+                  items: [],
+                  name: '',
+                },
+              ],
+              img: '',
+            },
+          },
+          token: {
+            endpoint: 'url',
+            //keys 뭐 들어가야하는지 모르겠음
+            keys: {
+              auth: 'string',
+              p256dh: 'string',
+            },
+            expirationTime: null,
+          },
+        }),
+      })
 
-  const handleOrder = () => {
-    // 주문 처리 로직을 추가해야 함
-    setIsOrderModalVisible(false)
+      if (response.ok) {
+        setIsOrderModalVisible(false)
+      } else {
+        console.error('주문 생성에 실패했습니다.')
+      }
+    } catch (error) {
+      console.error('주문 생성 중 오류 발생:', error)
+    }
   }
 
   const simplifiedMenus = info.menus.filter((menu) => menu.category === '간편주문')
@@ -47,7 +96,7 @@ const FloatingButton: React.FC<OwnProps> = ({ info }) => {
       <LargeModal
         title={`주문 확인 - ${selectedMenu ? selectedMenu.name : ''}`}
         width={400}
-        visible={isOrderModalVisible}
+        open={isOrderModalVisible}
         onOk={handleOrder}
         onCancel={() => setIsOrderModalVisible(false)}
         okText="주문"
