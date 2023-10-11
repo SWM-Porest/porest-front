@@ -3,6 +3,7 @@ import Header from 'Component/Header'
 import { CloseButton, CloseButtonContainer } from 'Component/Modal/CartModal'
 import { useRestaurantState } from 'Context/restaurantContext'
 import AmountCheck from 'Utils/AmountCheck'
+import getImageSrc from 'Utils/getImageSrc'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import AddCart from './AddCart'
@@ -90,7 +91,7 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
               title={menu ? menu.name : ''}
               price={menu ? menu.price : 0}
               description={menu ? menu.description : ''}
-              img={menu && menu.img ? process.env.REACT_APP_STATIC_URL + menu.img.path : ''}
+              img={menu ? getImageSrc(menu.img) : ''}
             ></DescriptionContainer>
             <ContainerBox>
               <Categories ingre={menu ? menu.ingre : []}></Categories>

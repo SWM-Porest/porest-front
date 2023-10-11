@@ -2,6 +2,7 @@ import { Menu } from 'Context/restaurantContext'
 import React from 'react'
 import styled from 'styled-components'
 import { FlexAlignCSS } from 'Styles/common'
+import getImageSrc from 'Utils/getImageSrc'
 interface OwnProps {
   info: Menu
 }
@@ -12,7 +13,7 @@ const MenuCard: React.FC<OwnProps> = ({ info }) => {
     <div>
       {info.img ? (
         <MenuCardContainer>
-          <StyledImage src={process.env.REACT_APP_STATIC_URL + info.img.path} alt="메뉴 이미지" />
+          <StyledImage src={getImageSrc(info.img)} alt="메뉴 이미지" />
           <div>
             <ImgStyledName>{info.name}</ImgStyledName>
             <ImgStyledPrice>{price}원</ImgStyledPrice>

@@ -16,6 +16,7 @@ import React, { useEffect, useState } from 'react'
 
 import FloatingButton from 'Component/FloatingButton'
 import BurgerMenu from 'Component/Modal/BurgerMenu'
+import getImageSrc from 'Utils/getImageSrc'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import CartModal from '../Component/Modal/CartModal'
@@ -73,7 +74,7 @@ const MenuBoardPage: React.FC = () => {
           images={
             restaurant && restaurant.banner_images
               ? restaurant.banner_images.map((banner_image) => {
-                  return process.env.REACT_APP_STATIC_URL + banner_image.path
+                  return getImageSrc(banner_image)
                 })
               : []
           }
@@ -123,7 +124,4 @@ const StyledBadge = styled(Badge)`
 
 const StyledH5 = styled.h5`
   margin: 0;
-  @media screen and (max-width: 440pt) {
-    font-size: 2rem;
-  }
 `

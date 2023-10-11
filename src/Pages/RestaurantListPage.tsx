@@ -1,6 +1,7 @@
 import { LoadingOutlined } from '@ant-design/icons'
 import Header from 'Component/Header'
 import BurgerMenu from 'Component/Modal/BurgerMenu'
+import getImageSrc from 'Utils/getImageSrc'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -50,11 +51,7 @@ const RestaurantListPage = () => {
             <RestaurantItem key={restaurant._id}>
               <RestaurantLink to={`/restaurants/${restaurant._id}`}>
                 <Container>
-                  {restaurant.banner_images?.length > 0 ? (
-                    <StyledImage src={restaurant.banner_images[0]} alt="매장 사진" />
-                  ) : (
-                    <StyledImage src="/img/회색.png" alt="기본 이미지" />
-                  )}
+                  <StyledImage src={getImageSrc(restaurant.banner_images[0])} alt="매장 사진" />
                   <div>
                     <StyledName>{restaurant.name}</StyledName>
                     <StyledAddress>주소: {restaurant.address}</StyledAddress>
