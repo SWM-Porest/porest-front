@@ -1,7 +1,6 @@
 import { orderService } from 'Api/orderService'
 import { useAccessToken } from 'Api/tokenCookie'
 import Loading from 'Component/Loading'
-import { Order } from 'Component/ProfileComponent/OrderList'
 import ErrorPage from 'Pages/ErrorPage'
 import { Button, List, Space, Tabs, TabsProps, Tag, message } from 'antd'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
@@ -10,6 +9,7 @@ import { styled } from 'styled-components'
 import { CheckCircleOutlined, ClockCircleOutlined, MinusCircleOutlined, SyncOutlined } from '@ant-design/icons'
 import { onOrder } from 'Socket/socketio'
 import { useEffect } from 'react'
+import { Order } from 'Api/OrderInterface'
 
 const RestaurantOrderList = () => {
   const { id } = useParams()

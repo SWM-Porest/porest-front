@@ -1,4 +1,4 @@
-import { Order } from 'Component/ProfileComponent/OrderList'
+import { Order } from 'Api/OrderInterface'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 

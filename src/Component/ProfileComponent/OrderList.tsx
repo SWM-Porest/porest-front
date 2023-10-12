@@ -1,6 +1,6 @@
 import { Order, OrderMenu } from 'Api/OrderInterface'
 import { useAccessToken } from 'Api/tokenCookie'
-import useUserData from 'Api/UseUserData'
+import useUserData from 'Api/useUserData'
 import useUserOrderData from 'Api/useUserOrderData'
 import OrderModal from 'Component/Modal/OrderModal'
 import formatDate from 'Utils/formatDate'
@@ -8,33 +8,6 @@ import getImageSrc from 'Utils/getImageSrc'
 import { Table } from 'antd'
 import { useState } from 'react'
 import styled from 'styled-components'
-
-interface OptionItem {
-  name: string
-  price: number
-}
-
-interface MenuOption {
-  name: string
-  items: OptionItem[]
-}
-
-interface OrderMenu {
-  menu_name: string
-  price: number
-  quantity: number
-  img: Image
-}
-
-export interface Order {
-  restaurant_id: number
-  restaurant_name: string
-  created_at: string
-  updated_at: string
-  _id: string
-  menus: Menu[]
-  status: number
-}
 
 const OrderList = () => {
   const page = 1 // page 변수 정의
@@ -138,7 +111,7 @@ const OrderList = () => {
                   <MenuImageContainer>
                     {Object.values(order.menus)
                       .slice(0, 1)
-                      .map((menu: Menu, menuIndex: number) => (
+                      .map((menu: OrderMenu, menuIndex: number) => (
                         <MenuImage key={menuIndex} src={getImageSrc(menu.img)} alt="메뉴 이미지" />
                       ))}
                   </MenuImageContainer>
@@ -150,7 +123,7 @@ const OrderList = () => {
                   >
                     {Object.values(order.menus)
                       .slice(0, 1)
-                      .map((menu: Menu, menuIndex: number) => (
+                      .map((menu: OrderMenu, menuIndex: number) => (
                         <MenuNameContainer key={menuIndex}>
                           <div>
                             {Object.values(order.menus).length > 1 ? (
@@ -171,7 +144,7 @@ const OrderList = () => {
                         <RestaurantNameContainer>{order.restaurant_name}</RestaurantNameContainer>
                         <ColoredText>
                           {Object.values(order.menus)
-                            .reduce((menuTotal: number, menu: Menu) => menuTotal + menu.price * menu.quantity, 0)
+                            .reduce((menuTotal: number, menu: OrderMenu) => menuTotal + menu.price * menu.quantity, 0)
                             .toLocaleString()}
                           원
                         </ColoredText>

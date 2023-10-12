@@ -30,4 +30,5 @@ export interface Order {
   menus: { [menuId: string]: OrderMenu }
   status: number
   status_updated_at: { [status: number]: string }
+  created_at: string
 }
