@@ -1,7 +1,13 @@
 import Header from 'Component/Header'
 import { Restaurant } from 'Context/restaurantContext'
 import { Button, Card, Form, Input, InputNumber, Modal, Switch, Upload, UploadFile, message } from 'antd'
-import { PlusOutlined, EyeOutlined } from '@ant-design/icons'
+import { PlusOutlined } from '@ant-design/icons'
+import {
+  AddCircle24Filled,
+  ReOrder24Regular,
+  SubtractCircle24Filled,
+  DismissCircle24Filled,
+} from '@fluentui/react-icons'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useMutation } from 'react-query'
@@ -54,6 +60,23 @@ const EditRestaurantPage: React.FC = () => {
   const [restaurantImageList, setRestaurantImageList] = useState<UploadFile[]>([])
   const [menuImageList, setMenuImageList] = useState<UploadFile[][]>([])
   const [showDetails, setShowDetails] = useState<boolean[]>([])
+
+  const handleChange2 = (file: any) => {
+    console.log(file.target)
+    const fileList = [...restaurantImageList]
+    for (let i = 0; i < file.target.files.length; i++) {
+      fileList.unshift({
+        name: file.target.files[i].name,
+        status: file.target.files[i].status,
+        url: URL.createObjectURL(file.target.files[i]),
+        type: file.target.files[i].type,
+        uid: '',
+      })
+    }
+
+    setRestaurantImageList(fileList)
+  }
+
   const handleChange = ({ fileList: newFileList }: { fileList: UploadFile[] }) => {
     newFileList.forEach((file) => {
       if (file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg') {
@@ -67,6 +90,12 @@ const EditRestaurantPage: React.FC = () => {
       throw new Error('이미지 파일만 업로드 가능합니다.')
     })
     setRestaurantImageList(newFileList)
+  }
+
+  const deleteImage = (i: number) => {
+    if (i >= 0 && i < restaurantImageList.length) {
+      setRestaurantImageList(restaurantImageList.filter((_, index) => i !== index))
+    }
   }
 
   const restauratnUpdateMutation = useMutation(
@@ -236,16 +265,16 @@ const EditRestaurantPage: React.FC = () => {
   }
 
   const uploadButton = (
-    <div>
-      <PlusOutlined />
+    <UploadBtnContainer htmlFor="restaurantImage">
+      <AddCircle24Filled />
       <div
         style={{
           marginTop: 8,
         }}
       >
-        업로드
+        사진 추가
       </div>
-    </div>
+    </UploadBtnContainer>
   )
 
   const formItemLayoutWithOutLabel = {
@@ -296,28 +325,71 @@ const EditRestaurantPage: React.FC = () => {
 
   return (
     <div>
-      <Header HeaderName={restaurant?.name ?? '' + ' 관리'}></Header>
+      <Header HeaderName={'가게 관리'} Right={<CompleteButton>완료</CompleteButton>}></Header>
       <Container>
-        <StyledUpload
-          listType="picture-card"
-          fileList={restaurantImageList}
-          onChange={handleChange}
-          accept="image/png, image/jpeg, image/jpg"
-          showUploadList={{
-            showPreviewIcon: false,
-            showRemoveIcon: true,
-            showDownloadIcon: false,
-          }}
-        >
-          {restaurantImageList && restaurantImageList.length >= 6 ? null : uploadButton}
-        </StyledUpload>
-        <Form
+        <form>
+          <FormItemContainer>
+            <FormItemLabel>가게 이름</FormItemLabel>
+            <FormItemInput type="text" />
+          </FormItemContainer>
+          <FormItemContainer>
+            <FormItemLabel>가게 사진</FormItemLabel>
+            <ImageListContainer>
+              <input
+                type="file"
+                id="restaurantImage"
+                accept="image/*"
+                style={{ visibility: 'hidden' }}
+                onChange={handleChange2}
+                multiple
+              />
+              {restaurantImageList && restaurantImageList.length >= 6 ? null : uploadButton}
+              {restaurantImageList && restaurantImageList.length > 0
+                ? restaurantImageList.map((image, index) => {
+                    return (
+                      <ImageItem key={index}>
+                        <div
+                          style={{
+                            position: 'absolute',
+                            top: 0,
+                            right: 0,
+                          }}
+                        >
+                          <CustomDismiss
+                            onClick={() => {
+                              deleteImage(index)
+                            }}
+                          />
+                        </div>
+
+                        <ImageContainer src={image.url} />
+                      </ImageItem>
+                    )
+                  })
+                : null}
+            </ImageListContainer>
+          </FormItemContainer>
+          <FormItemContainer>
+            <FormItemLabel>가게 설명</FormItemLabel>
+            <FormItemInput type="text" />
+          </FormItemContainer>
+          <FormItemContainer>
+            <FormItemLabel>연락처</FormItemLabel>
+            <FormItemInput type="text" />
+          </FormItemContainer>
+          <FormItemContainer>
+            <FormItemLabel>주소</FormItemLabel>
+            <FormItemInput type="text" />
+          </FormItemContainer>
+        </form>
+        {/* <Form
           form={form}
           name="restaurant"
           initialValues={{
             ...restaurant,
           }}
           onFinish={handleSubmit}
+          layout="vertical"
         >
           <Form.Item
             name="name"
@@ -330,6 +402,21 @@ const EditRestaurantPage: React.FC = () => {
             ]}
           >
             <Input />
+          </Form.Item>
+          <Form.Item label="가게 사진">
+            <StyledUpload
+              listType="picture-card"
+              fileList={restaurantImageList}
+              onChange={handleChange}
+              accept="image/png, image/jpeg, image/jpg"
+              showUploadList={{
+                showPreviewIcon: false,
+                showRemoveIcon: true,
+                showDownloadIcon: false,
+              }}
+            >
+              {restaurantImageList && restaurantImageList.length >= 6 ? null : uploadButton}
+            </StyledUpload>
           </Form.Item>
           <Form.Item
             name="en_name"
@@ -357,8 +444,8 @@ const EditRestaurantPage: React.FC = () => {
           </Form.Item>
           <Form.Item name="phone_number" label="매장 전화번호">
             <Input />
-          </Form.Item>
-          <Form.List name="category">
+          </Form.Item> */}
+        {/* <Form.List name="category">
             {(fields, { add, remove }) => (
               <>
                 {fields.map((field, index) => (
@@ -634,8 +721,8 @@ const EditRestaurantPage: React.FC = () => {
                 </ButtonContainer>
               </CardContainer>
             )}
-          </Form.List>
-          <Button
+          </Form.List> */}
+        {/* <Button
             type="primary"
             htmlType="submit"
             loading={confirmLoading}
@@ -643,10 +730,10 @@ const EditRestaurantPage: React.FC = () => {
             block
           >
             수정하기
-          </Button>
-        </Form>
+          </Button> */}
+        {/* </Form> */}
 
-        <Modal
+        {/* <Modal
           title="메뉴 옵션 추가"
           open={isMenuOptionModalOpen}
           onCancel={() => {
@@ -769,21 +856,142 @@ const EditRestaurantPage: React.FC = () => {
               <InputNumber min={1} max={maxOptionsSelect} />
             </Form.Item>
           </Form>
-        </Modal>
+        </Modal> */}
+        <FormHeader>
+          <div>테이블</div>
+          <div style={{ color: '#999999' }}>5개</div>
+        </FormHeader>
+        <FormBody>
+          <FormContent>
+            <div style={{ flex: 1 }}>
+              <SubtractCircle24Filled color="red" />
+            </div>
+            <div style={{ flex: 6 }}>1 번 테이블</div>
+            <div style={{ flex: 1 }}>
+              <ReOrder24Regular color="#AAAAAA" />
+            </div>
+          </FormContent>
+          <TableAddButton>
+            <AddCircle24Filled /> <TableAddButtonText>테이블 추가</TableAddButtonText>
+          </TableAddButton>
+        </FormBody>
       </Container>
       <Footer />
     </div>
   )
 }
+
 export default EditRestaurantPage
 
+const UploadBtnContainer = styled.label`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 6pt 6pt 0 0;
+
+  min-width: 7.5rem;
+  min-height: 7.5rem;
+  max-width: 7.5rem;
+  max-height: 7.5rem;
+
+  color: #3fba73;
+  background-color: rgba(63, 186, 115, 0.1);
+  border-radius: 8pt;
+  cursor: pointer;
+`
+const ImageItem = styled.div`
+  position: relative;
+`
+
+const CustomDismiss = styled(DismissCircle24Filled)`
+  cursor: pointer;
+  background-color: white;
+  maring: 4pt;
+  border-radius: 50%;
+`
+const ImageListContainer = styled.div`
+  display: flex;
+  overflow-x: auto; /* 가로 스크롤 생성 */
+  overflow-y: hidden; /* 세로 스크롤 생성 안함 */
+  padding: 0 0 4pt 0;
+`
+const ImageContainer = styled.img`
+  width: 7.5rem;
+  height: 7.5rem;
+  object-fit: cover;
+  margin: 6pt 6pt 0 0;
+  border-radius: 8pt;
+`
+const FormItemLabel = styled.div`
+  margin-bottom: 4pt;
+`
+const FormItemInput = styled.input`
+  width: 100%;
+  border: 1px solid #f7f7f7;
+  border-radius: 12%;
+  padding: 8pt;
+`
+const FormItemContainer = styled.div`
+  margin-bottom: 24pt;
+`
+
+const TableAddButtonText = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const TableAddButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #3fba73;
+  background-color: rgba(63, 186, 115, 0.1);
+  border-radius: 8pt;
+  width: 100%;
+  padding: 8pt;
+  margin: 4pt 0 4pt 0;
+  cursor: pointer;
+  * {
+    margin-right: 4pt;
+  }
+`
+
+const FormContent = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 8pt;
+  margin: 4pt 0 4pt 0;
+  align-items: center;
+  width: 100%;
+  background-color: #fafafa;
+  border-radius: 8pt;
+  * {
+    margin-right: 4pt;
+    display: flex;
+    align-items: center;
+  }
+`
+
+const FormBody = styled.div``
+
+const FormHeader = styled.div`
+  display: flex;
+  * {
+    padding-right: 8pt;
+  }
+`
+
+const CompleteButton = styled.div`
+  font-weight: bold;
+  color: #3fba73;
+  font-size: ${({ theme }) => theme.FONT_SIZE.tiny};
+  cursor: pointer;
+`
 const Container = styled.div`
   width: 80%;
   margin: auto;
-  font-size: 24px;
-  * {
-    font-size: inherit !important; /* 부모 요소의 글꼴 크기 상속 */
-  }
 `
 const CardContainer = styled.div`
   display: flex;
