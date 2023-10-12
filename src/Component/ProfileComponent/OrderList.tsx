@@ -1,10 +1,10 @@
+import { Order, OrderMenu } from 'Api/OrderInterface'
 import { useAccessToken } from 'Api/tokenCookie'
-import useUserData from 'Api/useUserData'
+import useUserData from 'Api/UseUserData'
 import useUserOrderData from 'Api/useUserOrderData'
 import OrderModal from 'Component/Modal/OrderModal'
-import formatDate from 'Component/formatDate'
-import getImageSrc from 'Component/getImageSrc'
-import { Image } from 'Context/restaurantContext'
+import formatDate from 'Utils/formatDate'
+import getImageSrc from 'Utils/getImageSrc'
 import { Table } from 'antd'
 import { useState } from 'react'
 import styled from 'styled-components'
@@ -19,24 +19,21 @@ interface MenuOption {
   items: OptionItem[]
 }
 
-export interface OrderMenu {
+interface OrderMenu {
   menu_name: string
   price: number
   quantity: number
   img: Image
-  options: MenuOption[]
 }
 
 export interface Order {
-  restaurant_id: string
+  restaurant_id: number
   restaurant_name: string
-  restaurant_address: string
   created_at: string
   updated_at: string
   _id: string
-  menus: { [menuId: string]: OrderMenu }
+  menus: Menu[]
   status: number
-  status_updated_at: { [status: number]: string }
 }
 
 const OrderList = () => {
@@ -54,6 +51,11 @@ const OrderList = () => {
   const openModalHandler = (id: string) => {
     setOrderId(id)
     setIsOpen(!isOpen)
+  }
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString)
+    return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
   }
 
   if (isLoading) {
@@ -136,7 +138,7 @@ const OrderList = () => {
                   <MenuImageContainer>
                     {Object.values(order.menus)
                       .slice(0, 1)
-                      .map((menu: OrderMenu, menuIndex: number) => (
+                      .map((menu: Menu, menuIndex: number) => (
                         <MenuImage key={menuIndex} src={getImageSrc(menu.img)} alt="메뉴 이미지" />
                       ))}
                   </MenuImageContainer>
@@ -148,7 +150,7 @@ const OrderList = () => {
                   >
                     {Object.values(order.menus)
                       .slice(0, 1)
-                      .map((menu: OrderMenu, menuIndex: number) => (
+                      .map((menu: Menu, menuIndex: number) => (
                         <MenuNameContainer key={menuIndex}>
                           <div>
                             {Object.values(order.menus).length > 1 ? (
@@ -169,7 +171,7 @@ const OrderList = () => {
                         <RestaurantNameContainer>{order.restaurant_name}</RestaurantNameContainer>
                         <ColoredText>
                           {Object.values(order.menus)
-                            .reduce((menuTotal: number, menu: OrderMenu) => menuTotal + menu.price * menu.quantity, 0)
+                            .reduce((menuTotal: number, menu: Menu) => menuTotal + menu.price * menu.quantity, 0)
                             .toLocaleString()}
                           원
                         </ColoredText>

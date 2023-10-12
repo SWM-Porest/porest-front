@@ -1,6 +1,6 @@
+import { MenuOption } from 'Api/OrderInterface'
 import axios, { AxiosError } from 'axios'
 import React, { Dispatch, createContext, useContext, useReducer } from 'react'
-
 export interface Image {
   filename: string
   path: string
@@ -33,30 +33,9 @@ export interface Menu {
   img: Image
   ingre: string[]
   _id: string
-  menuOptions: MenuOption[]
-  created_date: Date
-  updated_date: Date
-}
-interface Language {
-  ko: string
-  en: string
-  [key: string]: string
-}
-interface Name {
-  language: Language
+  options: MenuOption[]
 }
 
-export interface Item {
-  name: Name
-  price: number
-}
-export interface MenuOption {
-  _id: string
-  name: Name
-  items: Item[]
-  isSoldOut: boolean
-  isRequired: boolean
-}
 export const restaurantContextDefaultValue: Restaurant = {
   _id: '',
   name: '',
@@ -85,32 +64,20 @@ export const restaurantContextDefaultValue: Restaurant = {
         type: 'string',
       },
       ingre: ['string'],
-      menuOptions: [
+      options: [
         {
-          _id: 'string',
-          name: {
-            language: {
-              ko: 'string',
-              en: 'string',
-            },
-          },
+          _id: '',
+          name: 'string',
+          isSoldOut: false,
+          maxSelect: 1,
           items: [
             {
-              name: {
-                language: {
-                  ko: 'string',
-                  en: 'string',
-                },
-              },
-              price: 0,
+              name: 'string',
+              price: 2000,
             },
           ],
-          isSoldOut: false,
-          isRequired: false,
         },
       ],
-      created_date: new Date(),
-      updated_date: new Date(),
     },
   ],
 }

@@ -1,8 +1,8 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { Order, OrderMenu } from 'Api/OrderInterface'
 import Header from 'Component/Header'
 import { CloseButton, CloseButtonContainer } from 'Component/Modal/CartModal'
-import formatDate from 'Component/formatDate'
-import { Image } from 'Context/restaurantContext'
+import formatDate from 'Utils/formatDate'
 import type { StepsProps } from 'antd'
 import { Popover, Steps } from 'antd'
 import React from 'react'
@@ -20,35 +20,6 @@ const customDot: StepsProps['progressDot'] = (dot, { status, index }) => (
     {dot}
   </Popover>
 )
-
-interface OptionItem {
-  name: string
-  price: number
-}
-
-interface MenuOption {
-  name: string
-  items: OptionItem[]
-}
-
-interface OrderMenu {
-  menu_name: string
-  price: number
-  quantity: number
-  img: Image
-  options: MenuOption[]
-}
-
-interface Order {
-  restaurant_id: string
-  restaurant_name: string
-  restaurant_address: string
-  updated_at: string
-  _id: string
-  menus: { [menuId: string]: OrderMenu }
-  status: number
-  status_updated_at: { [status: number]: string }
-}
 
 interface OwnProps {
   order: Order

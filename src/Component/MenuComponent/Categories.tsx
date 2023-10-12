@@ -13,7 +13,7 @@ const Categories = ({ ingre }: ingre) => {
 
   return (
     <div style={{ cursor: 'default' }}>
-      <h2 style={{ fontSize: '2rem', margin: '16pt' }}>주요 재료</h2>
+      <h5 style={{ margin: 0 }}>주요 재료</h5>
       <Categoryul>{ulelem}</Categoryul>
     </div>
   )
