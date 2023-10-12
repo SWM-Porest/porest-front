@@ -18,6 +18,7 @@ const TableList = () => {
           restaurant_id: '1',
           restaurant_name: 'test',
           restaurant_address: 'test',
+          created_at: new Date().toString(),
           updated_at: new Date().toString(),
           menus: {
             1: {
@@ -61,6 +62,7 @@ const TableList = () => {
           restaurant_id: '1',
           restaurant_name: 'test',
           restaurant_address: 'test',
+          created_at: new Date().toString(),
           updated_at: new Date().toString(),
           menus: {
             1: {
@@ -104,6 +106,7 @@ const TableList = () => {
           restaurant_id: '1',
           restaurant_name: 'test',
           restaurant_address: 'test',
+          created_at: new Date().toString(),
           updated_at: new Date().toString(),
           menus: {
             1: {

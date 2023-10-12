@@ -1,5 +1,5 @@
 import { useAccessToken } from 'Api/tokenCookie'
-import useUserData from 'Api/UseUserData'
+import useUserData from 'Api/useUserData'
 import useUserOrderData from 'Api/useUserOrderData'
 import OrderModal from 'Component/Modal/OrderModal'
 import formatDate from 'Component/formatDate'
@@ -31,6 +31,7 @@ export interface Order {
   restaurant_id: string
   restaurant_name: string
   restaurant_address: string
+  created_at: string
   updated_at: string
   _id: string
   menus: { [menuId: string]: OrderMenu }

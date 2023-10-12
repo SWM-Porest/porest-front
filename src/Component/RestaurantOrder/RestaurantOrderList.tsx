@@ -169,7 +169,7 @@ const RestaurantOrderList = () => {
 
             <List
               itemLayout="horizontal"
-              dataSource={item.menus}
+              dataSource={Object.values(item.menus)}
               renderItem={(item) => (
                 <List.Item>
                   <List.Item.Meta title={item.menu_name} description={item.quantity + '개'} />
