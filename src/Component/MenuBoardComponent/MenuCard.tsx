@@ -1,7 +1,6 @@
 import { Menu } from 'Context/restaurantContext'
 import React from 'react'
 import styled from 'styled-components'
-import { FlexAlignCSS } from 'Styles/common'
 import getImageSrc from 'Utils/getImageSrc'
 interface OwnProps {
   info: Menu
@@ -14,17 +13,19 @@ const MenuCard: React.FC<OwnProps> = ({ info }) => {
       {info.img ? (
         <MenuCardContainer>
           <StyledImage src={getImageSrc(info.img)} alt="메뉴 이미지" />
-          <div>
-            <ImgStyledName>{info.name}</ImgStyledName>
-            <ImgStyledPrice>{price}원</ImgStyledPrice>
-          </div>
+          <StyledText>
+            <StyledName>{info.name}</StyledName>
+            <StyledDes>{info.description}</StyledDes>
+            <StyledPrice>{price}원</StyledPrice>
+          </StyledText>
         </MenuCardContainer>
       ) : (
         <MenuCardContainer>
-          <div>
+          <StyledText>
             <StyledName>{info.name}</StyledName>
+            <StyledDes>{info.description}</StyledDes>
             <StyledPrice>{price}원</StyledPrice>
-          </div>
+          </StyledText>
         </MenuCardContainer>
       )}
     </div>
@@ -33,40 +34,53 @@ const MenuCard: React.FC<OwnProps> = ({ info }) => {
 export default MenuCard
 
 const MenuCardContainer = styled.div`
-  ${FlexAlignCSS};
-  padding: 24pt 48pt;
+  display: flex;
+  padding: 1.2rem 0;
+  align-items: flex-start;
+  gap: 16px;
+
   color: inherit;
   text-decoration: none;
+
   border-top: ridge;
   border-color: ${({ theme }) => theme.COLOR.common.gray[700]};
   cursor: pointer;
 `
 
 const StyledImage = styled.img`
-  display: block;
-  width: 200pt;
-  height: 192pt;
-  border-radius: 8pt;
+  width: 10.8rem;
+  aspect-ratio: 1/1;
+
+  border-radius: 1.2rem;
+  background: url(<path-to-image>), lightgray 50% / cover no-repeat;
 `
 
-const ImgStyledName = styled.h4`
-  padding: 8pt 56pt;
-  margin: 0;
-`
-
-const ImgStyledPrice = styled.h5`
-  padding: 8pt 56pt;
-  margin: 0;
-  color: ${({ theme }) => theme.COLOR.number_price};
+const StyledText = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  align-self: stretch;
 `
 
 const StyledName = styled.h4`
-  padding: 8pt 32pt;
+  margin: 0;
+  color: ${({ theme }) => theme.COLOR.common.gray[20]};
+  font-style: normal;
+  font-weight: 600;
+`
+
+const StyledDes = styled.h5`
+  color: ${({ theme }) => theme.COLOR.common.gray[40]};
+  font-size: 1.4rem;
+  font-style: normal;
+  font-weight: 400;
   margin: 0;
 `
 
-const StyledPrice = styled.h5`
-  padding: 8pt 32pt;
+const StyledPrice = styled.h4`
+  color: ${({ theme }) => theme.COLOR.common.gray[20]};
+  font-style: normal;
+  font-weight: 700;
   margin: 0;
-  color: ${({ theme }) => theme.COLOR.number_price};
 `
