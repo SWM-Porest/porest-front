@@ -1,12 +1,12 @@
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { getCookie } from 'Api/cartCookie'
+import { getCookie, removeAllCookie } from 'Api/cartCookie'
 import { useAccessToken } from 'Api/tokenCookie'
 import { useNotification } from 'Api/useNotification'
 import CartPrice from 'Component/CartComponent/CartPrice'
 import Header from 'Component/Header'
 import { useCartModal } from 'Context/CartModalContext'
 import { useRestaurantState } from 'Context/restaurantContext'
+import { ReactComponent as Chevron } from 'assets/Chevron.svg'
 import React, { useEffect } from 'react'
 import { styled } from 'styled-components'
 
@@ -80,21 +80,25 @@ const CartModal: React.FC = () => {
       console.error('주문 생성 중 오류 발생:', error)
     }
   }
+  const handleRemoveMenu = () => {
+    removeAllCookie(restaurant?._id as string)
+  }
 
   return (
     <ModalOverlay className={isModalOpen ? 'open' : ''} onClick={handleOverlayClick}>
       <ModalContent onClick={handleContentClick}>
         {/* 모달 내용 */}
         <Header
-          HeaderName="주문서"
-          Right={
-            <CloseButtonContainer>
-              <CloseButton icon={faXmark} onClick={closeModal} size="2xl" />
-            </CloseButtonContainer>
+          Left={
+            <Icon onClick={closeModal}>
+              <Chevron width="2rem" height="2rem" fill="#212121" />
+            </Icon>
           }
-        ></Header>
+          HeaderName="주문서"
+          Right={<Icon onClick={handleRemoveMenu}>전체삭제</Icon>}
+        />
         <CartPrice />
-        <div style={{ display: 'flex' }}>
+        <ButtonContainer style={{ display: 'flex' }}>
           <StyledButton
             onClick={() => {
               useNotification()
@@ -103,7 +107,7 @@ const CartModal: React.FC = () => {
           >
             주문하기
           </StyledButton>
-        </div>
+        </ButtonContainer>
       </ModalContent>
     </ModalOverlay>
   )
@@ -117,7 +121,7 @@ const ModalOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: ${({ theme }) => theme.COLOR.common.gray[600]};
+  background-color: ${({ theme }) => theme.COLOR.common.gray[60]};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -125,7 +129,7 @@ const ModalOverlay = styled.div`
 `
 
 const ModalContent = styled.div`
-  background-color: ${({ theme }) => theme.COLOR.common.white};
+  background-color: ${({ theme }) => theme.COLOR.common.gray[120]};
   position: relative;
   width: 100%;
   height: 100%;
@@ -150,7 +154,7 @@ export const CloseButton = styled(FontAwesomeIcon)`
   cursor: pointer;
   width: 54px;
   height: 54px;
-  color: ${({ theme }) => theme.COLOR.common.gray[700]}; /* 아이콘 색상 */
+  color: ${({ theme }) => theme.COLOR.common.gray[70]}; /* 아이콘 색상 */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -162,7 +166,7 @@ const StyledButton = styled.button`
   text-decoration: none;
   text-align: center;
   background-color: ${({ theme }) => theme.COLOR.main};
-  color: ${({ theme }) => theme.COLOR.common.white};
+  color: ${({ theme }) => theme.COLOR.common.white[0]};
   padding: 20px;
   width: 90%;
   height: 100%;
@@ -176,4 +180,15 @@ const StyledButton = styled.button`
     box-shadow: 0px 0px 16px 0 ${({ theme }) => theme.COLOR.main};
     transition: 0.4s;
   }
+`
+const Icon = styled.div`
+  display: flex;
+  padding: 1rem;
+  gap: 1rem;
+  border-radius: 2rem;
+  background: ${({ theme }) => theme.COLOR.common.white[0]};
+`
+
+const ButtonContainer = styled.div`
+  background-color: ${({ theme }) => theme.COLOR.common.white[0]};
 `
