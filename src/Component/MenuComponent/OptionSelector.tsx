@@ -49,5 +49,5 @@ const LargeButton = styled.div<{ selected: boolean }>`
 `
 const StyledPrice = styled.span<{ selected: boolean }>`
   float: right;
-  color: ${({ selected, theme }) => (selected ? theme.COLOR.white : theme.COLOR.number_price)};
+  color: ${({ selected, theme }) => (selected ? theme.COLOR.common.white[0] : theme.COLOR.number_price)};
 `
