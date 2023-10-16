@@ -5,8 +5,9 @@ import MenuBoardPage from 'Pages/MenuBoardPage'
 import ProfilePage from 'Pages/ProfilePage'
 import RestaurantListPage from 'Pages/RestaurantListPage'
 import RestaurantPage from 'Pages/RestaurantPage'
-import { createBrowserRouter } from 'react-router-dom'
+import TablePage from 'Pages/TablePage'
 import PrivateRoute from 'Routes/private'
+import { createBrowserRouter } from 'react-router-dom'
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
           {
             path: '/restaurants/:id/edit',
             element: <EditRestaurantPage />,
+          },
+          {
+            path: 'table', // 레스토랑 id, table number
+            element: <TablePage />,
           },
         ],
       },
