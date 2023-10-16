@@ -67,7 +67,7 @@ const StyledButton = styled.button`
   text-decoration: none;
   text-align: center;
   background-color: ${({ theme }) => theme.COLOR.main};
-  color: ${({ theme }) => theme.COLOR.common.white};
+  color: ${({ theme }) => theme.COLOR.common.white[0]};
   padding: 32pt;
   width: 90%;
   margin: auto;
@@ -86,32 +86,32 @@ const showMessage = (messageText: string, duration: number) => {
   const messageContainer = document.createElement('div')
   messageContainer.style.display = 'flex'
   messageContainer.style.alignItems = 'center'
-  messageContainer.style.width = '416pt'
+  messageContainer.style.width = '28rem'
 
   const image = new Image()
   image.src = '/img/check.png'
-  image.style.width = '40pt'
-  image.style.height = '40pt'
-  image.style.marginRight = '24pt'
+  image.style.width = '2rem'
+  image.style.height = '2rem'
+  image.style.marginRight = '1rem'
 
   const textContainer = document.createElement('div')
   textContainer.textContent = messageText
-  textContainer.style.fontSize = '2rem'
-  textContainer.style.fontFamily = 'Noto Sans KR'
-  textContainer.style.fontWeight = 'bold'
+  textContainer.style.fontSize = '1.8rem'
+  textContainer.style.fontFamily = 'pretendard'
+  textContainer.style.fontWeight = '600'
 
   messageContainer.appendChild(image)
   messageContainer.appendChild(textContainer)
 
   const containerStyle = messageContainer.style
   containerStyle.position = 'fixed'
-  containerStyle.top = '24pt'
+  containerStyle.top = '2rem'
   containerStyle.left = '50%'
   containerStyle.transform = 'translateX(-50%)'
   containerStyle.backgroundColor = '#fff'
   containerStyle.color = '#333'
-  containerStyle.padding = '24pt 40pt'
-  containerStyle.borderRadius = '16pt'
+  containerStyle.padding = '1rem 2.4rem'
+  containerStyle.borderRadius = '1rem'
   containerStyle.opacity = '0'
   containerStyle.transition = 'opacity 0.3s'
 
