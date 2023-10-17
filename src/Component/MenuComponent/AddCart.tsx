@@ -26,18 +26,18 @@ const AddCart: React.FC<Ownprops> = ({ menu, cnt, openModalHandler }) => {
 
 export default AddCart
 
-const StyledButton = styled.button`
+export const StyledButton = styled.button`
   cursor: pointer;
-  font-size: ${({ theme }) => theme.FONT_SIZE.small};
+  font-size: ${({ theme }) => theme.FONT_SIZE.tiny};
   font-weight: bold;
   text-decoration: none;
   text-align: center;
   background-color: ${({ theme }) => theme.COLOR.main};
   color: ${({ theme }) => theme.COLOR.common.white};
-  padding: 32pt;
-  width: 90%;
-  margin: auto;
-  margin-bottom: 40pt;
+  padding: 2rem;
+  flex: 1;
+  margin: 0 20px;
+  margin-bottom: 2rem;
   border-radius: 8pt;
   box-shadow: 0 8pt 16pt 0 rgba(0, 0, 0, 0.3);
   border: none;

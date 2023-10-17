@@ -5,6 +5,7 @@ import MenuBoardPage from 'Pages/MenuBoardPage'
 import ProfilePage from 'Pages/ProfilePage'
 import RestaurantListPage from 'Pages/RestaurantListPage'
 import RestaurantPage from 'Pages/RestaurantPage'
+import WaitingPage from 'Pages/WaitingPage'
 import { createBrowserRouter } from 'react-router-dom'
 import PrivateRoute from 'Routes/private'
 
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
             element: <EditRestaurantPage />,
           },
         ],
+      },
+      {
+        path: '/waiting/:restaurant_id',
+        element: <WaitingPage />,
       },
     ],
   },
