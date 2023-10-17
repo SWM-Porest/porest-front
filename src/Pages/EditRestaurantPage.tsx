@@ -122,6 +122,9 @@ const EditRestaurantPage: React.FC = () => {
 
     axios
       .patch(`${process.env.REACT_APP_API_URL}/restaurants/${id}/images`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
         auth: {
           username: process.env.REACT_APP_BASIC_AUTH_USERNAME
             ? process.env.REACT_APP_BASIC_AUTH_USERNAME

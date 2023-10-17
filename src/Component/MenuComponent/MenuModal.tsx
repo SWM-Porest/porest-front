@@ -94,14 +94,15 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
             ></DescriptionContainer>
             <ContainerBox>
               <Categories ingre={menu ? menu.ingre : []}></Categories>
-              {menu?.options.map((option) => (
-                <OptionSelector
-                  key={option._id}
-                  option={option}
-                  selectedItems={selectedOptions[option._id]?.map((item) => item.name) || []}
-                  onSelect={(selectedItems) => handleOptionSelect(option._id, selectedItems)}
-                />
-              ))}
+              {menu?.options &&
+                menu?.options.map((option) => (
+                  <OptionSelector
+                    key={option._id}
+                    option={option}
+                    selectedItems={selectedOptions[option._id]?.map((item) => item.name) || []}
+                    onSelect={(selectedItems) => handleOptionSelect(option._id, selectedItems)}
+                  />
+                ))}
             </ContainerBox>
             <StyledAmountContainer>
               <AmountCheck count={count} handleIncrement={handleIncrement} handleDecrement={handleDecrement} />

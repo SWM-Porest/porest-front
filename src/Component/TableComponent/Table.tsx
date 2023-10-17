@@ -1,18 +1,17 @@
-import { Order } from 'Api/OrderInterface'
+import { Table as TableModel } from 'Api/table'
+import Loading from 'Component/Loading'
+import axios from 'axios'
 import { useEffect, useState } from 'react'
+import { useQueries } from 'react-query'
 import styled from 'styled-components'
 
-interface Table {
-  name: string
-  orders: Order[]
-  isOccupied: boolean
-  isDisabled: boolean
-}
 interface Props {
-  table: Table
+  table: TableModel
 }
 
 const Table: React.FC<Props> = ({ table }) => {
+  const deepCopyTable = { ...table }
+  const [viewedTable, setViewedTable] = useState<TableModel>(deepCopyTable)
   const [isModalOpen, setIsOpenModal] = useState(false)
   const [numberOfOnCooking, setNumberOfOnCooking] = useState(0)
   const [numberOfOnServed, setNumberOfOnServed] = useState(0)
@@ -22,6 +21,38 @@ const Table: React.FC<Props> = ({ table }) => {
   const toggleModal = () => {
     setIsOpenModal(!isModalOpen)
   }
+
+  const fetchOrders = async (order_id: string) => {
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/orders/${order_id}`)
+
+    if (response.status === 200) {
+      const order = response.data
+
+      if (order.status <= 2) {
+        setNumberOfOnCooking(numberOfOnCooking + 1)
+      } else if (order.status > 2) {
+        setNumberOfOnServed(numberOfOnServed + 1)
+      }
+
+      if (orderStatus < order.status) {
+        setOrderStatus(order.status)
+      }
+
+      setViewedTable((prev) => ({
+        ...prev,
+        orders: prev.orders ? [...prev.orders, order] : [order],
+      }))
+    }
+
+    return response.data
+  }
+
+  const result = useQueries(
+    table.order_ids.map((order_id: string) => {
+      return { queryKey: ['orders', order_id], queryFn: () => fetchOrders(order_id), staleTime: Infinity }
+    }),
+  )
+
   const getStatusColor = (status: number) => {
     if (status === 0) {
       return 'transparent'
@@ -47,47 +78,35 @@ const Table: React.FC<Props> = ({ table }) => {
   }
 
   const getOrderElement = () => {
-    const menus = table.orders
+    const menus = viewedTable.orders
       .map((order) => {
-        return Object.values(order.menus)
+        if (viewedTable.orders) return Object.values(order.menus)
       })
       .flat()
     console.log(menus)
-    if (menus.length === 0) {
+    if (menus === undefined || menus.length === 0) {
       return ''
     }
+
     return menus.length > 1 ? (
       <div>
-        {menus[0].menu_name} 외 {menus.length - 1}개
+        {menus[0] && menus[0].menu_name} 외 {menus.length - 1}개
       </div>
     ) : (
-      <div>{menus[0].menu_name}</div>
+      <div>{menus[0] && menus[0].menu_name}</div>
     )
   }
-  useEffect(() => {
-    table.orders.forEach((order) => {
-      if (order.status <= 2) {
-        setNumberOfOnCooking(numberOfOnCooking + 1)
-      } else if (order.status > 2) {
-        setNumberOfOnServed(numberOfOnServed + 1)
-      }
-
-      if (orderStatus < order.status) {
-        setOrderStatus(order.status)
-      }
-    })
-  }, [table.orders])
 
   return (
     <StyledTable onClick={toggleModal}>
       <TableHeader color={getStatusColor(orderStatus)}>
         <TableHeaderLeft>
-          <TableName>{table.name}</TableName>
+          <TableName>{viewedTable.name}</TableName>
           <TableTime>10분</TableTime>
         </TableHeaderLeft>
         <TableStatus>{getStatusText(orderStatus)}</TableStatus>
       </TableHeader>
-      {Object.values(table.orders).length > 0 ? (
+      {viewedTable.orders && Object.values(viewedTable.orders).length > 0 ? (
         <TableBody>
           <TableMenus>{getOrderElement()}</TableMenus>
           <TableMenusStat>

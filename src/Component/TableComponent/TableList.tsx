@@ -1,153 +1,34 @@
 import { styled } from 'styled-components'
+
+import axios from 'axios'
+import { UseQueryResult, useQuery } from 'react-query'
+import { Table as TableModel } from 'Api/table'
+import Loading from 'Component/Loading'
 import Table from './Table'
 
-const TableList = () => {
-  const tables = [
-    {
-      name: '1번 테이블',
+interface Props {
+  id: string
+}
 
-      orders: [],
-      isOccupied: true,
-      isDisabled: false,
-    },
-    {
-      name: '2번 테이블',
+const TableList: React.FC<Props> = ({ id }) => {
+  const fecthTableList = async () => {
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/tables/restaurants/${id}`)
 
-      orders: [
-        {
-          restaurant_id: '1',
-          restaurant_name: 'test',
-          restaurant_address: 'test',
-          created_at: new Date().toString(),
-          updated_at: new Date().toString(),
-          menus: {
-            1: {
-              menu_name: '아메리카노',
-              price: 3000,
-              quantity: 1,
-              img: {
-                filename: 'string',
-                path: 'string',
-                type: 'string',
-              },
-              options: [],
-            },
-            2: {
-              menu_name: '카페라떼',
-              price: 5000,
-              quantity: 1,
-              img: {
-                filename: 'string',
-                path: 'string',
-                type: 'string',
-              },
-              options: [],
-            },
-          },
-          status: 1,
-          status_updated_at: {
-            1: new Date().toString(),
-          },
-          _id: '1',
-        },
-      ],
-      isOccupied: true,
-      isDisabled: false,
-    },
-    {
-      name: '3번 테이블',
+    return response.data
+  }
 
-      orders: [
-        {
-          restaurant_id: '1',
-          restaurant_name: 'test',
-          restaurant_address: 'test',
-          created_at: new Date().toString(),
-          updated_at: new Date().toString(),
-          menus: {
-            1: {
-              menu_name: '아메리카노',
-              price: 3000,
-              quantity: 1,
-              img: {
-                filename: 'string',
-                path: 'string',
-                type: 'string',
-              },
-              options: [],
-            },
-            2: {
-              menu_name: '카페라떼',
-              price: 5000,
-              quantity: 1,
-              img: {
-                filename: 'string',
-                path: 'string',
-                type: 'string',
-              },
-              options: [],
-            },
-          },
-          status: 2,
-          status_updated_at: {
-            1: new Date().toString(),
-          },
-          _id: '1',
-        },
-      ],
-      isOccupied: true,
-      isDisabled: false,
-    },
-    {
-      name: '1번 테이블',
+  const { data: tables, isLoading }: UseQueryResult<TableModel[]> = useQuery('tables', fecthTableList)
 
-      orders: [
-        {
-          restaurant_id: '1',
-          restaurant_name: 'test',
-          restaurant_address: 'test',
-          created_at: new Date().toString(),
-          updated_at: new Date().toString(),
-          menus: {
-            1: {
-              menu_name: '아메리카노',
-              price: 3000,
-              quantity: 1,
-              img: {
-                filename: 'string',
-                path: 'string',
-                type: 'string',
-              },
-              options: [],
-            },
-            2: {
-              menu_name: '카페라떼',
-              price: 5000,
-              quantity: 1,
-              img: {
-                filename: 'string',
-                path: 'string',
-                type: 'string',
-              },
-              options: [],
-            },
-          },
-          status: 3,
-          status_updated_at: {
-            1: new Date().toString(),
-          },
-          _id: '1',
-        },
-      ],
-      isOccupied: true,
-      isDisabled: false,
-    },
-  ]
+  if (isLoading) {
+    return <Loading />
+  }
+
   return (
     <Container>
-      {tables.map((table, index) => {
-        return <Table key={index} table={table} />
-      })}
+      {tables &&
+        tables.map((table: TableModel, index: number) => {
+          return <Table key={index} table={table} />
+        })}
     </Container>
   )
 }
