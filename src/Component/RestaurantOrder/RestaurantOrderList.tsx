@@ -161,7 +161,7 @@ const RestaurantOrderList = () => {
                   <Tag color={getStatusColor(item.status)} icon={getStatusIcon(item.status)}>
                     {getStatusText(item.status)}
                   </Tag>
-                  {item.menus[0].menu_name} 외 {Object.values(item.menus).length - 1}개
+                  {Object.values(item.menus)[0].menu_name} 외 {Object.values(item.menus).length - 1}개
                 </Space>
               }
               description={formatDate(item.created_at.toString())}
@@ -228,7 +228,7 @@ const RestaurantOrderList = () => {
 export default RestaurantOrderList
 
 const StyledContainer = styled.div`
-  padding: 48pt;
+  padding: 10pt;
   font-size: 2rem;
   * {
     font-size: inherit !important;
