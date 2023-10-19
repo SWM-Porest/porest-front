@@ -11,14 +11,17 @@ interface OwnProps {
 const MainOrder: React.FC<OwnProps> = ({ info }) => {
   const [menuId, setMenuId] = useState('')
   const [isOpen, setIsOpen] = useState(false)
+  const [activeMenuIndex, setActiveMenuIndex] = useState(0)
 
   const openModalHandler = (id: string) => {
     setMenuId(id)
     setIsOpen(!isOpen)
   }
 
+  const filteredMenus = info.menus.filter((menu) => menu.category !== '간편주문')
+
   // 중복되지 않은 메뉴 타입 추출
-  const uniqueMenuTypes = info.menus.reduce((types: string[], menu) => {
+  const uniqueMenuTypes = filteredMenus.reduce((types: string[], menu) => {
     if (!types.includes(menu.menutype)) {
       types.push(menu.menutype)
     }
@@ -27,8 +30,6 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
 
   // Ref 배열을 동적 생성
   const contentRefs = uniqueMenuTypes.map(() => useRef<HTMLDivElement>(null))
-
-  const [activeMenuIndex, setActiveMenuIndex] = useState(0)
 
   useEffect(() => {
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
@@ -82,7 +83,7 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
               <StyledLiEach>{menuType}</StyledLiEach>
             </div>
 
-            {info.menus.map(
+            {filteredMenus.map(
               (menu) =>
                 menu.menutype === menuType &&
                 menu._id && (
@@ -117,12 +118,12 @@ export default MainOrder
 const StyledUl = styled.ul`
   position: sticky;
   top: 0;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.COLOR.common.white};
   list-style: none;
   padding: 24pt 48pt;
   display: block;
   border-bottom: solid;
-  border-color: ${({ theme }) => theme.COLOR.common.gray[600]};
+  border-color: ${({ theme }) => theme.COLOR.common.gray[700]};
   cursor: pointer;
 `
 
@@ -131,7 +132,7 @@ const StyledLi = styled.li<{ $active: boolean }>`
   display: inline-block;
   padding: 16pt 40pt 0 0;
   font-weight: bold;
-  color: ${(props) => (props.$active ? '#343434' : '#A9A9A9')};
+  color: ${(props) => (props.$active ? props.theme.COLOR.common.black : props.theme.COLOR.common.gray[500])};
 `
 
 const MenuCardsContainer = styled.div`
@@ -148,7 +149,7 @@ const DisclaimerContainer = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
-  background-color: #f2f2f2;
+  background-color: ${({ theme }) => theme.COLOR.common.gray[700]};
   font-family: 'Noto Sans KR', sans-serif;
   cursor: default;
   padding: 0 8pt;
@@ -156,6 +157,6 @@ const DisclaimerContainer = styled.div`
 
 const Disclaimer = styled.div`
   font-size: 1.5rem;
-  color: #777;
+  color: ${({ theme }) => theme.COLOR.common.gray[400]};
   margin-top: 8pt;
 `

@@ -7,12 +7,12 @@ interface OwnProps {
 }
 
 const MenuCard: React.FC<OwnProps> = ({ info }) => {
-  const price = info.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  const price = info.price.toLocaleString()
   return (
     <div>
       {info.img ? (
         <MenuCardContainer>
-          <StyledImage src={info.img} alt="메뉴 이미지" />
+          <StyledImage src={process.env.REACT_APP_STATIC_URL + info.img.path} alt="메뉴 이미지" />
           <div>
             <ImgStyledName>{info.name}</ImgStyledName>
             <ImgStyledPrice>{price}원</ImgStyledPrice>
@@ -37,7 +37,7 @@ const MenuCardContainer = styled.div`
   color: inherit;
   text-decoration: none;
   border-top: ridge;
-  border-color: ${({ theme }) => theme.COLOR.common.gray[600]};
+  border-color: ${({ theme }) => theme.COLOR.common.gray[700]};
   cursor: pointer;
 `
 

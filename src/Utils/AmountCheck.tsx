@@ -5,24 +5,27 @@ import styled from 'styled-components'
 
 interface AmountContainerProps {
   count: number
-  handleQuantity: (type: string) => void
+  handleIncrement: () => void
+  handleDecrement: () => void
 }
 
-const AmountCheck: React.FC<AmountContainerProps> = ({ count, handleQuantity }) => {
+const AmountCheck: React.FC<AmountContainerProps> = ({ count, handleIncrement, handleDecrement }) => {
   return (
     <Container>
-      <MinusButton onClick={() => handleQuantity('minus')}>
+      <MinusButton onClick={handleDecrement}>
         <FontAwesomeIcon icon={faMinus}></FontAwesomeIcon>
       </MinusButton>
       <CountContainer>
         <CountSpan>{count}</CountSpan>
       </CountContainer>
-      <PlusButton onClick={() => handleQuantity('plus')}>
+      <PlusButton onClick={handleIncrement}>
         <FontAwesomeIcon icon={faPlus}></FontAwesomeIcon>
       </PlusButton>
     </Container>
   )
 }
+
+export default AmountCheck
 
 const Container = styled.div`
   display: flex;
@@ -50,7 +53,7 @@ const PlusMinusButton = styled.button`
   color: ${({ theme }) => theme.COLOR.common.black};
   &:active {
     background-color: ${({ theme }) => theme.COLOR.main};
-    color: #fff;
+    color: ${({ theme }) => theme.COLOR.common.white};
     box-shadow: 0px 0px 16px 0 ${({ theme }) => theme.COLOR.main};
     color: ${({ theme }) => theme.COLOR.common.white};
     outline: none;
@@ -76,5 +79,3 @@ const CountContainer = styled.div`
   align-items: center;
   cursor: default;
 `
-
-export default AmountCheck

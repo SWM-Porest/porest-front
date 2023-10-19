@@ -1,5 +1,11 @@
+import { MenuOption } from 'Api/OrderInterface'
 import axios, { AxiosError } from 'axios'
 import React, { Dispatch, createContext, useContext, useReducer } from 'react'
+export interface Image {
+  filename: string
+  path: string
+  type: string
+}
 
 export interface Restaurant {
   _id: string
@@ -9,7 +15,7 @@ export interface Restaurant {
   intro: string
   notice: string
   phone_number: string
-  banner_image_urls: string[]
+  banner_images: Image[]
   address: string
   created_at: string
   updated_at: string
@@ -24,9 +30,10 @@ export interface Menu {
   price: number
   category: string
   description: string
-  img: string
+  img: Image
   ingre: string[]
   _id: string
+  options: MenuOption[]
 }
 
 export const restaurantContextDefaultValue: Restaurant = {
@@ -34,7 +41,7 @@ export const restaurantContextDefaultValue: Restaurant = {
   name: '',
   en_name: '',
   category: [],
-  banner_image_urls: [],
+  banner_images: [],
   intro: '',
   notice: '',
   phone_number: '',
@@ -51,8 +58,26 @@ export const restaurantContextDefaultValue: Restaurant = {
       price: 2000,
       category: 'string',
       description: 'string',
-      img: 'string',
+      img: {
+        filename: 'string',
+        path: 'string',
+        type: 'string',
+      },
       ingre: ['string'],
+      options: [
+        {
+          _id: '',
+          name: 'string',
+          isSoldOut: false,
+          maxSelect: 1,
+          items: [
+            {
+              name: 'string',
+              price: 2000,
+            },
+          ],
+        },
+      ],
     },
   ],
 }
@@ -131,7 +156,7 @@ export const useRestaurantState = () => {
   return restaurantState
 }
 
-export const useRestauranDispatch = () => {
+export const useRestaurantDispatch = () => {
   const restaurantDispatch = useContext(RestaurantDispatchContext)
   if (!restaurantDispatch) throw new Error('Can not find restaurantDispatchProvider')
   return restaurantDispatch

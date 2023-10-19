@@ -1,33 +1,30 @@
 import { CartModalProvider } from 'Context/CartModalContext'
 import { RestaurantProvider } from 'Context/restaurantContext'
-import ErrorPage from 'Pages/ErrorPage'
-import MenuBoardPage from 'Pages/MenuBoardPage'
+import router from 'Routes/router'
 import { GlobalStyles } from 'Styles/global'
 import { theme } from 'Styles/theme'
 import React from 'react'
-import { Route, Routes, useLocation } from 'react-router-dom'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { RouterProvider } from 'react-router-dom'
+import { RecoilRoot } from 'recoil'
 import { ThemeProvider } from 'styled-components'
-import LoginPage from './Pages/LoginPage'
 
 const App: React.FC = () => {
-  const location = useLocation()
-  const errorCode = location.state && location.state.errorCode ? location.state.errorCode : 404
+  const queryClient = new QueryClient()
 
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyles />
-      <div className="App">
-        <CartModalProvider>
-          <RestaurantProvider>
-            <Routes>
-              <Route path="/restaurants/:id/login" element={<LoginPage />} />
-              <Route path="/restaurants/:id" element={<MenuBoardPage />} />
-              <Route path="*" element={<ErrorPage errorCode={errorCode} />} />
-            </Routes>
-          </RestaurantProvider>
-        </CartModalProvider>
-      </div>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <RecoilRoot>
+          <GlobalStyles />
+          <CartModalProvider>
+            <RestaurantProvider>
+              <RouterProvider router={router} />
+            </RestaurantProvider>
+          </CartModalProvider>
+        </RecoilRoot>
+      </ThemeProvider>
+    </QueryClientProvider>
   )
 }
 
