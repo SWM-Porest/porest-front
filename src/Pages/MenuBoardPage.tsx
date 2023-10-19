@@ -8,11 +8,15 @@ import {
   useRestaurantDispatch,
   useRestaurantState,
 } from 'Context/restaurantContext'
+import getImageSrc from 'Utils/getImageSrc'
 import { Spin } from 'antd'
+import { ReactComponent as Chevron } from 'assets/Chevron.svg'
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import ErrorPage from './ErrorPage'
+
+import { useNavigate } from 'react-router-dom'
 
 const MenuBoardPage: React.FC = () => {
   const { id } = useParams()
@@ -20,7 +24,11 @@ const MenuBoardPage: React.FC = () => {
 
   const dispatch = useRestaurantDispatch()
   const { data: restaurant, loading, error } = useRestaurantState().restaurant
+  const navigate = useNavigate()
 
+  const handleIconLeftClick = () => {
+    navigate('/restaurants')
+  }
   useEffect(() => {
     getRestaurant(dispatch, id)
   }, [dispatch, id])
@@ -36,7 +44,22 @@ const MenuBoardPage: React.FC = () => {
 
   return (
     <div className="MenuBoard">
-      <SliderContainer />
+      <SliderContainer
+        images={
+          restaurant && restaurant.banner_images
+            ? restaurant.banner_images.map((banner_image) => {
+                return getImageSrc(banner_image)
+              })
+            : []
+        }
+        title={restaurant ? restaurant.name : ''}
+        lefticon={
+          <IconLeft onClick={handleIconLeftClick}>
+            <Chevron width="2rem" height="2rem" fill="#212121" />
+          </IconLeft>
+        }
+      />
+
       <StyledContainer>
         <MainOrder info={restaurant ? restaurant : restaurantContextDefaultValue} />
         <FloatingButton info={restaurant ? restaurant : restaurantContextDefaultValue} />
@@ -59,4 +82,19 @@ export const StyledSpin = styled(Spin)`
     left: 50%;
     transform: translate(-50%, -50%) scale(4);
   }
+`
+const Icon = styled.div`
+  display: inline-flex;
+  padding: 1rem;
+  align-items: flex-start;
+  gap: 1rem;
+  border-radius: 2rem;
+  background: ${({ theme }) => theme.COLOR.common.white[0]};
+  box-shadow: 0 0.2rem 1.2rem 0 rgba(0, 0, 0, 0.16);
+  position: absolute;
+  top: 1rem;
+`
+
+const IconLeft = styled(Icon)`
+  left: 1.2rem;
 `

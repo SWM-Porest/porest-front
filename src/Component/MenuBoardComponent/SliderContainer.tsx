@@ -1,47 +1,22 @@
 import MainBanner from 'Component/MenuBoardComponent/MainBanner'
-import { useRestaurantState } from 'Context/restaurantContext'
-import ErrorPage from 'Pages/ErrorPage'
-import getImageSrc from 'Utils/getImageSrc'
 import { Spin } from 'antd'
-import { ReactComponent as Chevron } from 'assets/Chevron.svg'
-import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
-const SliderContainer: React.FC = () => {
-  const { data: restaurant, loading, error } = useRestaurantState().restaurant
-  if (loading) {
-    return (
-      <StyledSpin tip="Loading" size="large">
-        <div className="content" />
-      </StyledSpin>
-    )
-  }
-  if (error) return <ErrorPage errorCode={500} />
-
-  const navigate = useNavigate()
-
-  const handleIconLeftClick = () => {
-    navigate('/restaurants')
-  }
-
+const SliderContainer: React.FC<{
+  images: string[]
+  title?: string
+  lefticon?: React.ReactNode
+  righticon?: React.ReactNode
+}> = ({ images, title, lefticon, righticon }) => {
   return (
     <StyledContainer>
-      <MainBanner
-        images={
-          restaurant && restaurant.banner_images
-            ? restaurant.banner_images.map((banner_image) => {
-                return getImageSrc(banner_image)
-              })
-            : []
-        }
-      />
-      <IconLeft onClick={handleIconLeftClick}>
-        <Chevron width="2rem" height="2rem" fill="#212121" />
-      </IconLeft>
+      <MainBanner images={images} />
+      {lefticon && <>{lefticon}</>}
+      {righticon && <>{righticon}</>}
       {/* <IconRight>
         <LocalLanguage width="2rem" height="2rem" fill="#212121" />
       </IconRight> */}
-      <RestaurantName>{restaurant?.name}</RestaurantName>
+      {title && <RestaurantName>{title}</RestaurantName>}
     </StyledContainer>
   )
 }
