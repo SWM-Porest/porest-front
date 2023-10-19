@@ -1,14 +1,22 @@
 import { LoadingOutlined } from '@ant-design/icons'
+import Navbar from 'Utils/Navbar'
 import getImageSrc from 'Utils/getImageSrc'
+import { ReactComponent as Home } from 'assets/Home.svg'
+import { ReactComponent as Person } from 'assets/Person.svg'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 const RestaurantListPage = () => {
   const [restaurants, setRestaurants] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const navigate = useNavigate()
+
+  const handlePersonClick = () => {
+    navigate('/mypage')
+  }
 
   useEffect(() => {
     axios
@@ -41,30 +49,38 @@ const RestaurantListPage = () => {
   }
 
   return (
-    <>
-      <div>
-        <RestaurantList>
-          {restaurants.map((restaurant) => (
-            <RestaurantItem key={restaurant._id}>
-              <RestaurantLink to={`/restaurants/${restaurant._id}`}>
-                <StyledImage src={getImageSrc(restaurant.banner_images[0])} alt="매장 사진" />
-                <Container1>
-                  <NameContainer>
-                    <StyledName>{restaurant.name}</StyledName>
-                  </NameContainer>
-                  <AddressContainer>
-                    <StyledAddress>주소: {restaurant.address}</StyledAddress>
-                  </AddressContainer>
-                  <InfoContainer>
-                    <StyledInfo>설명: {restaurant.intro}</StyledInfo>
-                  </InfoContainer>
-                </Container1>
-              </RestaurantLink>
-            </RestaurantItem>
-          ))}
-        </RestaurantList>
-      </div>
-    </>
+    <div>
+      <RestaurantList>
+        {restaurants.map((restaurant) => (
+          <div key={restaurant._id}>
+            <RestaurantLink to={`/restaurants/${restaurant._id}`}>
+              <StyledImage src={getImageSrc(restaurant.banner_images[0])} alt="매장 사진" />
+              <ContentsContainer>
+                <NameContainer>
+                  <StyledName>{restaurant.name}</StyledName>
+                </NameContainer>
+                <AddressContainer>
+                  <StyledAddress>주소: {restaurant.address}</StyledAddress>
+                </AddressContainer>
+                <InfoContainer>
+                  <StyledInfo>설명: {restaurant.intro}</StyledInfo>
+                </InfoContainer>
+              </ContentsContainer>
+            </RestaurantLink>
+          </div>
+        ))}
+      </RestaurantList>
+      <NavContainer>
+        <Navbar
+          Icon={{
+            홈: <Home width="2.4rem" height="2.4rem" fill="#3FBA73" />,
+            '': <></>,
+            마이: <Person width="2.4rem" height="2.4rem" fill="#BBBBBB" onClick={handlePersonClick} />,
+          }}
+          index={0}
+        />
+      </NavContainer>
+    </div>
   )
 }
 export default RestaurantListPage
@@ -72,41 +88,33 @@ export default RestaurantListPage
 const RestaurantList = styled.ul`
   display: inline-flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: flex;
   gap: 1.6rem;
-  padding: 1.6rem 2rem;
-  margin: 0;
+  padding: 0 2rem;
 `
 
-const RestaurantItem = styled.li`
-  display: flex;
-  padding-bottom: 0;
-
-  flex-direction: column;
-  align-items: center;
-
-  gap: 1.2rem;
-  border-radius: 1.2rem;
-  background: #fafafa;
-`
 const StyledImage = styled.img`
-  width: 35rem;
+  width: 100%;
   height: 20rem;
   flex-shrink: 0;
   border-radius: 1.2rem 1.2rem 0 0;
 `
 
 const RestaurantLink = styled(Link)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
   text-decoration: none;
 `
 
-const Container1 = styled.div`
+const ContentsContainer = styled.div`
   padding: 1.2rem 1.6rem;
   display: flex;
-  width: 318px;
+  width: 100%;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
+  gap: 0.8rem;
 `
 
 const NameContainer = styled.div`
@@ -170,4 +178,14 @@ const NoDataMessage = styled.div`
   text-align: center;
   margin-top: 16pt;
   font-size: 1.2rem;
+`
+const NavContainer = styled.div`
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 6rem;
+  background-color: ${({ theme }) => theme.COLOR.common.white[0]};
+  @media screen and (min-width: ${({ theme }) => theme.MEDIA.tablet}) {
+    width: ${({ theme }) => theme.MEDIA.mobile};
+  }
 `
