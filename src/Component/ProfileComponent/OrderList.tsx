@@ -6,9 +6,9 @@ import OrderModal from 'Component/Modal/OrderModal'
 import formatDate from 'Utils/formatDate'
 import getImageSrc from 'Utils/getImageSrc'
 import { Table } from 'antd'
+import { ReactComponent as ChevronR } from 'assets/ChevronR.svg'
 import { useState } from 'react'
 import styled from 'styled-components'
-
 const OrderList = () => {
   const page = 1 // page 변수 정의
   const pageSize = 10 // pageSize 변수 정의
@@ -85,14 +85,15 @@ const OrderList = () => {
       <div>
         {userData && userOrderData ? (
           <StyledContainer>
-            <StyledTitle>
-              {userData.nickname}님은 <ColoredText>{userOrderData.orders.length}</ColoredText>회 주문하셨고,
-            </StyledTitle>
-            <StyledTitle>
-              <ColoredText>{totalPrice.toLocaleString()}</ColoredText>원 결제하셨어요.
-            </StyledTitle>
-            <StyledTable columns={restaurantOrderColumns} dataSource={restaurantOrderDataSource} pagination={false} />
-
+            <Container>
+              <StyledTitle>
+                {userData.nickname}님은 <ColoredText>{userOrderData.orders.length}</ColoredText>회 주문하셨고,
+              </StyledTitle>
+              <StyledTitle>
+                <ColoredText>{totalPrice.toLocaleString()}</ColoredText>원 결제하셨어요.
+              </StyledTitle>
+              <StyledTable columns={restaurantOrderColumns} dataSource={restaurantOrderDataSource} pagination={false} />
+            </Container>
             {userOrderData.orders.map((order: Order) => (
               <div key={order._id}>
                 <OrderModal
@@ -102,50 +103,55 @@ const OrderList = () => {
                     openModalHandler(order._id)
                   }}
                 />
-                <OrderDetails>
-                  <MenuImageContainer>
+                <OrderDetails
+                  onClick={() => {
+                    openModalHandler(order._id)
+                  }}
+                >
+                  <InfoContainer>
                     {Object.values(order.menus)
                       .slice(0, 1)
                       .map((menu: OrderMenu, menuIndex: number) => (
                         <MenuImage key={menuIndex} src={getImageSrc(menu.img)} alt="메뉴 이미지" />
                       ))}
-                  </MenuImageContainer>
-                  <MenuDetailsContainer
-                    key={`menu_${order._id}`}
-                    onClick={() => {
-                      openModalHandler(order._id)
-                    }}
-                  >
-                    {Object.values(order.menus)
-                      .slice(0, 1)
-                      .map((menu: OrderMenu, menuIndex: number) => (
-                        <MenuNameContainer key={menuIndex}>
-                          <div>
-                            {Object.values(order.menus).length > 1 ? (
-                              <div>
-                                {menu.menu_name} 외 {Object.values(order.menus).length - 1}개
-                              </div>
-                            ) : (
-                              <div> {menu.menu_name} </div>
-                            )}
-                          </div>
-                        </MenuNameContainer>
-                      ))}
-
-                    <MenuInfoContainer>
+                    <MenuDetailsContainer key={`menu_${order._id}`}>
                       <MenuDateContainer>{formatDate(order.updated_at)}</MenuDateContainer>
-
+                      <RestaurantNameContainer>{order.restaurant_name}</RestaurantNameContainer>
                       <div>
-                        <RestaurantNameContainer>{order.restaurant_name}</RestaurantNameContainer>
-                        <ColoredText>
-                          {Object.values(order.menus)
-                            .reduce((menuTotal: number, menu: OrderMenu) => menuTotal + menu.price * menu.quantity, 0)
-                            .toLocaleString()}
-                          원
-                        </ColoredText>
+                        {Object.values(order.menus)
+                          .slice(0, 1)
+                          .map((menu: OrderMenu, menuIndex: number) => (
+                            <StyledSpan key={menuIndex}>
+                              {Object.values(order.menus).length > 1 ? (
+                                <span>
+                                  {menu.menu_name} 외 {Object.values(order.menus).length - 1}개{' '}
+                                  {Object.values(order.menus)
+                                    .reduce(
+                                      (menuTotal: number, menu: OrderMenu) => menuTotal + menu.price * menu.quantity,
+                                      0,
+                                    )
+                                    .toLocaleString()}
+                                  원
+                                </span>
+                              ) : (
+                                <span>
+                                  {' '}
+                                  {menu.menu_name}{' '}
+                                  {Object.values(order.menus)
+                                    .reduce(
+                                      (menuTotal: number, menu: OrderMenu) => menuTotal + menu.price * menu.quantity,
+                                      0,
+                                    )
+                                    .toLocaleString()}
+                                  원
+                                </span>
+                              )}
+                            </StyledSpan>
+                          ))}
                       </div>
-                    </MenuInfoContainer>
-                  </MenuDetailsContainer>
+                    </MenuDetailsContainer>
+                  </InfoContainer>
+                  <ChevronR />
                 </OrderDetails>
               </div>
             ))}
@@ -167,77 +173,74 @@ const StyledTitle = styled.div`
   font-weight: bold;
   margin-bottom: 8pt;
   cursor: default;
-  padding-left: 8pt;
 `
 
-const StyledTable = styled(Table)`
-  margin-top: 24pt;
-  margin-bottom: 24pt;
-
-  th {
-    font-size: 2rem;
-  }
-
-  td.ant-table-cell {
-    font-size: 2rem;
-  }
+const Container = styled.div`
+  padding: 24pt;
 `
+const StyledTable = styled(Table)``
 
 const StyledContainer = styled.div`
-  padding: 48pt;
-  border: 1px solid #ddd;
-  border-radius: 4pt;
+  border: 1px solid ${({ theme }) => theme.COLOR.common.gray[100]};
+
   box-shadow: 0 0 4pt rgba(0, 0, 0, 0.1);
 `
 
 const OrderDetails = styled.div`
-  border: 1px solid #ddd;
+  border: 1px solid ${({ theme }) => theme.COLOR.common.gray[100]};
 
-  height: 160pt;
   display: flex;
-  padding: 24pt 48pt;
-  justify-content: space-between;
   cursor: pointer;
+
+  width: 100%;
+  padding: 2rem;
+  justify-content: space-between;
+  align-items: center;
 `
-const MenuImageContainer = styled.div`
-  position: relative;
-  width: 112pt;
-  padding-top: 112pt;
+const InfoContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 1.6rem;
 `
 
-const MenuDetailsContainer = styled.div`
-  padding-left: 24pt;
-  width: 80%;
-`
-const MenuNameContainer = styled.div`
-  font-size: 2rem;
-  font-weight: bold;
-  padding: 16pt 0;
-`
-
-const MenuDateContainer = styled.div`
-  color: ${({ theme }) => theme.COLOR.common.gray[400]};
-`
-
-const RestaurantNameContainer = styled.span`
-  padding-right: 8pt;
-`
 const ColoredText = styled.span`
   color: ${({ theme }) => theme.COLOR.main};
 `
 
-const MenuInfoContainer = styled.div`
-  display: flex;
-  padding: 8pt 0;
-  justify-content: space-between;
-  font-size: 1.8rem;
+const MenuImage = styled.img`
+  width: 6.2rem;
+  aspect-ratio: 1/1;
+  border-radius: 1.2rem;
+  border: 0.5px solid rgba(0, 0, 0, 0.04);
+  background: url(<path-to-image>), lightgray 50% / cover no-repeat;
 `
 
-const MenuImage = styled.img`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  border-radius: 50%;
+const MenuDetailsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+`
+
+const MenuDateContainer = styled.h5`
+  color: ${({ theme }) => theme.COLOR.common.gray[40]};
+  margin: 0;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.6rem;
+`
+const RestaurantNameContainer = styled.h4`
+  color: ${({ theme }) => theme.COLOR.common.gray[20]};
+  margin: 0;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 2rem;
+`
+
+const StyledSpan = styled.span`
+  color: ${({ theme }) => theme.COLOR.common.gray[30]};
+  font-size: 1.4rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.8rem;
 `

@@ -25,7 +25,8 @@ const StyledNavbar = styled.nav`
   display: flex;
   justify-content: space-between; /* 영역들 간의 공간을 동일하게 분배 */
   align-items: center; /* 세로 방향으로 가운데 정렬 */
-  padding: 24pt 48pt;
+  padding: 1rem 1.2rem;
+  background-color: ${({ theme }) => theme.COLOR.common.white[0]};
 `
 
 const LeftDiv = styled.div`
@@ -47,7 +48,8 @@ const RightDiv = styled.div`
   white-space: nowrap; /* 텍스트 줄바꿈 방지 */
 `
 
-const HeaderNameText = styled.h1`
+const HeaderNameText = styled.h3`
+  font-size: 1.8rem;
   margin: 0;
   cursor: default;
   white-space: nowrap; /* 텍스트 줄바꿈 방지 */

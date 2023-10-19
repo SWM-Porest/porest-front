@@ -1,5 +1,5 @@
-import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { ReactComponent as Plus } from 'assets/Add.svg'
+import { ReactComponent as Minus } from 'assets/Subtract.svg'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -12,14 +12,12 @@ interface AmountContainerProps {
 const AmountCheck: React.FC<AmountContainerProps> = ({ count, handleIncrement, handleDecrement }) => {
   return (
     <Container>
-      <MinusButton onClick={handleDecrement}>
-        <FontAwesomeIcon icon={faMinus}></FontAwesomeIcon>
+      <MinusButton>
+        <Minus onClick={handleDecrement} />
       </MinusButton>
-      <CountContainer>
-        <CountSpan>{count}</CountSpan>
-      </CountContainer>
-      <PlusButton onClick={handleIncrement}>
-        <FontAwesomeIcon icon={faPlus}></FontAwesomeIcon>
+      <CountSpan>{count}</CountSpan>
+      <PlusButton>
+        <Plus onClick={handleIncrement} />
       </PlusButton>
     </Container>
   )
@@ -29,53 +27,37 @@ export default AmountCheck
 
 const Container = styled.div`
   display: flex;
-  justify-content: space-between;
+  padding: 0.6rem;
   align-items: center;
-  align-items: center;
-  width: 200pt;
-  height: 64pt;
-  border: 0.1pt solid #c4c4c4;
-  border-radius: 8pt;
-  margin-bottom: 24pt;
+  gap: 0.4rem;
+  border-radius: 2.4rem;
+  background: ${({ theme }) => theme.COLOR.common.gray[120]};
 `
 
-const PlusMinusButton = styled.button`
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex: 1;
-  height: 64pt;
-  font-size: ${({ theme }) => theme.FONT_SIZE.small};
-  padding: 0;
-  color: ${({ theme }) => theme.COLOR.common.black};
-  &:active {
-    background-color: ${({ theme }) => theme.COLOR.main};
-    color: ${({ theme }) => theme.COLOR.common.white};
-    box-shadow: 0px 0px 16px 0 ${({ theme }) => theme.COLOR.main};
-    color: ${({ theme }) => theme.COLOR.common.white};
-    outline: none;
-  }
-  cursor: pointer;
-`
+const PlusMinusButton = styled.button``
 
 const PlusButton = styled(PlusMinusButton)`
-  border-radius: 0 8pt 8pt 0;
+  display: flex;
+  padding: 0.8rem;
+  align-items: flex-start;
+  gap: 1rem;
+  border-radius: 1.8rem;
+  background: ${({ theme }) => theme.COLOR.common.white[0]};
 `
 const MinusButton = styled(PlusMinusButton)`
-  border-radius: 8pt 0 0 8pt;
-`
-
-const CountSpan = styled.span`
-  font-size: ${({ theme }) => theme.FONT_SIZE.small};
-`
-
-const CountContainer = styled.div`
   display: flex;
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  cursor: default;
+  padding: 0.8rem;
+  align-items: flex-start;
+  gap: 1rem;
+  border-radius: 1.8rem;
+  background: ${({ theme }) => theme.COLOR.common.white[0]};
+`
+
+const CountSpan = styled.h4`
+  color: ${({ theme }) => theme.COLOR.common.gray[20]};
+  text-align: center;
+  margin: 0;
+  font-style: normal;
+  font-weight: 500;
+  width: 3.6rem;
 `

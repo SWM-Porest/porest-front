@@ -1,15 +1,22 @@
 import { LoadingOutlined } from '@ant-design/icons'
-import Header from 'Component/Header'
-import BurgerMenu from 'Component/Modal/BurgerMenu'
+import Navbar from 'Utils/Navbar'
+import getImageSrc from 'Utils/getImageSrc'
+import { ReactComponent as Home } from 'assets/Home.svg'
+import { ReactComponent as Person } from 'assets/Person.svg'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 const RestaurantListPage = () => {
   const [restaurants, setRestaurants] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const navigate = useNavigate()
+
+  const handlePersonClick = () => {
+    navigate('/mypage')
+  }
 
   useEffect(() => {
     axios
@@ -42,82 +49,117 @@ const RestaurantListPage = () => {
   }
 
   return (
-    <>
-      <Header Left={<BurgerMenu />} HeaderName="레스토랑" />
-      <div>
-        <RestaurantList>
-          {restaurants.map((restaurant) => (
-            <RestaurantItem key={restaurant._id}>
-              <RestaurantLink to={`/restaurants/${restaurant._id}`}>
-                <Container>
-                  {restaurant.banner_images?.length > 0 ? (
-                    <StyledImage src={restaurant.banner_images[0]} alt="매장 사진" />
-                  ) : (
-                    <StyledImage src="/img/회색.png" alt="기본 이미지" />
-                  )}
-                  <div>
-                    <StyledName>{restaurant.name}</StyledName>
-                    <StyledAddress>주소: {restaurant.address}</StyledAddress>
-                    <StyledInfo>설명: {restaurant.intro}</StyledInfo>
-                  </div>
-                </Container>
-              </RestaurantLink>
-            </RestaurantItem>
-          ))}
-        </RestaurantList>
-      </div>
-    </>
+    <div>
+      <RestaurantList>
+        {restaurants.map((restaurant) => (
+          <div key={restaurant._id}>
+            <RestaurantLink to={`/restaurants/${restaurant._id}`}>
+              <StyledImage src={getImageSrc(restaurant.banner_images[0])} alt="매장 사진" />
+              <ContentsContainer>
+                <NameContainer>
+                  <StyledName>{restaurant.name}</StyledName>
+                </NameContainer>
+                <AddressContainer>
+                  <StyledAddress>주소: {restaurant.address}</StyledAddress>
+                </AddressContainer>
+                <InfoContainer>
+                  <StyledInfo>설명: {restaurant.intro}</StyledInfo>
+                </InfoContainer>
+              </ContentsContainer>
+            </RestaurantLink>
+          </div>
+        ))}
+      </RestaurantList>
+      <NavContainer>
+        <Navbar
+          Icon={{
+            홈: <Home width="2.4rem" height="2.4rem" fill="#3FBA73" />,
+            '': <></>,
+            마이: <Person width="2.4rem" height="2.4rem" fill="#BBBBBB" onClick={handlePersonClick} />,
+          }}
+          index={0}
+        />
+      </NavContainer>
+    </div>
   )
 }
 export default RestaurantListPage
 
 const RestaurantList = styled.ul`
-  list-style: none;
-  padding: 0;
-  padding: 8pt 48pt;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex;
+  gap: 1.6rem;
+  padding: 0 2rem;
 `
 
-const RestaurantItem = styled.li`
-  margin-bottom: 16pt;
-  display: flex;
-  border: 1px solid #e0e0e0;
-  border-radius: 8pt;
-  padding: 16pt;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+const StyledImage = styled.img`
+  width: 100%;
+  height: 20rem;
+  flex-shrink: 0;
+  border-radius: 1.2rem 1.2rem 0 0;
 `
 
 const RestaurantLink = styled(Link)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
   text-decoration: none;
-  color: ${({ theme }) => theme.COLOR.common.black};
+`
+
+const ContentsContainer = styled.div`
+  padding: 1.2rem 1.6rem;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.8rem;
+`
+
+const NameContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+  align-self: stretch;
+`
+
+const StyledName = styled.div`
+  color: ${({ theme }) => theme.COLOR.common.gray[20]};
+  font-size: 1.8rem;
+  font-style: normal;
+  font-weight: 700;
+`
+
+const AddressContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+`
+
+const StyledAddress = styled.div`
+  color: ${({ theme }) => theme.COLOR.common.gray[30]};
+  font-size: 1.2rem;
+  font-style: normal;
+  font-weight: 400;
+`
+
+const InfoContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+`
+const StyledInfo = styled.div`
+  color: ${({ theme }) => theme.COLOR.common.gray[30]};
+  font-size: 1.2rem;
+  font-style: normal;
+  font-weight: 400;
 `
 
 const Container = styled.div`
   display: flex;
   align-items: center;
-`
-
-const StyledImage = styled.img`
-  width: 200pt;
-  height: 192pt;
-  border-radius: 8pt;
-`
-
-const StyledInfo = styled.p`
-  padding: 8pt 56pt;
-  margin: 0;
-  text-align: left;
-`
-
-const StyledName = styled.h4`
-  padding: 8pt 56pt;
-  margin: 0;
-  text-align: left;
-`
-
-const StyledAddress = styled.h5`
-  padding: 8pt 56pt;
-  margin: 0;
-  text-align: left;
 `
 
 const LoadingContainer = styled.div`
@@ -136,4 +178,14 @@ const NoDataMessage = styled.div`
   text-align: center;
   margin-top: 16pt;
   font-size: 1.2rem;
+`
+const NavContainer = styled.div`
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 6rem;
+  background-color: ${({ theme }) => theme.COLOR.common.white[0]};
+  @media screen and (min-width: ${({ theme }) => theme.MEDIA.tablet}) {
+    width: ${({ theme }) => theme.MEDIA.mobile};
+  }
 `

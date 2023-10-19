@@ -1,20 +1,30 @@
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { getCookie } from 'Api/cartCookie'
+import { getCookie, removeAllCookie } from 'Api/cartCookie'
 import { useAccessToken } from 'Api/tokenCookie'
 import { useNotification } from 'Api/useNotification'
 import CartPrice from 'Component/CartComponent/CartPrice'
 import Header from 'Component/Header'
 import { useCartModal } from 'Context/CartModalContext'
 import { useRestaurantState } from 'Context/restaurantContext'
+import { ReactComponent as Chevron } from 'assets/Chevron.svg'
 import React, { useEffect } from 'react'
 import { styled } from 'styled-components'
 
-const CartModal: React.FC = () => {
+interface OwnProps {
+  isOpen: boolean
+}
+const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
   const { data: restaurant, loading, error } = useRestaurantState().restaurant
   const cookie = getCookie(restaurant?._id as string) || {}
   const { isModalOpen, closeModal } = useCartModal()
   const [accessToken, setAccessToken] = useAccessToken()
+
+  if (isOpen) {
+    document.body.style.overflow = 'hidden'
+  } else {
+    document.body.style.overflow = 'auto'
+  }
+
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && isModalOpen) {
@@ -30,18 +40,6 @@ const CartModal: React.FC = () => {
       document.body.style.overflow = 'auto' // 컴포넌트가 unmount 될 때 다시 body의 overflow를 auto로 변경
     }
   }, [isModalOpen, closeModal])
-
-  const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    // 배경 클릭 시 모달 닫기
-    if (event.target === event.currentTarget) {
-      closeModal()
-    }
-  }
-
-  const handleContentClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    // 모달 내부(ModalContent) 클릭 시 모달 닫기 방지
-    event.stopPropagation()
-  }
 
   const handleOrder = async () => {
     try {
@@ -80,21 +78,25 @@ const CartModal: React.FC = () => {
       console.error('주문 생성 중 오류 발생:', error)
     }
   }
+  const handleRemoveMenu = () => {
+    removeAllCookie(restaurant?._id as string)
+  }
 
   return (
-    <ModalOverlay className={isModalOpen ? 'open' : ''} onClick={handleOverlayClick}>
-      <ModalContent onClick={handleContentClick}>
+    <ModalContainer>
+      <ModalView $load={isOpen} onClick={(e) => e.stopPropagation()}>
         {/* 모달 내용 */}
         <Header
-          HeaderName="주문서"
-          Right={
-            <CloseButtonContainer>
-              <CloseButton icon={faXmark} onClick={closeModal} size="2xl" />
-            </CloseButtonContainer>
+          Left={
+            <Icon onClick={closeModal}>
+              <Chevron width="2rem" height="2rem" fill="#212121" />
+            </Icon>
           }
-        ></Header>
+          HeaderName="주문서"
+          Right={<Icon onClick={handleRemoveMenu}>전체삭제</Icon>}
+        />
         <CartPrice />
-        <div style={{ display: 'flex' }}>
+        <ButtonContainer style={{ display: 'flex' }}>
           <StyledButton
             onClick={() => {
               useNotification()
@@ -103,33 +105,34 @@ const CartModal: React.FC = () => {
           >
             주문하기
           </StyledButton>
-        </div>
-      </ModalContent>
-    </ModalOverlay>
+        </ButtonContainer>
+      </ModalView>
+    </ModalContainer>
   )
 }
 
 export default CartModal
-
-const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: ${({ theme }) => theme.COLOR.common.gray[600]};
+const ModalContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  height: 100%;
+  @media screen and (min-width: ${({ theme }) => theme.MEDIA.tablet}) {
+    width: ${({ theme }) => theme.MEDIA.mobile};
+  }
 `
 
-const ModalContent = styled.div`
-  background-color: ${({ theme }) => theme.COLOR.common.white};
-  position: relative;
-  width: 100%;
+const ModalView = styled.div<{ $load: boolean }>`
+  z-index: 31;
+  position: fixed;
+  bottom: ${(props) => (props.$load ? '0' : '-100%')};
+  width: 100vw;
   height: 100%;
-  overflow: auto;
+  background-color: ${({ theme }) => theme.COLOR.common.white[0]};
+  transition: all 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  @media screen and (min-width: ${({ theme }) => theme.MEDIA.tablet}) {
+    width: ${({ theme }) => theme.MEDIA.mobile};
+  }
 `
 
 export const CloseButtonContainer = styled.div`
@@ -150,7 +153,7 @@ export const CloseButton = styled(FontAwesomeIcon)`
   cursor: pointer;
   width: 54px;
   height: 54px;
-  color: ${({ theme }) => theme.COLOR.common.gray[700]}; /* 아이콘 색상 */
+  color: ${({ theme }) => theme.COLOR.common.gray[70]};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -162,7 +165,7 @@ const StyledButton = styled.button`
   text-decoration: none;
   text-align: center;
   background-color: ${({ theme }) => theme.COLOR.main};
-  color: ${({ theme }) => theme.COLOR.common.white};
+  color: ${({ theme }) => theme.COLOR.common.white[0]};
   padding: 20px;
   width: 90%;
   height: 100%;
@@ -176,4 +179,15 @@ const StyledButton = styled.button`
     box-shadow: 0px 0px 16px 0 ${({ theme }) => theme.COLOR.main};
     transition: 0.4s;
   }
+`
+const Icon = styled.div`
+  display: flex;
+  padding: 1rem;
+  gap: 1rem;
+  border-radius: 2rem;
+  background: ${({ theme }) => theme.COLOR.common.white[0]};
+`
+
+const ButtonContainer = styled.div`
+  background-color: ${({ theme }) => theme.COLOR.common.white[0]};
 `
