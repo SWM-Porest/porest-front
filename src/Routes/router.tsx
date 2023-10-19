@@ -2,7 +2,8 @@ import EditRestaurantPage from 'Pages/EditRestaurantPage'
 import ErrorPage from 'Pages/ErrorPage'
 import LoginPage from 'Pages/LoginPage'
 import MenuBoardPage from 'Pages/MenuBoardPage'
-import ProfilePage from 'Pages/ProfilePage'
+import MyPage from 'Pages/MyPage'
+import OrderListPage from 'Pages/OrderListPage'
 import RestaurantListPage from 'Pages/RestaurantListPage'
 import RestaurantPage from 'Pages/RestaurantPage'
 import TablePage from 'Pages/TablePage'
@@ -30,19 +31,23 @@ const router = createBrowserRouter([
         element: <RestaurantPage />,
       },
       {
+        path: '/table', // 레스토랑 id, table number
+        element: <TablePage />,
+      },
+      {
         element: <PrivateRoute />,
         children: [
           {
-            path: '/mypage',
-            element: <ProfilePage />,
+            path: '/orderlist',
+            element: <OrderListPage />,
           },
           {
             path: '/restaurants/:id/edit',
             element: <EditRestaurantPage />,
           },
           {
-            path: 'table', // 레스토랑 id, table number
-            element: <TablePage />,
+            path: '/mypage',
+            element: <MyPage />,
           },
         ],
       },

@@ -57,7 +57,7 @@ const TablePage = () => {
   }, [])
 
   return (
-    <>
+    <div>
       <Header
         Left={
           <Icon>
@@ -121,11 +121,12 @@ const TablePage = () => {
           입력완료
         </SubmitButton>
       </ButtonContainer>
-    </>
+    </div>
   )
 }
 
 export default TablePage
+
 const Icon = styled.div``
 
 const MainContainer = styled.div`
@@ -162,19 +163,18 @@ const InputField = styled(Input)`
   font-style: normal;
   font-weight: 400;
   line-height: 2rem;
-  margin-bottom: 1rem; /* 버튼과의 간격을 조절 */
+  margin-bottom: 1rem;
 `
 const SubmitButton = styled(Button)`
-  width: 350px;
   height: 5.6rem;
   flex-shrink: 0;
   color: ${({ theme }) => theme.COLOR.common.white[0]};
   text-align: center;
-  font-family: Pretendard;
   font-size: 1.6rem;
   font-style: normal;
   font-weight: 700;
   line-height: 2rem;
+  width: 100%;
 `
 
 const ButtonContainer = styled.div`
@@ -185,4 +185,8 @@ const ButtonContainer = styled.div`
   align-items: flex-start;
   position: absolute;
   bottom: 0;
+  width: 100%;
+  @media screen and (min-width: ${({ theme }) => theme.MEDIA.tablet}) {
+    width: ${({ theme }) => theme.MEDIA.mobile};
+  }
 `
