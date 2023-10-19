@@ -52,28 +52,37 @@ const AddCart: React.FC<Ownprops> = ({ menu, cnt, openModalHandler, selectedOpti
   }
 
   return (
-    <div style={{ display: 'flex' }}>
+    <ButtonContainer style={{ display: 'flex' }}>
       <StyledButton onClick={addToCart}>장바구니 담기</StyledButton>
-    </div>
+    </ButtonContainer>
   )
 }
 
 export default AddCart
 
+const ButtonContainer = styled.div`
+  display: inline-flex;
+  padding: 1rem 2rem;
+  flex-direction: column;
+  align-items: flex-start;
+`
+
 const StyledButton = styled.button`
   cursor: pointer;
-  font-size: ${({ theme }) => theme.FONT_SIZE.small};
-  font-weight: bold;
-  text-decoration: none;
+  font-size: ${({ theme }) => theme.FONT_SIZE.medium};
+  font-weight: 700;
+  font-style: normal;
   text-align: center;
+  line-height: 2rem;
+
+  text-decoration: none;
   background-color: ${({ theme }) => theme.COLOR.main};
   color: ${({ theme }) => theme.COLOR.common.white[0]};
-  padding: 32pt;
-  width: 90%;
-  margin: auto;
-  margin-bottom: 40pt;
-  border-radius: 8pt;
-  box-shadow: 0 8pt 16pt 0 rgba(0, 0, 0, 0.3);
+  width: 100%;
+  height: 5.6rem;
+
+  border-radius: 1.2rem;
+  box-shadow: 0 0.8rem 1.6rem 0 rgba(0, 0, 0, 0.3);
   border: none;
   transition: 0.4s;
   &:hover {
@@ -97,7 +106,6 @@ const showMessage = (messageText: string, duration: number) => {
   const textContainer = document.createElement('div')
   textContainer.textContent = messageText
   textContainer.style.fontSize = '1.8rem'
-  textContainer.style.fontFamily = 'pretendard'
   textContainer.style.fontWeight = '600'
 
   messageContainer.appendChild(image)

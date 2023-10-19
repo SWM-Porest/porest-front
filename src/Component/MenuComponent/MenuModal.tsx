@@ -1,3 +1,4 @@
+import SliderContainer from 'Component/MenuBoardComponent/SliderContainer'
 import { useRestaurantState } from 'Context/restaurantContext'
 import AmountCheck from 'Utils/AmountCheck'
 import getImageSrc from 'Utils/getImageSrc'
@@ -6,7 +7,6 @@ import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import AddCart from './AddCart'
 import Categories from './Categories'
-import ContainerBox from './ContainerBox'
 import DescriptionContainer from './DescriptionContainer'
 import OptionSelector from './OptionSelector'
 
@@ -64,20 +64,25 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
     <ModalContainer>
       <ModalView $load={isOpen} onClick={(e) => e.stopPropagation()}>
         <ContentContainer>
+          <SliderContainer
+            images={menu ? [getImageSrc(menu.img)] : []}
+            lefticon={
+              <IconLeft
+                onClick={() => {
+                  openModalHandler(menu ? menu._id : '')
+                }}
+              >
+                <Dismiss width="2rem" height="2rem" />
+              </IconLeft>
+            }
+          />
           <DescriptionContainer
             title={menu ? menu.name : ''}
             price={menu ? menu.price : 0}
             description={menu ? menu.description : ''}
-            img={menu ? getImageSrc(menu.img) : ''}
           ></DescriptionContainer>
-          <Icon
-            onClick={() => {
-              openModalHandler(menu ? menu._id : '')
-            }}
-          >
-            <Dismiss width="2rem" height="2rem" />
-          </Icon>
-          <ContainerBox>
+
+          <div>
             <Categories ingre={menu ? menu.ingre : []}></Categories>
             {menu?.options.map((option) => (
               <OptionSelector
@@ -87,7 +92,7 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
                 onSelect={(selectedItems) => handleOptionSelect(option._id, selectedItems)}
               />
             ))}
-          </ContainerBox>
+          </div>
           <Container1>
             <Container2>수량 선택</Container2>
             <StyledAmountContainer>
@@ -114,39 +119,44 @@ const ModalContainer = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
+  @media screen and (min-width: ${({ theme }) => theme.MEDIA.tablet}) {
+    width: ${({ theme }) => theme.MEDIA.mobile};
+  }
 `
 
 const ModalView = styled.div<{ $load: boolean }>`
   z-index: 31;
   position: fixed;
   bottom: ${(props) => (props.$load ? '0' : '-100%')};
-  border-radius: 40px 40px 0px 0px;
-  width: 100%;
+  width: 100vw;
   height: 100%;
   background-color: ${({ theme }) => theme.COLOR.common.white[0]};
   transition: all 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  @media screen and (min-width: ${({ theme }) => theme.MEDIA.tablet}) {
+    width: ${({ theme }) => theme.MEDIA.mobile};
+  }
 `
 const ContentContainer = styled.div`
   overflow-y: auto;
-  max-height: calc(100% - 72px - 72pt); /* 헤더의 높이만큼 화면 높이에서 뺍니다. */
+  max-height: calc(100% - 72pt);
   position: relative;
 `
 
 const Container1 = styled.div`
   display: flex;
-  width: 390px;
-  padding: 20px;
+  padding: 2rem;
   justify-content: space-between;
   align-items: center;
 `
 const Container2 = styled.div`
-  color: #222121;
+  color: ${({ theme }) => theme.COLOR.common.gray[20]};
   font-family: Pretendard;
-  font-size: 20px;
+  font-size: 2rem;
   font-style: normal;
   font-weight: 600;
-  line-height: 24px; /* 120% */
+  line-height: 2rem;
 `
+
 const Icon = styled.div`
   display: inline-flex;
   padding: 1rem;
@@ -156,4 +166,9 @@ const Icon = styled.div`
   background: ${({ theme }) => theme.COLOR.common.white[0]};
   box-shadow: 0 0.2rem 1.2rem 0 rgba(0, 0, 0, 0.16);
   position: absolute;
+  top: 1rem;
+`
+
+const IconLeft = styled(Icon)`
+  left: 1.2rem;
 `
