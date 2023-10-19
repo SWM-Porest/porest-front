@@ -1,3 +1,4 @@
+import { Button } from 'antd'
 import { ReactComponent as Dismiss } from 'assets/Dismiss.svg'
 import { ReactComponent as Kakao } from 'assets/kakao.svg'
 import styled from 'styled-components'
@@ -15,10 +16,11 @@ const LoginPage = () => {
         <StyledName>Porest</StyledName>
       </ContainerTitle>
       <ButtonContainer>
-        <Button href="http://localhost:3001/auth/kakao">
+        <LoginButton href="http://localhost:3001/auth/kakao">
           <Kakao width="2.4rem" height="2.4rem" />
           <Text>카카오로 시작하기</Text>
-        </Button>
+          <></>
+        </LoginButton>
       </ButtonContainer>
     </Container>
   )
@@ -35,8 +37,8 @@ const Container = styled.div`
 const ContainerTitle = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center; /* 수직 정렬을 중앙에 맞춥니다. */
-  justify-content: center; /* 수평 정렬을 중앙에 맞춥니다. */
+  align-items: center;
+  justify-content: center;
 
   height: 100%;
 `
@@ -44,21 +46,20 @@ const ContainerTitle = styled.div`
 const StyledDes = styled.div`
   color: rgba(255, 255, 255, 0.8);
   text-align: center;
-  font-family: 'pretendard';
-  font-size: 16px;
+  font-size: 1.6rem;
   font-style: normal;
   font-weight: 500;
-  line-height: 20px; /* 125% */
+  line-height: 2rem;
 `
 
 const StyledName = styled.div`
-  color: #fff;
+  color: ${({ theme }) => theme.COLOR.common.white[0]};
   text-align: center;
-  font-family: 'ultra'; //폰트 찾아보기
-  font-size: 48px;
+  font-family: 'Ultra';
+  font-size: 4.8rem;
   font-style: normal;
   font-weight: 400;
-  line-height: 48px; /* 100% */
+  line-height: 4.8rem;
 `
 const Icon = styled.div`
   display: inline-flex;
@@ -81,26 +82,35 @@ const ButtonContainer = styled.div`
   flex-shrink: 0;
   display: inline-flex;
   padding: 1rem 2rem;
-  flex-direction: column;
-  align-items: flex-start;
   position: absolute;
   bottom: 0;
+  width: 100%;
+  @media screen and (min-width: ${({ theme }) => theme.MEDIA.tablet}) {
+    width: ${({ theme }) => theme.MEDIA.mobile};
+  }
 `
-const Button = styled.a`
-  width: 350px;
-  height: 56px;
+const LoginButton = styled(Button)`
+  height: 5.6rem;
   flex-shrink: 0;
-  border-radius: 12px;
+  font-family: Pretendard;
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 2rem;
+  width: 100%;
+  border-radius: 1.2rem;
   background: #fee500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   text-decoration: none;
 `
 const Text = styled.div`
-  width: 242px;
+  width: 24.2rem;
   color: rgba(0, 0, 0, 0.9);
   text-align: center;
-  font-family: Pretendard;
-  font-size: 16px;
+  font-size: 1.6rem;
   font-style: normal;
   font-weight: 700;
-  line-height: 20px; /* 125% */
+  line-height: 2rem;
 `
