@@ -10,11 +10,21 @@ import { ReactComponent as Chevron } from 'assets/Chevron.svg'
 import React, { useEffect } from 'react'
 import { styled } from 'styled-components'
 
-const CartModal: React.FC = () => {
+interface OwnProps {
+  isOpen: boolean
+}
+const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
   const { data: restaurant, loading, error } = useRestaurantState().restaurant
   const cookie = getCookie(restaurant?._id as string) || {}
   const { isModalOpen, closeModal } = useCartModal()
   const [accessToken, setAccessToken] = useAccessToken()
+
+  if (isOpen) {
+    document.body.style.overflow = 'hidden'
+  } else {
+    document.body.style.overflow = 'auto'
+  }
+
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && isModalOpen) {
@@ -30,18 +40,6 @@ const CartModal: React.FC = () => {
       document.body.style.overflow = 'auto' // 컴포넌트가 unmount 될 때 다시 body의 overflow를 auto로 변경
     }
   }, [isModalOpen, closeModal])
-
-  const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    // 배경 클릭 시 모달 닫기
-    if (event.target === event.currentTarget) {
-      closeModal()
-    }
-  }
-
-  const handleContentClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    // 모달 내부(ModalContent) 클릭 시 모달 닫기 방지
-    event.stopPropagation()
-  }
 
   const handleOrder = async () => {
     try {
@@ -85,8 +83,8 @@ const CartModal: React.FC = () => {
   }
 
   return (
-    <ModalOverlay className={isModalOpen ? 'open' : ''} onClick={handleOverlayClick}>
-      <ModalContent onClick={handleContentClick}>
+    <ModalContainer>
+      <ModalView $load={isOpen} onClick={(e) => e.stopPropagation()}>
         {/* 모달 내용 */}
         <Header
           Left={
@@ -108,32 +106,33 @@ const CartModal: React.FC = () => {
             주문하기
           </StyledButton>
         </ButtonContainer>
-      </ModalContent>
-    </ModalOverlay>
+      </ModalView>
+    </ModalContainer>
   )
 }
 
 export default CartModal
-
-const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: ${({ theme }) => theme.COLOR.common.gray[60]};
+const ModalContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  height: 100%;
+  @media screen and (min-width: ${({ theme }) => theme.MEDIA.tablet}) {
+    width: ${({ theme }) => theme.MEDIA.mobile};
+  }
 `
 
-const ModalContent = styled.div`
-  background-color: ${({ theme }) => theme.COLOR.common.gray[120]};
-  position: relative;
-  width: 100%;
+const ModalView = styled.div<{ $load: boolean }>`
+  z-index: 31;
+  position: fixed;
+  bottom: ${(props) => (props.$load ? '0' : '-100%')};
+  width: 100vw;
   height: 100%;
-  overflow: auto;
+  background-color: ${({ theme }) => theme.COLOR.common.white[0]};
+  transition: all 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  @media screen and (min-width: ${({ theme }) => theme.MEDIA.tablet}) {
+    width: ${({ theme }) => theme.MEDIA.mobile};
+  }
 `
 
 export const CloseButtonContainer = styled.div`
@@ -154,7 +153,7 @@ export const CloseButton = styled(FontAwesomeIcon)`
   cursor: pointer;
   width: 54px;
   height: 54px;
-  color: ${({ theme }) => theme.COLOR.common.gray[70]}; /* 아이콘 색상 */
+  color: ${({ theme }) => theme.COLOR.common.gray[70]};
   display: flex;
   justify-content: center;
   align-items: center;
