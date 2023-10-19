@@ -37,12 +37,18 @@ const COLOR = {
 }
 
 const FONT_SIZE = {
-  tiny: '0.8rem', //설명
-  small: '1.2rem', //
-  medium: '1.6rem', //List, 버튼, link, 가격
-  large: '2rem', //메뉴
-  big: '2.4rem', //제목 혹은 하단
+  tiny: '0.8rem',
+  small: '1.2rem',
+  medium: '1.6rem',
+  large: '2rem',
+  big: '2.4rem',
   huge: '2.8rem',
 }
 
-export const theme = { COLOR, FONT_SIZE }
+const MEDIA = {
+  mobile: '430px',
+  tablet: '800px',
+  laptop: '1440px',
+}
+
+export const theme = { COLOR, FONT_SIZE, MEDIA }

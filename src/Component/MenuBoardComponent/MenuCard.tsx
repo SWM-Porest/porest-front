@@ -37,7 +37,7 @@ const MenuCardContainer = styled.div`
   display: flex;
   padding: 1.2rem 0;
   align-items: flex-start;
-  gap: 16px;
+  gap: 1.6rem;
 
   color: inherit;
   text-decoration: none;

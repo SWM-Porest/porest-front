@@ -96,41 +96,44 @@ const FloatingButton: React.FC<OwnProps> = ({ info }) => {
   const simplifiedMenus = info.menus.filter((menu) => menu.category === '간편주문')
 
   return (
-    <FloatingButtonContainer>
-      {isMenuOpen && (
-        <div>
-          {simplifiedMenus.map((menu, index) => (
-            <StyledSimpleOrder key={index} onClick={() => toggleMenu(menu)}>
-              <StyledMenuName>{menu.name}</StyledMenuName>
-            </StyledSimpleOrder>
-          ))}
-        </div>
-      )}
-      <SimpleOrderIcon onClick={() => setIsMenuOpen(!isMenuOpen)}>
-        <SimpleOrder width="2.4rem" height="2.4rem" />
-      </SimpleOrderIcon>
-      <ChatBotIcon>
-        <ChatBot width="2.4rem" height="2.4rem" />
-      </ChatBotIcon>
-      {isModalOpen && <CartModal></CartModal>}
-      <CartIconContainer onClick={openModal}>
-        <StyledBadge count={totalCartItems}></StyledBadge>
-        <CartIcon>
-          <Cart width="2.4rem" height="2.4rem" fill="#fff" />
-        </CartIcon>
-      </CartIconContainer>
-      <Modal
-        title={`주문 확인 - ${selectedMenu ? selectedMenu.name : ''}`}
-        width={400}
-        open={isOrderModalVisible}
-        onOk={handleOrder}
-        onCancel={() => setIsOrderModalVisible(false)}
-        okText="주문"
-        cancelText="취소"
-      >
-        {selectedMenu && <p>{selectedMenu.name}을(를) 주문하시겠습니까?</p>}
-      </Modal>
-    </FloatingButtonContainer>
+    <div>
+      <CartModal isOpen={isModalOpen} />
+      <FloatingButtonContainer>
+        {isMenuOpen && (
+          <div>
+            {simplifiedMenus.map((menu, index) => (
+              <StyledSimpleOrder key={index} onClick={() => toggleMenu(menu)}>
+                <StyledMenuName>{menu.name}</StyledMenuName>
+              </StyledSimpleOrder>
+            ))}
+          </div>
+        )}
+        <SimpleOrderIcon onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <SimpleOrder width="2.4rem" height="2.4rem" />
+        </SimpleOrderIcon>
+        <ChatBotIcon>
+          <ChatBot width="2.4rem" height="2.4rem" />
+        </ChatBotIcon>
+
+        <CartIconContainer onClick={openModal}>
+          <StyledBadge count={totalCartItems}></StyledBadge>
+          <CartIcon>
+            <Cart width="2.4rem" height="2.4rem" fill="#fff" />
+          </CartIcon>
+        </CartIconContainer>
+        <Modal
+          title={`주문 확인 - ${selectedMenu ? selectedMenu.name : ''}`}
+          width={400}
+          open={isOrderModalVisible}
+          onOk={handleOrder}
+          onCancel={() => setIsOrderModalVisible(false)}
+          okText="주문"
+          cancelText="취소"
+        >
+          {selectedMenu && <p>{selectedMenu.name}을(를) 주문하시겠습니까?</p>}
+        </Modal>
+      </FloatingButtonContainer>
+    </div>
   )
 }
 
@@ -144,6 +147,9 @@ const FloatingButtonContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 1.6rem;
+  @media screen and (min-width: ${({ theme }) => theme.MEDIA.tablet}) {
+    right: calc(50% - 39.4rem);
+  }
 `
 const Icon = styled.div`
   cursor: pointer;
@@ -153,8 +159,7 @@ const Icon = styled.div`
   align-items: flex-start;
   border-radius: 2.8rem;
 
-  /* Flaot Button */
-  box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 0.2rem 1.2rem 0 rgba(0, 0, 0, 0.16);
 `
 
 const StyledSimpleOrder = styled(Icon)`

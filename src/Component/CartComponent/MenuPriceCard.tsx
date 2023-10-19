@@ -80,6 +80,7 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, orderinfo, handlePriceTotalCh
 export default MenuPriceCard
 
 const StyledContainer = styled.div`
+  width: 100%;
   display: inline-flex;
   padding: 1.6rem 2rem;
   flex-direction: column;
@@ -96,14 +97,14 @@ const StyledImage = styled.img`
 
 const MenuInfoContainer = styled.div`
   display: flex;
-  width: 350px;
+  width: 100%;
   justify-content: space-between;
   align-items: center;
 `
 
 const MenuPriceContainer = styled.div`
   display: flex;
-  width: 350px;
+  width: 100%;
   justify-content: space-between;
   align-items: center;
 `
@@ -111,14 +112,14 @@ const MenuPriceContainer = styled.div`
 const MenuInfoImageContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 1.6rem;
 `
 
 const MenuInfoDetailsContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 4px;
+  gap: 0.4rem;
 `
 
 const MenuName = styled.h4`

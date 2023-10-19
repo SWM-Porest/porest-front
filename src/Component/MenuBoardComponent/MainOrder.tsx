@@ -64,7 +64,7 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
     // IntersectionObserver
     const observer = new IntersectionObserver(handleIntersection, {
       root: null,
-      rootMargin: '0px',
+      rootMargin: '0',
       threshold: 0.5,
     })
     contentRefs.forEach((ref) => {
@@ -214,13 +214,12 @@ const DisclaimerContainer = styled.div`
   width: 100%;
   justify-content: center;
   background-color: ${({ theme }) => theme.COLOR.common.gray[100]};
-  font-family: 'pretendard';
   cursor: default;
   padding: 0 8pt;
 `
 
 const Disclaimer = styled.div`
   font-size: 1.5rem;
-  color: ${({ theme }) => theme.COLOR.common.gray[70]};
+  color: ${({ theme }) => theme.COLOR.common.gray[40]};
   margin-top: 8pt;
 `

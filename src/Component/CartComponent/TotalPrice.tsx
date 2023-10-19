@@ -29,6 +29,7 @@ const TotalPrice: React.FC<OwnProps> = (price) => {
 export default TotalPrice
 
 const StyledContainer = styled.div`
+  width: 100%;
   display: inline-flex;
   padding: 2rem;
   flex-direction: column;
@@ -39,12 +40,14 @@ const StyledContainer = styled.div`
 `
 
 const StyledH3 = styled.h3`
+  width: 100%;
   color: ${({ theme }) => theme.COLOR.common.gray[20]};
   font-style: normal;
   font-weight: 700;
 `
 
 const InnerContainer = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -53,7 +56,7 @@ const InnerContainer = styled.div`
 
 const Container1 = styled.div`
   display: flex;
-  width: 35rem;
+  width: 100%;
   justify-content: space-between;
   align-items: flex-start;
 `
@@ -74,7 +77,7 @@ const StyledPrice = styled.h4`
 
 const InnerTotalContainer = styled.div`
   display: flex;
-  width: 35rem;
+  width: 100%;
   justify-content: space-between;
   align-items: flex-start;
 `
