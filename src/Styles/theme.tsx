@@ -19,12 +19,12 @@ const COLOR = {
 }
 
 const FONT_SIZE = {
-  tiny: '1.5rem', //설명
-  small: '2.5rem', //
-  medium: '3rem', //List, 버튼, link, 가격
-  large: '3.5rem', //메뉴
-  big: '4.0rem', //제목 혹은 하단
-  huge: '4.5rem',
+  tiny: '0.8rem', //설명
+  small: '1.2rem', //
+  medium: '1.6rem', //List, 버튼, link, 가격
+  large: '2rem', //메뉴
+  big: '2.4rem', //제목 혹은 하단
+  huge: '2.8rem',
 }
 
 export const theme = { COLOR, FONT_SIZE }

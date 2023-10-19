@@ -1,6 +1,6 @@
+import { MenuOption } from 'Api/OrderInterface'
 import axios, { AxiosError } from 'axios'
 import React, { Dispatch, createContext, useContext, useReducer } from 'react'
-
 export interface Image {
   filename: string
   path: string
@@ -33,6 +33,7 @@ export interface Menu {
   img: Image
   ingre: string[]
   _id: string
+  options: MenuOption[]
 }
 
 export const restaurantContextDefaultValue: Restaurant = {
@@ -63,6 +64,20 @@ export const restaurantContextDefaultValue: Restaurant = {
         type: 'string',
       },
       ingre: ['string'],
+      options: [
+        {
+          _id: '',
+          name: 'string',
+          isSoldOut: false,
+          maxSelect: 1,
+          items: [
+            {
+              name: 'string',
+              price: 2000,
+            },
+          ],
+        },
+      ],
     },
   ],
 }

@@ -1,5 +1,5 @@
-import BurgerMenu from 'Component/BurgerMenu'
 import Header from 'Component/Header'
+import BurgerMenu from 'Component/Modal/BurgerMenu'
 import { useRestaurantState } from 'Context/restaurantContext'
 
 const RestaurantPage = () => {

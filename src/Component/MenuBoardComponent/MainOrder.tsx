@@ -18,8 +18,10 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
     setIsOpen(!isOpen)
   }
 
+  const filteredMenus = info.menus.filter((menu) => menu.category !== '간편주문')
+
   // 중복되지 않은 메뉴 타입 추출
-  const uniqueMenuTypes = info.menus.reduce((types: string[], menu) => {
+  const uniqueMenuTypes = filteredMenus.reduce((types: string[], menu) => {
     if (!types.includes(menu.menutype)) {
       types.push(menu.menutype)
     }
@@ -81,7 +83,7 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
               <StyledLiEach>{menuType}</StyledLiEach>
             </div>
 
-            {info.menus.map(
+            {filteredMenus.map(
               (menu) =>
                 menu.menutype === menuType &&
                 menu._id && (

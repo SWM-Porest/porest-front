@@ -1,42 +1,13 @@
+import { Order, OrderMenu } from 'Api/OrderInterface'
 import { useAccessToken } from 'Api/tokenCookie'
 import useUserData from 'Api/useUserData'
 import useUserOrderData from 'Api/useUserOrderData'
 import OrderModal from 'Component/Modal/OrderModal'
-import formatDate from 'Component/formatDate'
-import getImageSrc from 'Component/getImageSrc'
-import { Image } from 'Context/restaurantContext'
+import formatDate from 'Utils/formatDate'
+import getImageSrc from 'Utils/getImageSrc'
 import { Table } from 'antd'
 import { useState } from 'react'
 import styled from 'styled-components'
-
-interface OptionItem {
-  name: string
-  price: number
-}
-
-interface MenuOption {
-  name: string
-  items: OptionItem[]
-}
-
-interface OrderMenu {
-  menu_name: string
-  price: number
-  quantity: number
-  img: Image
-  options: MenuOption[]
-}
-
-interface Order {
-  restaurant_id: string
-  restaurant_name: string
-  restaurant_address: string
-  updated_at: string
-  _id: string
-  menus: { [menuId: string]: OrderMenu }
-  status: number
-  status_updated_at: { [status: number]: string }
-}
 
 const OrderList = () => {
   const page = 1 // page 변수 정의

@@ -1,28 +1,27 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { removeCookie, setCookie } from 'Api/cartCookie'
-import AmountCheck from 'Component/AmountCheck'
 import { CloseButton, CloseButtonContainer } from 'Component/Modal/CartModal'
-import getImageSrc from 'Component/getImageSrc'
 import { Menu, useRestaurantState } from 'Context/restaurantContext'
+import AmountCheck from 'Utils/AmountCheck'
+import getImageSrc from 'Utils/getImageSrc'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 interface OwnProps {
   info: Menu
-  cnt: number
+  orderinfo: { count: number; menu_id: string }
   handlePriceTotalChange: () => void
 }
 
-const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }) => {
+const MenuPriceCard: React.FC<OwnProps> = ({ info, orderinfo, handlePriceTotalChange }) => {
   const { data: restaurant } = useRestaurantState().restaurant
-  const [count, setCount] = useState(cnt)
+  const [count, setCount] = useState(orderinfo.count)
   const [totalprice, setTotalPrice] = useState((info.price * count).toLocaleString())
   const price = info.price.toLocaleString()
-
   const handleIncrement = () => {
     const newCount = count + 1
     setCount(newCount)
-    setCookie(restaurant?._id as string, info, 1)
+    setCookie(restaurant?._id as string, info, 1, info.options)
     handlePriceTotalChange()
   }
 
@@ -30,7 +29,7 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }
     if (count > 1) {
       const newCount = count - 1
       setCount(newCount)
-      setCookie(restaurant?._id as string, info, -1)
+      setCookie(restaurant?._id as string, info, -1, info.options)
       handlePriceTotalChange()
     } else {
       removeCookie(restaurant?._id as string, info._id)
@@ -42,9 +41,15 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }
     removeCookie(restaurant?._id as string, info._id)
     handlePriceTotalChange()
   }
+  const optionPricesSum = info.options.reduce((acc, option) => {
+    const itemPricesSum = option.items.reduce((itemAcc, item) => itemAcc + item.price, 0)
+    return acc + itemPricesSum
+  }, 0)
+
   useEffect(() => {
-    setTotalPrice((info.price * count).toLocaleString())
-  }, [count, info.price])
+    const newTotalPrice = ((info.price + optionPricesSum) * count).toLocaleString()
+    setTotalPrice(newTotalPrice)
+  }, [count, info.price, optionPricesSum])
 
   return (
     <StyledContainer>
@@ -56,8 +61,18 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }
             <CloseButton icon={faXmark} onClick={handleRemoveMenu} size="2xl" />
           </CloseButtonContainer>
         </TopContainer>
-
         <StyledPrice>{price}원</StyledPrice>
+        {info.options.map((option, index) => (
+          <div key={index}>
+            <h6 style={{ margin: 0, padding: '8pt 0' }}>{option.name}</h6>
+            {option.items.map((item, index) => (
+              <LargeButton key={index}>
+                <span>{item.name}</span>
+                <StyledOptionPrice>+ {item.price}</StyledOptionPrice>
+              </LargeButton>
+            ))}
+          </div>
+        ))}
         <InnerContainer>
           <StyledAmountContainer>
             <AmountCheck count={count} handleIncrement={handleIncrement} handleDecrement={handleDecrement} />
@@ -124,5 +139,13 @@ const StyledTotalPrice = styled.h5`
   text-align: right;
   display: block;
   margin-top: 24pt;
+  color: ${({ theme }) => theme.COLOR.number_price};
+`
+const LargeButton = styled.div`
+  padding: 8pt 0;
+  font-size: 1.8rem;
+`
+const StyledOptionPrice = styled.span`
+  float: right;
   color: ${({ theme }) => theme.COLOR.number_price};
 `
