@@ -1,20 +1,17 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { getCookie } from 'Api/cartCookie'
-import { useAccessToken } from 'Api/tokenCookie'
-import { useNotification } from 'Api/useNotification'
 import CartPrice from 'Component/CartComponent/CartPrice'
 import Header from 'Component/Header'
 import { useCartModal } from 'Context/CartModalContext'
-import { useRestaurantState } from 'Context/restaurantContext'
 import React, { useEffect } from 'react'
 import { styled } from 'styled-components'
 
 const CartModal: React.FC = () => {
-  const { data: restaurant, loading, error } = useRestaurantState().restaurant
-  const cookie = getCookie(restaurant?._id as string) || {}
+  const showAlert = () => {
+    alert(`현재 준비중인 기능입니다.\n직원을 호출해주세요.`)
+  }
+
   const { isModalOpen, closeModal } = useCartModal()
-  const [accessToken, setAccessToken] = useAccessToken()
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && isModalOpen) {
@@ -42,45 +39,6 @@ const CartModal: React.FC = () => {
     // 모달 내부(ModalContent) 클릭 시 모달 닫기 방지
     event.stopPropagation()
   }
-
-  const handleOrder = async () => {
-    try {
-      // API 요청을 보내는 부분
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/orders`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          restaurant_id: restaurant?._id,
-          restaurant_name: restaurant?.name,
-          restaurant_address: restaurant?.address,
-          //테이블 아이디 어디서 받아야할지 모르겠음
-          table_id: 1,
-          menus: cookie,
-          token: {
-            endpoint: 'url',
-            //keys 뭐 들어가야하는지 모르겠음
-            keys: {
-              auth: 'string',
-              p256dh: 'string',
-            },
-            expirationTime: null,
-          },
-        }),
-      })
-
-      if (response.ok) {
-        console.log('주문 생성에 성공했습니다.')
-      } else {
-        console.error('주문 생성에 실패했습니다.')
-      }
-    } catch (error) {
-      console.error('주문 생성 중 오류 발생:', error)
-    }
-  }
-
   return (
     <ModalOverlay className={isModalOpen ? 'open' : ''} onClick={handleOverlayClick}>
       <ModalContent onClick={handleContentClick}>
@@ -95,14 +53,7 @@ const CartModal: React.FC = () => {
         ></Header>
         <CartPrice />
         <div style={{ display: 'flex' }}>
-          <StyledButton
-            onClick={() => {
-              useNotification()
-              handleOrder()
-            }}
-          >
-            주문하기
-          </StyledButton>
+          <StyledButton onClick={showAlert}>주문하기</StyledButton>
         </div>
       </ModalContent>
     </ModalOverlay>
@@ -117,7 +68,7 @@ const ModalOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: ${({ theme }) => theme.COLOR.common.gray[600]};
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -125,7 +76,7 @@ const ModalOverlay = styled.div`
 `
 
 const ModalContent = styled.div`
-  background-color: ${({ theme }) => theme.COLOR.common.white};
+  background-color: #ffffff;
   position: relative;
   width: 100%;
   height: 100%;
@@ -142,7 +93,7 @@ export const CloseButtonContainer = styled.div`
   align-items: center;
   transition: background 0.3s ease-in-out; /* hover 시 배경색 변경 애니메이션 */
   &:hover {
-    background: ${({ theme }) => theme.COLOR.main}; /* hover 시 색상 변경 */
+    background: #1d9255; /* hover 시 색상 변경 */
   }
 `
 export const CloseButton = styled(FontAwesomeIcon)`
@@ -150,7 +101,7 @@ export const CloseButton = styled(FontAwesomeIcon)`
   cursor: pointer;
   width: 54px;
   height: 54px;
-  color: ${({ theme }) => theme.COLOR.common.gray[700]}; /* 아이콘 색상 */
+  color: #c5c9cc; /* 아이콘 색상 */
   display: flex;
   justify-content: center;
   align-items: center;

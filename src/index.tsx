@@ -1,13 +1,14 @@
-import { CookiesProvider } from 'react-cookie'
+import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
 import App from './App'
-import * as serviceWorkerRegistration from './serviceWorkerRegistration'
+import { CookiesProvider } from 'react-cookie'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <CookiesProvider>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </CookiesProvider>,
 )
-
-serviceWorkerRegistration.register()

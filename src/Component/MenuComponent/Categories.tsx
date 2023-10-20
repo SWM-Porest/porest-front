@@ -13,7 +13,7 @@ const Categories = ({ ingre }: ingre) => {
 
   return (
     <div style={{ cursor: 'default' }}>
-      <h5 style={{ margin: 0 }}>주요 재료</h5>
+      <h2 style={{ fontSize: '2rem', margin: '16pt' }}>주요 재료</h2>
       <Categoryul>{ulelem}</Categoryul>
     </div>
   )
@@ -32,12 +32,12 @@ const Categoryli = styled.li`
   font-size: 2rem;
   font-weight: bold;
   border-radius: 14.5px;
-  color: ${({ theme }) => theme.COLOR.common.white};
+  color: #fff;
   position: realtive;
   padding: 8pt 16pt;
   margin: 8pt;
   letter-spacing: -0.3px;
   text-align: center;
-  background-color: ${({ theme }) => theme.COLOR.common.gray[100]};
+  background-color: #424242;
   box-shadow: 0 3px 9px 0 rgba(0, 0, 0, 0.4);
 `

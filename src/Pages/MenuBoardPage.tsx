@@ -7,31 +7,28 @@ import { useCartModal } from 'Context/CartModalContext'
 import {
   getRestaurant,
   restaurantContextDefaultValue,
-  useRestaurantDispatch,
+  useRestauranDispatch,
   useRestaurantState,
 } from 'Context/restaurantContext'
 import { FlexAlignCSS } from 'Styles/common'
 import { Badge, Spin } from 'antd'
 import React, { useEffect, useState } from 'react'
-
-import FloatingButton from 'Component/FloatingButton'
-import BurgerMenu from 'Component/Modal/BurgerMenu'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import CartModal from '../Component/Modal/CartModal'
 import ErrorPage from './ErrorPage'
-
 const MenuBoardPage: React.FC = () => {
-  const [totalCartItems, setTotalCartItems] = useState(0)
   const { id } = useParams()
   if (id === undefined) throw new Error('id가 없습니다.')
 
-  const dispatch = useRestaurantDispatch()
+  const dispatch = useRestauranDispatch()
   const { data: restaurant, loading, error } = useRestaurantState().restaurant
 
   useEffect(() => {
     getRestaurant(dispatch, id)
   }, [dispatch, id])
+
+  const [totalCartItems, setTotalCartItems] = useState(0)
 
   useEffect(() => {
     const updateTotalCartItems = () => {
@@ -58,7 +55,6 @@ const MenuBoardPage: React.FC = () => {
       {isModalOpen && <CartModal></CartModal>}
       <StyledContainer>
         <Header
-          Left={<BurgerMenu />}
           HeaderName={restaurant ? restaurant.name : ''}
           Right={
             <>
@@ -69,17 +65,8 @@ const MenuBoardPage: React.FC = () => {
             </>
           }
         />
-        <MainBanner
-          images={
-            restaurant && restaurant.banner_images
-              ? restaurant.banner_images.map((banner_image) => {
-                  return process.env.REACT_APP_STATIC_URL + banner_image.path
-                })
-              : []
-          }
-        />
-        <MainOrder info={restaurant ? restaurant : restaurantContextDefaultValue} />
-        <FloatingButton info={restaurant ? restaurant : restaurantContextDefaultValue} />
+        <StyledBanner images={restaurant ? restaurant.banner_image_urls : []} />
+        <StyledOrder info={restaurant ? restaurant : restaurantContextDefaultValue} />
       </StyledContainer>
       <Footer />
     </div>
@@ -89,7 +76,17 @@ const MenuBoardPage: React.FC = () => {
 export default MenuBoardPage
 
 const StyledContainer = styled.div`
-  background-color: ${({ theme }) => theme.COLOR.common.white};
+  background-color: #fff;
+`
+
+const StyledBanner = styled(MainBanner)`
+  margin: 0px;
+  padding: 0px;
+`
+
+const StyledOrder = styled(MainOrder)`
+  margin: 0px;
+  padding: 0px;
 `
 
 const StyledButton = styled.button`
