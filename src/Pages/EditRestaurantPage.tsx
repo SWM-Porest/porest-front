@@ -16,6 +16,7 @@ import Footer from 'Component/Footer'
 import Loading from 'Component/Loading'
 import { useForm } from 'react-hook-form'
 import { Table } from 'Api/table'
+import { FormItemContainer, FormItemInput, FormItemLabel, FormItmeHeader } from 'Component/Form/FormElement'
 
 const EditRestaurantPage: React.FC = () => {
   const { id } = useParams()
@@ -220,11 +221,15 @@ const EditRestaurantPage: React.FC = () => {
       <Container>
         <form id="form" onSubmit={handleSubmit(onRetaurantEditSubmit)}>
           <FormItemContainer>
-            <FormItemLabel>가게 이름</FormItemLabel>
+            <FormItmeHeader>
+              <FormItemLabel>가게 이름</FormItemLabel>
+            </FormItmeHeader>
             <FormItemInput type="text" {...register('name')} />
           </FormItemContainer>
           <FormItemContainer>
-            <FormItemLabel>가게 사진</FormItemLabel>
+            <FormItmeHeader>
+              <FormItemLabel>가게 사진</FormItemLabel>
+            </FormItmeHeader>
             <ImageListContainer>
               {restaurantImageList && restaurantImageList.length >= 6 ? null : uploadButton}
               {restaurantImageList && restaurantImageList.length > 0
@@ -261,21 +266,29 @@ const EditRestaurantPage: React.FC = () => {
             </ImageListContainer>
           </FormItemContainer>
           <FormItemContainer>
-            <FormItemLabel>가게 설명</FormItemLabel>
+            <FormItmeHeader>
+              <FormItemLabel>가게 설명</FormItemLabel>
+            </FormItmeHeader>
             <FormItemInput type="text" {...register('intro')} />
           </FormItemContainer>
           <FormItemContainer>
-            <FormItemLabel>연락처</FormItemLabel>
+            <FormItmeHeader>
+              <FormItemLabel>연락처</FormItemLabel>
+            </FormItmeHeader>
             <FormItemInput type="text" {...register('phone_number')} />
           </FormItemContainer>
           <FormItemContainer>
-            <FormItemLabel>주소</FormItemLabel>
+            <FormItmeHeader>
+              <FormItemLabel>주소</FormItemLabel>
+            </FormItmeHeader>
             <FormItemInput type="text" {...register('address')} />
           </FormItemContainer>
         </form>
         <FormHeader>
-          <div>테이블</div>
-          <div style={{ color: '#999999' }}>{tableData?.length}개</div>
+          <FormItmeHeader>
+            <FormItemLabel>테이블</FormItemLabel>
+            <div style={{ color: '#999999' }}>{tableData?.length}개</div>
+          </FormItmeHeader>
         </FormHeader>
         <FormBody>
           {tableData &&
@@ -292,8 +305,8 @@ const EditRestaurantPage: React.FC = () => {
                 </FormContent>
               )
             })}
-          <TableAddButton>
-            <AddCircle24Filled /> <TableAddButtonText onClick={addTable}>테이블 추가</TableAddButtonText>
+          <TableAddButton onClick={addTable}>
+            <AddCircle24Filled /> <TableAddButtonText>테이블 추가</TableAddButtonText>
           </TableAddButton>
         </FormBody>
       </Container>
@@ -343,20 +356,6 @@ const ImageContainer = styled.img`
   object-fit: cover;
   margin: 6pt 6pt 0 0;
   border-radius: 8pt;
-`
-const FormItemLabel = styled.div`
-  font-size: ${({ theme }) => theme.FONT_SIZE.small};
-  font-weight: bold;
-  margin-bottom: 4pt;
-`
-const FormItemInput = styled.input`
-  width: 100%;
-  border: 1px solid #f7f7f7;
-  border-radius: 6pt;
-  padding: 8pt;
-`
-const FormItemContainer = styled.div`
-  margin-bottom: 24pt;
 `
 
 const TableAddButtonText = styled.div`
