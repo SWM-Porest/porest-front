@@ -36,7 +36,7 @@ export default App
 const Container = styled.div`
   height: 100vh;
   @media screen and (min-width: 800px) {
-    background: #3fba73;
+    background: #fff;
     overflow: hidden;
   }
 `
