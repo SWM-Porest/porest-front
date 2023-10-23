@@ -34,7 +34,9 @@ const Container = styled.div`
   background: ${({ theme }) => theme.COLOR.common.gray[120]};
 `
 
-const PlusMinusButton = styled.button``
+const PlusMinusButton = styled.button`
+  cursor: pointer;
+`
 
 const PlusButton = styled(PlusMinusButton)`
   display: flex;
@@ -60,4 +62,5 @@ const CountSpan = styled.h4`
   font-style: normal;
   font-weight: 500;
   width: 3.6rem;
+  cursor: default;
 `

@@ -34,6 +34,7 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   background-color: ${({ theme }) => theme.COLOR.common.white[0]};
+  cursor: pointer;
 `
 
 const ListContainer = styled.div`

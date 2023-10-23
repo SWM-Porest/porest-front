@@ -207,6 +207,7 @@ const StyledLiEach = styled.li`
   font-size: 2rem;
   font-style: normal;
   font-weight: 700;
+  cursor: default;
 `
 
 const DisclaimerContainer = styled.div`

@@ -61,6 +61,7 @@ const SliderStatus = styled.div`
   font-size: 1.2rem;
   font-style: normal;
   line-height: 1.6rem;
+  cursor: default;
 `
 
 const WhiteText = styled.span`

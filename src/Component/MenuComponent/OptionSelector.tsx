@@ -45,6 +45,7 @@ const StyledContainer = styled.div`
   align-items: center;
   gap: 1.2rem;
   width: 100%;
+  cursor: default;
 `
 
 const OptionTitle = styled.div`
