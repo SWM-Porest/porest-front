@@ -6,7 +6,7 @@ export interface OptionItem {
 }
 
 export interface MenuOption {
-  _id: string
+  _id: string | null
   name: string
   isSoldOut: boolean
   maxSelect: number

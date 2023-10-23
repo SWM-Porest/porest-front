@@ -294,7 +294,7 @@ const EditRestaurantPage: React.FC = () => {
           {tableData &&
             tableData.map((table, index) => {
               return (
-                <FormContent key={index}>
+                <FormContent key={Date.now() + index}>
                   <div style={{ flex: 1 }}>
                     <SubtractCircle24Filled color="red" onClick={() => deleteTable(table._id)} />
                   </div>

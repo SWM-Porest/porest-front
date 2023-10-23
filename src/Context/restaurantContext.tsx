@@ -1,6 +1,11 @@
 import { MenuOption } from 'Api/OrderInterface'
 import axios, { AxiosError } from 'axios'
 import React, { Dispatch, createContext, useContext, useReducer } from 'react'
+
+export const isInstanceOfImage = (object: any): boolean => {
+  return typeof object === 'object' && object !== null && 'filename' in object && 'path' in object && 'type' in object
+}
+
 export interface Image {
   filename: string
   path: string
