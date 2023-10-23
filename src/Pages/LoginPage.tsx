@@ -1,13 +1,20 @@
 import { Button } from 'antd'
 import { ReactComponent as Dismiss } from 'assets/Dismiss.svg'
 import { ReactComponent as Kakao } from 'assets/kakao.svg'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 const LoginPage = () => {
+  const navigate = useNavigate()
+
+  const handleDismissClick = () => {
+    navigate(-3) // 전전 페이지로 이동
+  }
+
   return (
     <Container>
       <IconContainer>
-        <Icon>
+        <Icon onClick={handleDismissClick}>
           <Dismiss width="2rem" height="2rem" />
         </Icon>
       </IconContainer>
