@@ -1,8 +1,15 @@
+import { getTotalCartItems } from 'Api/cartCookie'
 import { useAccessToken } from 'Api/tokenCookie'
-import { Restaurant } from 'Context/restaurantContext'
-import { Modal } from 'antd'
-import React, { useState } from 'react'
+import { useCartModal } from 'Context/CartModalContext'
+import { Restaurant, useRestaurantState } from 'Context/restaurantContext'
+import { Badge, Modal } from 'antd'
+import { ReactComponent as SimpleOrder } from 'assets/Call.svg'
+import { ReactComponent as Cart } from 'assets/Cart.svg'
+import { ReactComponent as ChatBot } from 'assets/Group 19.svg'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+
+import CartModal from 'Component/Modal/CartModal'
 
 interface OwnProps {
   info: Restaurant
@@ -17,6 +24,7 @@ const FloatingButton: React.FC<OwnProps> = ({ info }) => {
   const [selectedMenu, setSelectedMenu] = useState<MenuType | null>(null)
   const [isOrderModalVisible, setIsOrderModalVisible] = useState(false)
   const [accessToken, setAccessToken] = useAccessToken()
+  const { data: restaurant, loading, error } = useRestaurantState().restaurant
 
   const toggleMenu = (menu: MenuType) => {
     setSelectedMenu(menu)
@@ -74,37 +82,58 @@ const FloatingButton: React.FC<OwnProps> = ({ info }) => {
       console.error('주문 생성 중 오류 발생:', error)
     }
   }
-
+  const [totalCartItems, setTotalCartItems] = useState(0)
+  useEffect(() => {
+    const updateTotalCartItems = () => {
+      const totalItems = getTotalCartItems(restaurant?._id as string)
+      setTotalCartItems(totalItems)
+    }
+    updateTotalCartItems()
+    const intervalId = setInterval(updateTotalCartItems, 1000)
+    return () => clearInterval(intervalId)
+  }, [restaurant])
+  const { openModal, isModalOpen } = useCartModal()
   const simplifiedMenus = info.menus.filter((menu) => menu.category === '간편주문')
 
   return (
-    <FloatingButtonContainer>
-      {isMenuOpen && (
-        <Menu>
-          {simplifiedMenus.map((menu, index) => (
-            <StyledButton key={index} onClick={() => toggleMenu(menu)}>
-              {menu.name}
-            </StyledButton>
-          ))}
-          <StyledButton>다국어</StyledButton>
-        </Menu>
-      )}
-      <FloatingButtonStyled onClick={() => setIsMenuOpen(!isMenuOpen)}>
-        {isMenuOpen ? 'Porest' : 'Porest'}
-      </FloatingButtonStyled>
+    <div>
+      <CartModal isOpen={isModalOpen} />
+      <FloatingButtonContainer>
+        {isMenuOpen && (
+          <div>
+            {simplifiedMenus.map((menu, index) => (
+              <StyledSimpleOrder key={index} onClick={() => toggleMenu(menu)}>
+                <StyledMenuName>{menu.name}</StyledMenuName>
+              </StyledSimpleOrder>
+            ))}
+          </div>
+        )}
+        <SimpleOrderIcon onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <SimpleOrder width="2.4rem" height="2.4rem" />
+        </SimpleOrderIcon>
+        <ChatBotIcon>
+          <ChatBot width="2.4rem" height="2.4rem" />
+        </ChatBotIcon>
 
-      <LargeModal
-        title={`주문 확인 - ${selectedMenu ? selectedMenu.name : ''}`}
-        width={400}
-        open={isOrderModalVisible}
-        onOk={handleOrder}
-        onCancel={() => setIsOrderModalVisible(false)}
-        okText="주문"
-        cancelText="취소"
-      >
-        {selectedMenu && <p>{selectedMenu.name}을(를) 주문하시겠습니까?</p>}
-      </LargeModal>
-    </FloatingButtonContainer>
+        <CartIconContainer onClick={openModal}>
+          <StyledBadge count={totalCartItems}></StyledBadge>
+          <CartIcon>
+            <Cart width="2.4rem" height="2.4rem" fill="#fff" />
+          </CartIcon>
+        </CartIconContainer>
+        <Modal
+          title={`주문 확인 - ${selectedMenu ? selectedMenu.name : ''}`}
+          width={400}
+          open={isOrderModalVisible}
+          onOk={handleOrder}
+          onCancel={() => setIsOrderModalVisible(false)}
+          okText="주문"
+          cancelText="취소"
+        >
+          {selectedMenu && <p>{selectedMenu.name}을(를) 주문하시겠습니까?</p>}
+        </Modal>
+      </FloatingButtonContainer>
+    </div>
   )
 }
 
@@ -112,38 +141,67 @@ export default FloatingButton
 
 const FloatingButtonContainer = styled.div`
   position: fixed;
-  bottom: 36pt;
-  right: 36pt;
-`
-
-const FloatingButtonStyled = styled.button`
-  background-color: ${({ theme }) => theme.COLOR.main};
-  color: ${({ theme }) => theme.COLOR.common.white};
-  border-radius: 50%;
-  width: 96pt;
-  height: 96pt;
-  font-size: 1.8rem;
-  cursor: pointer;
-`
-
-const Menu = styled.div`
+  bottom: 3.6rem;
+  right: 3.6rem;
+  display: inline-flex;
   flex-direction: column;
-  position: fixed;
-  bottom: 144pt;
+  align-items: flex-start;
+  gap: 1.6rem;
+  @media screen and (min-width: ${({ theme }) => theme.MEDIA.tablet}) {
+    right: calc(50% - 39.4rem);
+  }
+`
+const Icon = styled.div`
+  cursor: pointer;
+  display: flex;
+  padding: 1.6rem;
+  flex-direction: column;
+  align-items: flex-start;
+  border-radius: 2.8rem;
+
+  box-shadow: 0 0.2rem 1.2rem 0 rgba(0, 0, 0, 0.16);
 `
 
-const StyledButton = styled.button`
-  width: 96pt;
-  height: 96pt;
-  font-size: 1.8rem;
-  margin: 8pt 0;
-  cursor: pointer;
-  background-color: ${({ theme }) => theme.COLOR.common.white};
-  border: 1px solid ${({ theme }) => theme.COLOR.common.gray[700]};
-  border-radius: 50%;
+const StyledSimpleOrder = styled(Icon)`
+  background: ${({ theme }) => theme.COLOR.common.white[0]};
 `
-const LargeModal = styled(Modal)`
-  .ant-modal-content {
-    transform: scale(1.5);
+
+const SimpleOrderIcon = styled(Icon)`
+  background: ${({ theme }) => theme.COLOR.main};
+`
+
+const ChatBotIcon = styled(Icon)`
+  background: ${({ theme }) => theme.COLOR.focus};
+`
+const CartIconContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+`
+
+const CartIcon = styled(Icon)`
+  background: ${({ theme }) => theme.COLOR.main};
+`
+
+const StyledMenuName = styled.div`
+  width: 2.4rem;
+  height: 2.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  text-align: center;
+`
+const StyledBadge = styled(Badge)`
+  position: absolute;
+  top: 0;
+  right: 0;
+  .ant-badge-count {
+    height: 2rem;
+    width: 2rem;
+    line-height: 2rem;
+    font-size: 1.5rem;
+    border-radius: 50%;
   }
 `

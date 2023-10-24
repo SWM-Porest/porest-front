@@ -39,15 +39,15 @@ const CheckMiniBox: React.FC<OwnProps> = ({ img, check }) => {
 const StyledContainer = styled.div`
   text-align: center;
   align-items: center;
-  margin: 10px;
-  font-size: 30px;
+  margin: 1rem;
+  font-size: 3rem;
 `
 const StyledH3 = styled.h3`
-  margin: 0px;
+  margin: 0;
   font-family: 'Noto Serif KR', serif;
   text-align: center;
-  background-color: ${({ theme }) => theme.COLOR.common.gray[700]};
-  border-radius: 20px 20px 0 0;
+  background-color: ${({ theme }) => theme.COLOR.common.gray[70]};
+  border-radius: 2rem 2rem 0 0;
 `
 
 const StyledImage = styled.img`
@@ -58,13 +58,13 @@ const StyledMiniContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: ${({ theme }) => theme.COLOR.common.gray[700]};
-  border-radius: 0 0 20px 20px;
+  background-color: ${({ theme }) => theme.COLOR.common.gray[70]};
+  border-radius: 0 0 2rem 2rem;
 `
 
 const BoxContainer = styled.div`
-  background-color: ${({ theme }) => theme.COLOR.common.white};
-  font-size: 35px;
-  border-radius: 20px;
-  margin: 10px;
+  background-color: ${({ theme }) => theme.COLOR.common.white[0]};
+  font-size: 3.5rem;
+  border-radius: 2rem;
+  margin: 1rem;
 `

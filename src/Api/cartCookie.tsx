@@ -89,6 +89,9 @@ export const removeCookie = (name: string, menuId: string) => {
   }
   return cartCookie.set(name, JSON.stringify(cookie), { path: '/' })
 }
+export const removeAllCookie = (name: string) => {
+  cartCookie.remove(name, { path: '/' })
+}
 
 export const getTotalCartItems = (name: string): number => {
   const cookie = getCookie(name) || {}

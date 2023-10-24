@@ -1,14 +1,17 @@
-import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { Order, OrderMenu } from 'Api/OrderInterface'
 import Header from 'Component/Header'
-import { CloseButton, CloseButtonContainer } from 'Component/Modal/CartModal'
+import OrderInfo from 'Component/ProfileComponent/OrderInfo'
+import RestaurantInfo from 'Component/ProfileComponent/RestaurantInfo'
+import TotalPrice from 'Component/ProfileComponent/TotalPrice'
 import formatDate from 'Utils/formatDate'
 import type { StepsProps } from 'antd'
 import { Popover, Steps } from 'antd'
+import { ReactComponent as Chevron } from 'assets/Chevron.svg'
 import React from 'react'
 import styled from 'styled-components'
 
 const { Step } = Steps
+
 const customDot: StepsProps['progressDot'] = (dot, { status, index }) => (
   <Popover
     content={
@@ -85,19 +88,18 @@ const OrderModal: React.FC<OwnProps> = ({ order, isOpen, openModalHandler }) => 
 
         <ModalView $load={isOpen} onClick={(e) => e.stopPropagation()}>
           <Header
-            HeaderName="주문 히스토리"
-            Right={
-              <CloseButtonContainer>
-                <CloseButton
-                  icon={faTimes}
-                  onClick={() => {
-                    openModalHandler(order ? order._id : '')
-                  }}
-                  size="2x"
-                />
-              </CloseButtonContainer>
+            Left={
+              <Chevron
+                width="2rem"
+                height="2rem"
+                fill="#212121"
+                onClick={() => {
+                  openModalHandler(order ? order._id : '')
+                }}
+              />
             }
-          ></Header>
+            HeaderName={'주문내역'}
+          />
 
           <ContentContainer>
             <CustomSteps direction="vertical" current={order.status - 1} progressDot={customDot}>
@@ -119,46 +121,15 @@ const OrderModal: React.FC<OwnProps> = ({ order, isOpen, openModalHandler }) => 
             </CustomSteps>
 
             <OrderInfoContainer>
-              <div>
-                <OrderInfoLabel>주문 매장</OrderInfoLabel>
-                <OrderInfoValue>
-                  <OrderRestaurantName>{order.restaurant_name}</OrderRestaurantName>
-                  <OrderRestaurantAddress>{order.restaurant_address}</OrderRestaurantAddress>
-                </OrderInfoValue>
-              </div>
-              {Object.values(order.menus).map((menu, index) => (
-                <div key={index}>
-                  <MenuName>{menu.menu_name}</MenuName>
-                  <MenuItem>
-                    <MenuPrice>{menu.price.toLocaleString()}원</MenuPrice>
-                    <MenuPrice>{menu.quantity} 개</MenuPrice>
-                    <span />
-                    <MenuPrice>{(menu.price * menu.quantity).toLocaleString()}원</MenuPrice>
-                  </MenuItem>
-                  {menu.options.map((option) => (
-                    <div key={option.name}>
-                      {Array.isArray(option.items) && option.items.length > 0 ? (
-                        <OptionContainer>
-                          {option.items.map((item) => (
-                            <MenuItem key={item.name}>
-                              <OptionName>{option.name}</OptionName>
-                              <OptionName>{item.name} </OptionName>
-                              <span />
-                              <OptionPrice>{item.price.toLocaleString()}원</OptionPrice>
-                            </MenuItem>
-                          ))}
-                        </OptionContainer>
-                      ) : (
-                        <p>옵션이 없습니다.</p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              ))}
-              <TotalPrice>
-                <div>총 금액: </div>
-                <ColoredText>{orderTotalPrice.toLocaleString()}원</ColoredText>
-              </TotalPrice>
+              <RestaurantInfo
+                restaurant_id={order.restaurant_id}
+                restaurant_name={order.restaurant_name}
+                restaurant_address={order.restaurant_address}
+              />
+              <InfoContainer>
+                <OrderInfo order_menus={Object.values(order.menus)} />
+              </InfoContainer>
+              <TotalPrice total_price={orderTotalPrice} />
             </OrderInfoContainer>
           </ContentContainer>
         </ModalView>
@@ -174,6 +145,22 @@ const ModalContainer = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
+  @media screen and (min-width: ${({ theme }) => theme.MEDIA.tablet}) {
+    width: ${({ theme }) => theme.MEDIA.mobile};
+  }
+`
+
+const ModalView = styled.div<{ $load: boolean }>`
+  z-index: 31;
+  position: fixed;
+  bottom: ${(props) => (props.$load ? '0' : '-100%')};
+  width: 100vw;
+  height: 100%;
+  background-color: ${({ theme }) => theme.COLOR.common.gray[120]};
+  transition: all 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  @media screen and (min-width: ${({ theme }) => theme.MEDIA.tablet}) {
+    width: ${({ theme }) => theme.MEDIA.mobile};
+  }
 `
 
 const ModalBackdrop = styled.div<{ $load: boolean }>`
@@ -184,58 +171,35 @@ const ModalBackdrop = styled.div<{ $load: boolean }>`
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  background-color: ${({ theme }) => theme.COLOR.common.gray[600]};
+  background-color: ${({ theme }) => theme.COLOR.common.black[20]};
   ${(props) => (props.$load ? 'top: 0; left: 0; right: 0;' : '')};
-`
-
-const ModalView = styled.div<{ $load: boolean }>`
-  z-index: 31;
-  position: fixed;
-  bottom: ${(props) => (props.$load ? '0' : '-100%')};
-  border-radius: 40px 40px 0px 0px;
-  width: 100%;
-  height: 80%;
-  background-color: ${({ theme }) => theme.COLOR.common.white};
-  transition: all 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
 `
 
 const ContentContainer = styled.div`
   cursor: default;
   overflow-y: auto;
-  max-height: calc(100% - 72px - 72pt);
+  max-height: calc(100% - 7.2rem);
 `
 
 const CustomSteps = styled(Steps)`
   background-color: ${({ theme }) => theme.COLOR.hover};
-  padding: 32pt 0 0 32pt;
+  padding: 1rem 2rem;
 
   .ant-steps-item {
-    font-family: 'Noto Sans KR', sans-serif;
-    font-weight: normal;
-    height: 96pt;
+    font-family: 'pretendard';
   }
-  .ant-steps-item-title {
-    font-size: 2rem;
-    padding-left: 8pt;
-  }
-  .ant-steps-item-description {
-    font-size: 1.8rem;
-    padding-left: 8pt;
-  }
-  .ant-steps-item-process .ant-steps-item-title {
-    font-weight: bold;
-  }
+
   .ant-steps-item-icon {
     .ant-steps-icon {
       .ant-steps-icon-dot {
-        background-color: ${({ theme }) => theme.COLOR.common.gray[400]} !important;
+        background-color: ${({ theme }) => theme.COLOR.common.gray[40]} !important;
       }
     }
   }
   .ant-steps-item-active {
     .ant-steps-icon {
       .ant-steps-icon-dot {
-        background-color: ${({ theme }) => theme.COLOR.common.gray[200]} !important;
+        background-color: ${({ theme }) => theme.COLOR.common.gray[20]} !important;
       }
     }
   }
@@ -243,72 +207,16 @@ const CustomSteps = styled(Steps)`
   .ant-steps-item-finish {
     .ant-steps-item-container {
       .ant-steps-item-tail::after {
-        background-color: ${({ theme }) => theme.COLOR.common.gray[400]};
+        background-color: ${({ theme }) => theme.COLOR.common.gray[40]};
       }
     }
   }
 `
 
-const OrderInfoContainer = styled.div``
-
-const OrderInfoLabel = styled.div`
-  padding: 24pt 32pt;
-  font-size: 2rem;
-  background-color: ${({ theme }) => theme.COLOR.common.gray[700]};
+const OrderInfoContainer = styled.div`
+  padding: 2rem 0;
 `
 
-const OrderInfoValue = styled.div`
-  color: ${({ theme }) => theme.COLOR.common.gray[200]};
-  padding: 24pt 32pt;
-  border-bottom: 1px solid #ddd;
-`
-const OrderRestaurantName = styled.div`
-  font-size: 2rem;
-  font-weight: bold;
-`
-const OrderRestaurantAddress = styled.div`
-  padding: 8pt 0;
-  font-size: 1.8rem;
-`
-const MenuName = styled.div`
-  padding: 24pt 32pt;
-  font-weight: bold;
-  font-size: 2.3rem;
-  border-top: 1px solid #ddd;
-`
-
-const MenuItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8pt 48pt;
-  font-size: 2rem;
-`
-
-const MenuPrice = styled.div`
-  color: ${({ theme }) => theme.COLOR.common.gray[400]};
-`
-const OptionContainer = styled.div`
-  padding: 8pt 0;
-`
-
-const OptionName = styled.div`
-  color: ${({ theme }) => theme.COLOR.common.gray[600]};
-`
-
-const OptionPrice = styled.div`
-  color: ${({ theme }) => theme.COLOR.common.gray[600]};
-`
-const TotalPrice = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24pt 32pt;
-  font-size: 2.3rem;
-  background-color: ${({ theme }) => theme.COLOR.common.gray[700]};
-  font-weight: bold;
-`
-
-const ColoredText = styled.span`
-  color: ${({ theme }) => theme.COLOR.sub};
+const InfoContainer = styled.div`
+  padding: 2rem 0;
 `
