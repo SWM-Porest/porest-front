@@ -4,12 +4,14 @@ import ErrorPage from 'Pages/ErrorPage'
 import LoginPage from 'Pages/LoginPage'
 import LoginRedirectionPage from 'Pages/LoginRedirectionPage'
 import MenuBoardPage from 'Pages/MenuBoardPage'
-import ProfilePage from 'Pages/ProfilePage'
+import MyPage from 'Pages/MyPage'
+import OrderListPage from 'Pages/OrderListPage'
 import RestaurantListPage from 'Pages/RestaurantListPage'
 import RestaurantPage from 'Pages/RestaurantPage'
 import WaitingPage from 'Pages/WaitingPage'
-import { createBrowserRouter } from 'react-router-dom'
+import TablePage from 'Pages/TablePage'
 import PrivateRoute from 'Routes/private'
+import { createBrowserRouter } from 'react-router-dom'
 
 const router = createBrowserRouter([
   {
@@ -32,11 +34,15 @@ const router = createBrowserRouter([
         element: <RestaurantPage />,
       },
       {
+        path: '/table', // 레스토랑 id, table number
+        element: <TablePage />,
+      },
+      {
         element: <PrivateRoute />,
         children: [
           {
-            path: '/mypage',
-            element: <ProfilePage />,
+            path: '/orderlist',
+            element: <OrderListPage />,
           },
           {
             path: '/restaurants/:id/edit',
@@ -54,6 +60,7 @@ const router = createBrowserRouter([
             path: 'login/redirection',
             element: <LoginRedirectionPage />,
           },
+          { path: '/mypage', element: <MyPage /> },
         ],
       },
     ],

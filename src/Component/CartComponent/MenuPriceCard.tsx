@@ -1,28 +1,25 @@
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { removeCookie, setCookie } from 'Api/cartCookie'
-import AmountCheck from 'Component/AmountCheck'
-import { CloseButton, CloseButtonContainer } from 'Component/Modal/CartModal'
-import getImageSrc from 'Component/getImageSrc'
 import { Menu, useRestaurantState } from 'Context/restaurantContext'
+import AmountCheck from 'Utils/AmountCheck'
+import getImageSrc from 'Utils/getImageSrc'
+import { ReactComponent as Dismiss } from 'assets/Dismiss.svg'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-
 interface OwnProps {
   info: Menu
-  cnt: number
+  orderinfo: { count: number; menu_id: string }
   handlePriceTotalChange: () => void
 }
 
-const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }) => {
+const MenuPriceCard: React.FC<OwnProps> = ({ info, orderinfo, handlePriceTotalChange }) => {
   const { data: restaurant } = useRestaurantState().restaurant
-  const [count, setCount] = useState(cnt)
+  const [count, setCount] = useState(orderinfo.count)
   const [totalprice, setTotalPrice] = useState((info.price * count).toLocaleString())
   const price = info.price.toLocaleString()
-
   const handleIncrement = () => {
     const newCount = count + 1
     setCount(newCount)
-    setCookie(restaurant?._id as string, info, 1)
+    setCookie(restaurant?._id as string, info, 1, info.options)
     handlePriceTotalChange()
   }
 
@@ -30,7 +27,7 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }
     if (count > 1) {
       const newCount = count - 1
       setCount(newCount)
-      setCookie(restaurant?._id as string, info, -1)
+      setCookie(restaurant?._id as string, info, -1, info.options)
       handlePriceTotalChange()
     } else {
       removeCookie(restaurant?._id as string, info._id)
@@ -42,29 +39,40 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }
     removeCookie(restaurant?._id as string, info._id)
     handlePriceTotalChange()
   }
+  const optionPricesSum = info.options.reduce((acc, option) => {
+    const itemPricesSum = option.items.reduce((itemAcc, item) => itemAcc + item.price, 0)
+    return acc + itemPricesSum
+  }, 0)
+
   useEffect(() => {
-    setTotalPrice((info.price * count).toLocaleString())
-  }, [count, info.price])
+    const newTotalPrice = ((info.price + optionPricesSum) * count).toLocaleString()
+    setTotalPrice(newTotalPrice)
+  }, [count, info.price, optionPricesSum])
 
   return (
     <StyledContainer>
-      <StyledImage src={getImageSrc(info.img)} alt="메뉴 이미지" />
-      <OuterContainer>
-        <TopContainer>
-          <StyledName>{info.name}</StyledName>
-          <CloseButtonContainer>
-            <CloseButton icon={faXmark} onClick={handleRemoveMenu} size="2xl" />
-          </CloseButtonContainer>
-        </TopContainer>
+      <MenuInfoContainer>
+        <MenuInfoImageContainer>
+          <StyledImage src={getImageSrc(info.img)} alt="메뉴 이미지" />
+          <MenuInfoDetailsContainer>
+            <MenuName>{info.name}</MenuName>
+            {info.options.map((option, index) => (
+              <MenuOption key={index}>
+                <span style={{ margin: 0, padding: '8pt 0' }}>{option.name}:</span>
+                {option.items.map((item, index) => (
+                  <span key={index}> {item.name}</span>
+                ))}
+              </MenuOption>
+            ))}
+          </MenuInfoDetailsContainer>
+        </MenuInfoImageContainer>
+        <Dismiss width="2.4rem" height="2.4rem" onClick={handleRemoveMenu} />
+      </MenuInfoContainer>
 
-        <StyledPrice>{price}원</StyledPrice>
-        <InnerContainer>
-          <StyledAmountContainer>
-            <AmountCheck count={count} handleIncrement={handleIncrement} handleDecrement={handleDecrement} />
-          </StyledAmountContainer>
-          <StyledTotalPrice>{totalprice}원</StyledTotalPrice>
-        </InnerContainer>
-      </OuterContainer>
+      <MenuPriceContainer>
+        <AmountCheck count={count} handleIncrement={handleIncrement} handleDecrement={handleDecrement} />
+        <TotalPrice>{totalprice}원</TotalPrice>
+      </MenuPriceContainer>
     </StyledContainer>
   )
 }
@@ -72,57 +80,66 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, cnt, handlePriceTotalChange }
 export default MenuPriceCard
 
 const StyledContainer = styled.div`
-  position: relative;
-  padding: 24pt 48pt;
-  border-top: ridge;
-  border-color: ${({ theme }) => theme.COLOR.common.gray[700]};
-  cursor: default;
+  width: 100%;
+  display: inline-flex;
+  padding: 1.6rem 2rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.6rem;
+  background-color: ${({ theme }) => theme.COLOR.common.white[0]};
 `
 
 const StyledImage = styled.img`
-  display: flex;
-  position: relative;
-  float: left;
-  width: 120pt;
-  height: 112pt;
-  border-radius: 8pt;
-  margin-right: 32pt;
-`
-const TopContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`
-const OuterContainer = styled.div`
-  overflow: hidden;
+  width: 6rem;
+  height: 6rem;
+  border-radius: 1.2rem;
 `
 
-const InnerContainer = styled.div`
-  margin-top: 16pt;
+const MenuInfoContainer = styled.div`
   display: flex;
+  width: 100%;
   justify-content: space-between;
   align-items: center;
 `
 
-const StyledName = styled.h4`
+const MenuPriceContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const MenuInfoImageContainer = styled.div`
   display: flex;
   align-items: center;
-  margin: 0;
+  gap: 1.6rem;
 `
 
-const StyledPrice = styled.h5`
-  margin: 0;
-  padding: 16pt 0;
-`
-
-const StyledAmountContainer = styled.div`
-  margin-top: 16pt;
+const MenuInfoDetailsContainer = styled.div`
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
 `
 
-const StyledTotalPrice = styled.h5`
-  float: right;
+const MenuName = styled.h4`
+  color: ${({ theme }) => theme.COLOR.common.gray[20]};
+  font-style: normal;
+  font-weight: 500;
+  margin: 0;
+`
+
+const MenuOption = styled.div`
+  color: ${({ theme }) => theme.COLOR.common.gray[40]};
+  font-size: 1.4rem;
+  font-style: normal;
+  font-weight: 400;
+`
+
+const TotalPrice = styled.h3`
+  margin: 0;
+  color: ${({ theme }) => theme.COLOR.common.gray[20]};
   text-align: right;
-  display: block;
-  margin-top: 24pt;
-  color: ${({ theme }) => theme.COLOR.number_price};
+  font-style: normal;
+  font-weight: 500;
 `

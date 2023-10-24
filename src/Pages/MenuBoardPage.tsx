@@ -1,47 +1,37 @@
-import { getTotalCartItems } from 'Api/cartCookie'
-import BurgerMenu from 'Component/BurgerMenu'
+import FloatingButton from 'Component/FloatingButton'
 import Footer from 'Component/Footer'
-import Header from 'Component/Header'
-import MainBanner from 'Component/MenuBoardComponent/MainBanner'
 import MainOrder from 'Component/MenuBoardComponent/MainOrder'
-import { useCartModal } from 'Context/CartModalContext'
+import SliderContainer from 'Component/MenuBoardComponent/SliderContainer'
 import {
   getRestaurant,
   restaurantContextDefaultValue,
   useRestaurantDispatch,
   useRestaurantState,
 } from 'Context/restaurantContext'
-import { FlexAlignCSS } from 'Styles/common'
-import { Badge, Spin } from 'antd'
-import React, { useEffect, useState } from 'react'
-
+import getImageSrc from 'Utils/getImageSrc'
+import { Spin } from 'antd'
+import { ReactComponent as Chevron } from 'assets/Chevron.svg'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import CartModal from '../Component/Modal/CartModal'
 import ErrorPage from './ErrorPage'
 
+import { useNavigate } from 'react-router-dom'
+
 const MenuBoardPage: React.FC = () => {
-  const [totalCartItems, setTotalCartItems] = useState(0)
   const { id } = useParams()
   if (id === undefined) throw new Error('id가 없습니다.')
 
   const dispatch = useRestaurantDispatch()
   const { data: restaurant, loading, error } = useRestaurantState().restaurant
+  const navigate = useNavigate()
 
+  const handleIconLeftClick = () => {
+    navigate('/restaurants')
+  }
   useEffect(() => {
     getRestaurant(dispatch, id)
   }, [dispatch, id])
-
-  useEffect(() => {
-    const updateTotalCartItems = () => {
-      const totalItems = getTotalCartItems(restaurant?._id as string)
-      setTotalCartItems(totalItems)
-    }
-    updateTotalCartItems()
-    const intervalId = setInterval(updateTotalCartItems, 1000)
-    return () => clearInterval(intervalId)
-  }, [restaurant])
-  const { openModal, isModalOpen } = useCartModal()
 
   if (loading) {
     return (
@@ -54,30 +44,25 @@ const MenuBoardPage: React.FC = () => {
 
   return (
     <div className="MenuBoard">
-      {isModalOpen && <CartModal></CartModal>}
+      <SliderContainer
+        images={
+          restaurant && restaurant.banner_images
+            ? restaurant.banner_images.map((banner_image) => {
+                return getImageSrc(banner_image)
+              })
+            : []
+        }
+        title={restaurant ? restaurant.name : ''}
+        lefticon={
+          <IconLeft onClick={handleIconLeftClick}>
+            <Chevron width="2rem" height="2rem" fill="#212121" />
+          </IconLeft>
+        }
+      />
+
       <StyledContainer>
-        <Header
-          Left={<BurgerMenu />}
-          HeaderName={restaurant ? restaurant.name : ''}
-          Right={
-            <>
-              <StyledBadge count={totalCartItems}></StyledBadge>
-              <StyledButton onClick={openModal}>
-                <StyledH5>장바구니</StyledH5>
-              </StyledButton>
-            </>
-          }
-        />
-        <StyledBanner
-          images={
-            restaurant && restaurant.banner_images
-              ? restaurant.banner_images.map((banner_image) => {
-                  return process.env.REACT_APP_STATIC_URL + banner_image.path
-                })
-              : []
-          }
-        />
-        <StyledOrder info={restaurant ? restaurant : restaurantContextDefaultValue} />
+        <MainOrder info={restaurant ? restaurant : restaurantContextDefaultValue} />
+        <FloatingButton info={restaurant ? restaurant : restaurantContextDefaultValue} />
       </StyledContainer>
       <Footer />
     </div>
@@ -87,26 +72,7 @@ const MenuBoardPage: React.FC = () => {
 export default MenuBoardPage
 
 const StyledContainer = styled.div`
-  background-color: ${({ theme }) => theme.COLOR.common.white};
-`
-
-const StyledBanner = styled(MainBanner)`
-  margin: 0px;
-  padding: 0px;
-`
-
-const StyledOrder = styled(MainOrder)`
-  margin: 0px;
-  padding: 0px;
-`
-
-const StyledButton = styled.button`
-  ${FlexAlignCSS};
-  color: inherit;
-  padding: 0;
-  border: none;
-  background: none;
-  cursor: pointer;
+  background-color: ${({ theme }) => theme.COLOR.common.gray[120]};
 `
 
 export const StyledSpin = styled(Spin)`
@@ -117,21 +83,18 @@ export const StyledSpin = styled(Spin)`
     transform: translate(-50%, -50%) scale(4);
   }
 `
-
-const StyledBadge = styled(Badge)`
-  .ant-badge-count {
-    height: 32pt;
-    width: 32pt;
-    line-height: 32pt;
-    font-size: 1.5rem;
-    border-radius: 50%;
-  }
-  transform: translate(400%, -40%) scale(1.3);
+const Icon = styled.div`
+  display: inline-flex;
+  padding: 1rem;
+  align-items: flex-start;
+  gap: 1rem;
+  border-radius: 2rem;
+  background: ${({ theme }) => theme.COLOR.common.white[0]};
+  box-shadow: 0 0.2rem 1.2rem 0 rgba(0, 0, 0, 0.16);
+  position: absolute;
+  top: 1rem;
 `
 
-const StyledH5 = styled.h5`
-  margin: 0;
-  @media screen and (max-width: 440pt) {
-    font-size: 2rem;
-  }
+const IconLeft = styled(Icon)`
+  left: 1.2rem;
 `

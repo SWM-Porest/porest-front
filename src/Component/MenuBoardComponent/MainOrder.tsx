@@ -1,6 +1,9 @@
+import Header from 'Component/Header'
 import { MenuModal } from 'Component/MenuComponent/MenuModal'
 import { Restaurant } from 'Context/restaurantContext'
+import { ReactComponent as Chevron } from 'assets/Chevron.svg'
 import React, { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import MenuCard from './MenuCard'
 
@@ -12,14 +15,34 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
   const [menuId, setMenuId] = useState('')
   const [isOpen, setIsOpen] = useState(false)
   const [activeMenuIndex, setActiveMenuIndex] = useState(0)
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true)
+  const navigate = useNavigate()
+
+  const handleIconLeftClick = () => {
+    navigate('/restaurants')
+  }
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY
+      const hideHeaderThreshold = window.innerWidth
+      setIsHeaderVisible(scrollY > hideHeaderThreshold)
+    }
+    handleScroll() // 최초 실행 시 스크롤 위치 측정
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   const openModalHandler = (id: string) => {
     setMenuId(id)
     setIsOpen(!isOpen)
   }
 
+  const filteredMenus = info.menus.filter((menu) => menu.category !== '간편주문')
+
   // 중복되지 않은 메뉴 타입 추출
-  const uniqueMenuTypes = info.menus.reduce((types: string[], menu) => {
+  const uniqueMenuTypes = filteredMenus.reduce((types: string[], menu) => {
     if (!types.includes(menu.menutype)) {
       types.push(menu.menutype)
     }
@@ -56,17 +79,30 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
 
   return (
     <div>
-      <StyledUl>
-        {uniqueMenuTypes.map((menuType, index) => (
-          <StyledLi
-            key={index}
-            $active={activeMenuIndex === index}
-            onClick={() => contentRefs[index].current?.scrollIntoView({ behavior: 'smooth' })}
-          >
-            {menuType}
-          </StyledLi>
-        ))}
-      </StyledUl>
+      <StyledTop>
+        {isHeaderVisible && (
+          <Header
+            Left={
+              <Icon onClick={handleIconLeftClick}>
+                <Chevron width="2rem" height="2rem" fill="#212121" />
+              </Icon>
+            }
+            HeaderName={info ? info.name : ''}
+            Right={''}
+          />
+        )}
+        <StyledUl>
+          {uniqueMenuTypes.map((menuType, index) => (
+            <StyledLi
+              key={index}
+              $active={activeMenuIndex === index}
+              onClick={() => contentRefs[index].current?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              {menuType}
+            </StyledLi>
+          ))}
+        </StyledUl>
+      </StyledTop>
       <MenuModal
         id={menuId}
         isOpen={isOpen}
@@ -77,24 +113,25 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
       {uniqueMenuTypes.map((menuType, index) => (
         <div key={`menuType_${index}`}>
           <MenuCardsContainer ref={contentRefs[index]}>
-            <div>
-              <StyledLiEach>{menuType}</StyledLiEach>
-            </div>
-
-            {info.menus.map(
-              (menu) =>
-                menu.menutype === menuType &&
-                menu._id && (
-                  <div
-                    key={`menu_${menu._id}`}
-                    onClick={() => {
-                      openModalHandler(menu._id)
-                    }}
-                  >
-                    <MenuCard key={menu._id} info={menu} />
-                  </div>
-                ),
-            )}
+            <MenuCardContainer>
+              <LiContainer>
+                <StyledLiEach>{menuType}</StyledLiEach>
+              </LiContainer>
+              {filteredMenus.map(
+                (menu) =>
+                  menu.menutype === menuType &&
+                  menu._id && (
+                    <div
+                      key={`menu_${menu._id}`}
+                      onClick={() => {
+                        openModalHandler(menu._id)
+                      }}
+                    >
+                      <MenuCard key={menu._id} info={menu} />
+                    </div>
+                  ),
+              )}
+            </MenuCardContainer>
           </MenuCardsContainer>
         </div>
       ))}
@@ -113,48 +150,77 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
 
 export default MainOrder
 
-const StyledUl = styled.ul`
+const StyledTop = styled.div`
   position: sticky;
   top: 0;
-  background-color: ${({ theme }) => theme.COLOR.common.white};
-  list-style: none;
-  padding: 24pt 48pt;
-  display: block;
-  border-bottom: solid;
-  border-color: ${({ theme }) => theme.COLOR.common.gray[700]};
+  background-color: ${({ theme }) => theme.COLOR.common.white[0]};
   cursor: pointer;
+`
+const Icon = styled.div`
+  display: flex;
+  padding: 1rem;
+  gap: 1rem;
+  border-radius: 2rem;
+  background: ${({ theme }) => theme.COLOR.common.white[0]};
+`
+
+const StyledUl = styled.ul`
+  margin: 0;
+  display: inline-flex;
+  padding: 1rem 2rem;
+  align-items: flex-start;
+  gap: 0.4rem;
 `
 
 const StyledLi = styled.li<{ $active: boolean }>`
-  // active props 추가
   display: inline-block;
-  padding: 16pt 40pt 0 0;
-  font-weight: bold;
-  color: ${(props) => (props.$active ? props.theme.COLOR.common.black : props.theme.COLOR.common.gray[500])};
+  padding: 0.8rem 1.2rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1.7rem;
+
+  color: ${(props) => (props.$active ? props.theme.COLOR.common.white[0] : props.theme.COLOR.common.gray[40])};
+  background-color: ${(props) => (props.$active ? props.theme.COLOR.common.gray[20] : 'transparent')};
+
+  font-size: 1.4rem;
+  font-style: normal;
+  font-weight: 700;
 `
 
 const MenuCardsContainer = styled.div`
   align-items: center;
 `
-
+const MenuCardContainer = styled.div`
+  margin: 2rem 0 0 0;
+  background-color: ${({ theme }) => theme.COLOR.common.white[0]};
+  padding: 0 2rem;
+`
+const LiContainer = styled.div`
+  display: inline-flex;
+  padding: 2rem 0 0.8rem 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.8rem;
+`
 const StyledLiEach = styled.li`
-  padding: 24pt 48pt;
-  font-weight: bold;
-  cursor: default;
+  color: ${({ theme }) => theme.COLOR.common.gray[20]};
+  font-size: 2rem;
+  font-style: normal;
+  font-weight: 700;
 `
 
 const DisclaimerContainer = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
-  background-color: ${({ theme }) => theme.COLOR.common.gray[700]};
-  font-family: 'Noto Sans KR', sans-serif;
+  background-color: ${({ theme }) => theme.COLOR.common.gray[100]};
+  font-family: 'pretendard';
   cursor: default;
   padding: 0 8pt;
 `
 
 const Disclaimer = styled.div`
   font-size: 1.5rem;
-  color: ${({ theme }) => theme.COLOR.common.gray[400]};
+  color: ${({ theme }) => theme.COLOR.common.gray[40]};
   margin-top: 8pt;
 `

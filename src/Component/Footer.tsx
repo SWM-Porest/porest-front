@@ -18,7 +18,7 @@ const StyledContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${({ theme }) => theme.COLOR.common.gray[700]};
+  background-color: ${({ theme }) => theme.COLOR.common.gray[100]};
   width: 100%;
 `
 const ParentContainer = styled.div`
@@ -32,7 +32,7 @@ const ParentContainer = styled.div`
 
 const Copyright = styled.p`
   font-size: 1.5rem;
-  color: ${({ theme }) => theme.COLOR.common.gray[400]};
+  color: ${({ theme }) => theme.COLOR.common.gray[40]};
   margin-top: 8pt;
   text-align: center;
 `
