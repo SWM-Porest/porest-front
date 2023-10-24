@@ -15,10 +15,11 @@ import {
   Add20Filled,
   AddCircle20Filled,
   AddCircle24Filled,
+  CheckmarkCircle20Filled,
   Dismiss20Regular,
-  DismissSquare20Regular,
   Image20Filled,
   Image24Filled,
+  RadioButton20Regular,
   ReOrder20Regular,
   SubtractCircle20Filled,
 } from '@fluentui/react-icons'
@@ -70,12 +71,27 @@ const CreateOrUpdateMenuPage = () => {
     }
   }
 
-  const sumbitMenuForm = async (data: any) => {
+  const submitMenuForm = async (data: any) => {
     console.log(data)
+
     if (data._id !== undefined) {
       const res = await axios.patch(`${process.env.REACT_APP_API_URL}/restaurants/${id}/menus/`, data)
+
+      if (res.status !== 200) {
+        alert('메뉴 수정에 실패했습니다.')
+      } else {
+        alert('메뉴 수정에 성공했습니다.')
+        navigate(-1)
+      }
     } else {
       const res = await axios.post(`${process.env.REACT_APP_API_URL}/restaurants/${id}/menus`, data)
+
+      if (res.status !== 200) {
+        alert('메뉴 등록에 실패했습니다.')
+      } else {
+        alert('메뉴 등록에 성공했습니다.')
+        navigate(-1)
+      }
     }
   }
 
@@ -107,6 +123,7 @@ const CreateOrUpdateMenuPage = () => {
       _id: null,
       isSoldOut: false,
       maxSelect: 0,
+      isRequired: false,
     }
 
     setOptions((prev) => [...prev, option])
@@ -156,6 +173,23 @@ const CreateOrUpdateMenuPage = () => {
     })
   }
 
+  const checkRequired = (index: number) => {
+    const option = options[index]
+
+    const isRequired = !option.isRequired
+
+    setValue(`menuOptions.${index}.isRequired`, isRequired)
+    setOptions((prev) => {
+      const newOptions = [...prev]
+      newOptions[index].isRequired = isRequired
+      return newOptions
+    })
+  }
+
+  const handleOptionItemPriceInput = (e: any) => {
+    // console.log(e.)
+  }
+
   useEffect(() => {
     if (menu !== undefined) {
       reset(state.menu)
@@ -183,7 +217,7 @@ const CreateOrUpdateMenuPage = () => {
         }
       ></Header>
       <MenuBody>
-        <Form id="form" onSubmit={handleSubmit(sumbitMenuForm)}>
+        <Form id="form" onSubmit={handleSubmit(submitMenuForm)}>
           <FormItemContainer>
             <FormItemInput
               type="text"
@@ -285,11 +319,22 @@ const CreateOrUpdateMenuPage = () => {
                       <OptionHeader>
                         <OptionHeaderFront>
                           <RedSubtractCircle20Filled onClick={() => removeOption(moIdx)} />
-                          {option.name}
+                          <TransparantInput
+                            type="text"
+                            {...register(`menuOptions.${moIdx}.name`, {
+                              required: true,
+                            })}
+                            placeholder="옵션 이름"
+                          />
                         </OptionHeaderFront>
-                        <OptionHeaderBack>
+
+                        <OptionHeaderBack $isRequired={option.isRequired} onClick={() => checkRequired(moIdx)}>
                           <CheckBoxContainer>
-                            <input type="checkbox" />
+                            {option.isRequired ? (
+                              <CheckmarkCircle20Filled color="#3FBA73" />
+                            ) : (
+                              <RadioButton20Regular color="#AAAAAA" />
+                            )}
                           </CheckBoxContainer>
                           필수 옵션
                         </OptionHeaderBack>
@@ -302,8 +347,24 @@ const CreateOrUpdateMenuPage = () => {
                                 <OptionItemLeft>
                                   <RedSubtractCircle20Filled onClick={() => removeOptionItem(iIdx, moIdx)} />
                                   <OptionItemContent>
-                                    <OptionItemName>{item.name}</OptionItemName>
-                                    <OptionItemPrice>+{item.price.toLocaleString()}원</OptionItemPrice>
+                                    <OptionItemName>
+                                      <TransparantInput
+                                        type="text"
+                                        {...register(`menuOptions.${moIdx}.items.${iIdx}.name`, {
+                                          required: true,
+                                        })}
+                                        placeholder="옵션 항목 이름"
+                                      />
+                                    </OptionItemName>
+                                    <OptionItemPrice onClick={(e) => handleOptionItemPriceInput(e)}>
+                                      <TransparantInput
+                                        type="number"
+                                        {...register(`menuOptions.${moIdx}.items.${iIdx}.price`, {
+                                          required: true,
+                                        })}
+                                        placeholder="옵션 항목 가격"
+                                      />
+                                    </OptionItemPrice>
                                   </OptionItemContent>
                                 </OptionItemLeft>
                                 <OptionItemReOrder />
@@ -331,13 +392,22 @@ const CreateOrUpdateMenuPage = () => {
 
 export default CreateOrUpdateMenuPage
 
+const TransparantInput = styled.input`
+  background-color: transparent;
+  border: none;
+`
+
 const OptionItemPrice = styled.div`
-  font-size: ${({ theme }) => theme.FONT_SIZE.small};
-  color: #666666;
+  * {
+    font-size: ${({ theme }) => theme.FONT_SIZE.small};
+    color: #666666;
+  }
 `
 
 const OptionItemName = styled.div`
-  font-size: ${({ theme }) => theme.FONT_SIZE.medium};
+  * {
+    font-size: ${({ theme }) => theme.FONT_SIZE.medium};
+  }
 `
 const OptionItemLeft = styled.div`
   display: flex;
@@ -351,13 +421,20 @@ const OptionItemContent = styled.div`
 const OptionItemReOrder = styled(ReOrder20Regular)`
   color: #aaaaaa;
 `
-const CheckBoxContainer = styled.div``
+const CheckBoxContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  * {
+    margin-right: 0.8rem;
+  }
+`
 
-const OptionHeaderBack = styled.div`
+const OptionHeaderBack = styled.div<{ $isRequired: boolean }>`
   display: flex;
   align-items: center;
   font-size: ${({ theme }) => theme.FONT_SIZE.medium};
-  color: #3fba73;
+  ${(props) => (props.$isRequired ? 'color: #3FBA73;' : 'color: #AAAAAA;')}
   font-weight: bold;
 `
 
@@ -365,8 +442,10 @@ const OptionHeaderFront = styled.div`
   display: flex;
   align-items: center;
 
-  font-size: ${({ theme }) => theme.FONT_SIZE.medium};
-  font-weight: bold;
+  * {
+    font-size: ${({ theme }) => theme.FONT_SIZE.medium};
+    font-weight: bold;
+  }
 `
 const AddOptionButton = styled.div`
   display: flex;

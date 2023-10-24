@@ -75,6 +75,7 @@ export const restaurantContextDefaultValue: Restaurant = {
           name: 'string',
           isSoldOut: false,
           maxSelect: 1,
+          isRequired: false,
           items: [
             {
               name: 'string',

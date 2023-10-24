@@ -11,6 +11,7 @@ export interface MenuOption {
   isSoldOut: boolean
   maxSelect: number
   items: OptionItem[]
+  isRequired: boolean
 }
 
 export interface OrderMenu {
