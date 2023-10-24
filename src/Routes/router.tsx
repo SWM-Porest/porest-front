@@ -1,6 +1,8 @@
 import EditRestaurantPage from 'Pages/EditRestaurantPage'
+import EditWaitingPage from 'Pages/EditWaitingPage'
 import ErrorPage from 'Pages/ErrorPage'
 import LoginPage from 'Pages/LoginPage'
+import LoginRedirectionPage from 'Pages/LoginRedirectionPage'
 import MenuBoardPage from 'Pages/MenuBoardPage'
 import ProfilePage from 'Pages/ProfilePage'
 import RestaurantListPage from 'Pages/RestaurantListPage'
@@ -40,11 +42,19 @@ const router = createBrowserRouter([
             path: '/restaurants/:id/edit',
             element: <EditRestaurantPage />,
           },
+          {
+            path: '/waitings/:restaurant_id',
+            element: <WaitingPage />,
+          },
+          {
+            path: '/waitings/:restaurant_id/edit',
+            element: <EditWaitingPage />,
+          },
+          {
+            path: 'login/redirection',
+            element: <LoginRedirectionPage />,
+          },
         ],
-      },
-      {
-        path: '/waiting/:restaurant_id',
-        element: <WaitingPage />,
       },
     ],
   },

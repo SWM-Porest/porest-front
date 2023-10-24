@@ -15,7 +15,7 @@ export const useNotification = async (order: CreateOrder, accessToken: string) =
           return registration.pushManager.subscribe(subscribeOptions)
         })
         .then((pushSubscription) => {
-          order.token = JSON.stringify(pushSubscription)
+          order.token = pushSubscription
           return createOrder(order, accessToken)
         })
       return data

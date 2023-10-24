@@ -11,18 +11,9 @@ export interface Order {
   menus: { [menuId: string]: OrderMenu }
   status: number
   status_updated_at: { [key: number]: Date }
-  token: string | null
+  token: PushSubscription | null
   created_at: string
   updated_at: string
-}
-
-export interface PushSubscription {
-  endpoint: string
-  keys: {
-    auth: string
-    p256dh: string
-  }
-  expirationTime: number | null
 }
 
 export interface CreateOrder {
@@ -31,7 +22,7 @@ export interface CreateOrder {
   restaurant_address: string
   table_id: number
   menus: { [menuId: string]: OrderMenu }
-  token: string | null
+  token: PushSubscription | null
 }
 export const createOrder = async (order: CreateOrder, accessToken: string): Promise<Order> => {
   const { data } = await axios<Order>({

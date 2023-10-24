@@ -1,10 +1,11 @@
 import styled from 'styled-components'
 
-interface NowWaitingBoxProps {
+export interface NowWaitingBoxProps {
   team: number
+  head_count: number
 }
 
-const NowWaitingBox = ({ team }: NowWaitingBoxProps) => {
+const NowWaitingBox = ({ team, head_count }: NowWaitingBoxProps) => {
   return (
     <Container>
       <WaitingBox>
@@ -18,7 +19,7 @@ const NowWaitingBox = ({ team }: NowWaitingBoxProps) => {
         </BetweenBlackFontBox>
         <BetweenBlackFontBox>
           <div>총 입장 인원</div>
-          <div>2 명</div>
+          <div>{head_count} 명</div>
         </BetweenBlackFontBox>
       </WaitingDetailBox>
       <NoticeBox>

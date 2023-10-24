@@ -1,15 +1,13 @@
 import axios from 'axios'
-import { FindWaitingDto } from './waitingRegistration'
 
-const fetchWaitingCancel = async (accessToken: string, data: FindWaitingDto) => {
+const fetchWaitingCancel = async (accessToken: string, waitingId: string) => {
   try {
     const response = await axios({
       method: 'PATCH',
-      url: `${process.env.REACT_APP_API_URL}/waitings/cancel`,
+      url: `${process.env.REACT_APP_API_URL}/waitings/${waitingId}/cancel`,
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
-      data: data,
     })
     return response.data
   } catch (error) {
