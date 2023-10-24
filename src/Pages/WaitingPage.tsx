@@ -1,6 +1,5 @@
 import { getWaiting, getWaitingTeam } from 'Api/getWaiting'
 import { useAccessToken } from 'Api/tokenCookie'
-import fetchWaitingCancel from 'Api/waitingCancel'
 import fetchWaitingRegistration from 'Api/waitingRegistration'
 import Header from 'Component/Header'
 import { getRestaurant, useRestaurantDispatch, useRestaurantState } from 'Context/restaurantContext'
@@ -8,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { StyledSpin } from './MenuBoardPage'
 import { FullPageDiv, PreviousButton, Step1, Step2, Step3 } from 'Component/WaitingComponent/HeadCountForm'
+import { fetchWaitingCancel } from 'Api/updateWaiting'
 
 enum StepNumber {
   SelectHeadCounter = 1,
@@ -25,7 +25,7 @@ const WaitingPage = () => {
   const dispatch = useRestaurantDispatch()
   const { data: restaurant, loading } = useRestaurantState().restaurant
   const { data: waiting, isLoading } = getWaiting(data.restaurant_id, accessToken)
-  const { data: waitingTeam, teamLoading } = getWaitingTeam(data.restaurant_id, accessToken)
+  const { data: waitingTeam, isLoading: isLoading2 } = getWaitingTeam(data.restaurant_id, accessToken)
 
   useEffect(() => {
     getRestaurant(dispatch, defaultId)
@@ -66,8 +66,7 @@ const WaitingPage = () => {
       window.location.reload()
     }
   }
-
-  if (isLoading && loading && teamLoading) {
+  if (loading && isLoading && isLoading2) {
     return (
       <StyledSpin tip="Loading" size="large">
         <div className="content" />
@@ -75,7 +74,7 @@ const WaitingPage = () => {
     )
   }
 
-  if (waiting && stepNumber !== StepNumber.WaitingData) {
+  if (waiting && waitingTeam && stepNumber !== StepNumber.WaitingData) {
     setData({ ...waiting })
     setStepNumber(StepNumber.WaitingData)
   }

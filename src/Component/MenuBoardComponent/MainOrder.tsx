@@ -51,6 +51,7 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
 
   // Ref 배열을 동적 생성
   const contentRefs = uniqueMenuTypes.map(() => useRef<HTMLDivElement>(null))
+  console.log(contentRefs)
 
   useEffect(() => {
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {

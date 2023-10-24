@@ -80,7 +80,7 @@ export const StyledSpin = styled(Spin)`
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(4);
+    transform: translate(-50%, -50%) scale(2);
   }
 `
 const Icon = styled.div`

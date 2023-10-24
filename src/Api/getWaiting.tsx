@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Waiting } from './waitingRegistration'
+import { Waiting, WaitingTeam } from './waitingRegistration'
 import { useQuery } from 'react-query'
 
 const fetchgetWaiting = async (id: string, accessToken: string): Promise<Waiting | undefined> => {
@@ -21,7 +21,7 @@ export const fetchgetRestaurantWaiting = async (id: string, accessToken: string)
   try {
     const response = await axios({
       method: 'GET',
-      url: `${process.env.REACT_APP_API_URL}/waitings/restaurant/${id}`,
+      url: `${process.env.REACT_APP_API_URL}/waitings/${id}/restaurant`,
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -32,7 +32,7 @@ export const fetchgetRestaurantWaiting = async (id: string, accessToken: string)
   }
 }
 
-export const fetchWaitingTeam = async (id: string, accessToken: string) => {
+export const fetchWaitingTeam = async (id: string, accessToken: string): Promise<WaitingTeam | undefined> => {
   try {
     const response = await axios({
       method: 'GET',
@@ -58,24 +58,11 @@ export const getWaiting = (restaurant_id: string, accessToken: string): any => {
   }
 }
 
-export const getRestaurantWaiting = (restaurant_id: string, accessToken: string): any => {
-  try {
-    return useQuery(['restaurantWaiting', restaurant_id], () => fetchgetRestaurantWaiting(restaurant_id, accessToken), {
-      staleTime: 60000,
-      retry: 1,
-      retryDelay: 500,
-    })
-  } catch (err) {
-    console.log('웨이팅 정보가 없습니다.')
-  }
-}
-
 export const getWaitingTeam = (restaurant_id: string, accessToken: string): any => {
   try {
     return useQuery(['waitingTeam', restaurant_id], () => fetchWaitingTeam(restaurant_id, accessToken), {
       staleTime: 60000,
-      retry: 1,
-      retryDelay: 500,
+      retry: 0,
     })
   } catch (err) {
     console.log('현재 대기 팀 수가 없습니다.')

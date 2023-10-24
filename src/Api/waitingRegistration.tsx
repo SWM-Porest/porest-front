@@ -12,12 +12,21 @@ export interface FindWaitingDto {
 export interface Waiting {
   _id: string
   user_id: string
+  user_nick: string
   restaurant_id: string
   restaurant_name: string
   status: number
   head_count: number
   created_at: Date
   updated_at: Date
+}
+
+export interface WaitingTeam {
+  _id: string
+  restaurant_id: string
+  created_at: Date
+  updated_at: Date
+  waiting_teams: number
 }
 
 const fetchWaitingRegistration = async (data: CreateWaitingDto, accessToken: string): Promise<Waiting> => {

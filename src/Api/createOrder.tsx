@@ -1,5 +1,5 @@
-import { OrderMenu } from 'Component/ProfileComponent/OrderList'
 import axios from 'axios'
+import { OrderMenu } from './OrderInterface'
 
 export interface Order {
   _id: string

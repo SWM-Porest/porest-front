@@ -10,35 +10,6 @@ import { ReactComponent as ChevronR } from 'assets/ChevronR.svg'
 import { useState } from 'react'
 import styled from 'styled-components'
 
-interface OptionItem {
-  name: string
-  price: number
-}
-
-interface MenuOption {
-  name: string
-  items: OptionItem[]
-}
-
-export interface OrderMenu {
-  menu_name: string
-  price: number
-  quantity: number
-  img: string
-  options: MenuOption[]
-}
-
-export interface Order {
-  restaurant_id: string
-  restaurant_name: string
-  restaurant_address: string
-  updated_at: string
-  _id: string
-  menus: { [menuId: string]: OrderMenu }
-  status: number
-  status_updated_at: { [status: number]: string }
-}
-
 const OrderList = () => {
   const page = 1 // page 변수 정의
   const pageSize = 10 // pageSize 변수 정의
