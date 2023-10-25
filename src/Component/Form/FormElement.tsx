@@ -50,4 +50,5 @@ export const FormItmeHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1.6rem;
+  cursor: default;
 `

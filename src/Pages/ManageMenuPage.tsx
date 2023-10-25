@@ -1,13 +1,13 @@
 import { AddCircle20Filled, ChevronRight20Regular, Image24Filled, ReOrder20Regular } from '@fluentui/react-icons'
 import Header from 'Component/Header'
-import { Link, useParams } from 'react-router-dom'
-import { styled } from 'styled-components'
-import ErrorPage from './ErrorPage'
-import axios from 'axios'
-import { UseQueryResult, useQuery } from 'react-query'
 import Loading from 'Component/Loading'
 import { Menu, Restaurant } from 'Context/restaurantContext'
+import axios from 'axios'
+import { UseQueryResult, useQuery } from 'react-query'
+import { Link, useParams } from 'react-router-dom'
+import { styled } from 'styled-components'
 import { v4 as uuidv4 } from 'uuid'
+import ErrorPage from './ErrorPage'
 
 const EditMenuPage = () => {
   const { id } = useParams()
@@ -56,7 +56,12 @@ const EditMenuPage = () => {
                         restaurant.menus.map((menu: Menu) => {
                           if (menu.category !== c)
                             return (
-                              <MenuItem key={uuidv4()}>
+                              <MenuItem
+                                key={uuidv4()}
+                                to={`/restaurants/${id}/menus/edit`}
+                                state={{ category: c, menu: menu }}
+                                style={{ textDecoration: 'none', color: '#000000' }}
+                              >
                                 <MenuImage>
                                   {menu.img && menu.img.path ? (
                                     <img src={process.env.REACT_APP_STATIC_URL + menu.img.path} alt="" />
@@ -65,15 +70,7 @@ const EditMenuPage = () => {
                                   )}
                                 </MenuImage>
                                 <MenuBody>
-                                  <MenuName>
-                                    <Link
-                                      to={`/restaurants/${id}/menus/edit`}
-                                      state={{ category: c, menu: menu }}
-                                      style={{ textDecoration: 'none', color: '#000000' }}
-                                    >
-                                      {menu.name}
-                                    </Link>
-                                  </MenuName>
+                                  <MenuName>{menu.name}</MenuName>
                                   <MenuDiscount>
                                     <DiscountPercentage>20%</DiscountPercentage>
                                     <OriginalPrice>100,000원</OriginalPrice>
@@ -173,7 +170,7 @@ const MenuImage = styled.div`
     border-radius: 1.2rem;
   }
 `
-const MenuItem = styled.div`
+const MenuItem = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: space-between;

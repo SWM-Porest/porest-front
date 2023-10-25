@@ -1,16 +1,3 @@
-import Header from 'Component/Header'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
-import { styled } from 'styled-components'
-import {
-  FormInputContainer,
-  FormInputInContainer,
-  FormItemContainer,
-  FormItemInput,
-  FormItemLabel,
-  FormItemTextField,
-  FormItmeHeader,
-} from 'Component/Form/FormElement'
 import {
   Add20Filled,
   AddCircle20Filled,
@@ -23,11 +10,24 @@ import {
   ReOrder20Regular,
   SubtractCircle20Filled,
 } from '@fluentui/react-icons'
-import { useEffect, useState } from 'react'
-import { Image, isInstanceOfImage } from 'Context/restaurantContext'
 import { MenuOption } from 'Api/OrderInterface'
-import { v4 as uuidv4 } from 'uuid'
+import {
+  FormInputContainer,
+  FormInputInContainer,
+  FormItemContainer,
+  FormItemInput,
+  FormItemLabel,
+  FormItemTextField,
+  FormItmeHeader,
+} from 'Component/Form/FormElement'
+import Header from 'Component/Header'
+import { Image, isInstanceOfImage } from 'Context/restaurantContext'
 import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { styled } from 'styled-components'
+import { v4 as uuidv4 } from 'uuid'
 import ErrorPage from './ErrorPage'
 
 const CreateOrUpdateMenuPage = () => {
@@ -209,7 +209,7 @@ const CreateOrUpdateMenuPage = () => {
     <>
       <Header
         HeaderName="메뉴"
-        Left={<Dismiss20Regular onClick={() => navigate(-1)} />}
+        Left={<Dismiss20Regular style={{ cursor: 'pointer' }} onClick={() => navigate(-1)} />}
         Right={
           <CompleteButton $isActive={formState.isValid} type="submit" form="form">
             완료
@@ -286,7 +286,7 @@ const CreateOrUpdateMenuPage = () => {
                 onChange={(e: any) => setInputIngreValue(e.target.value)}
                 placeholder="주요 재료를 입력해주세요"
               />
-              <AddCircle24Filled color="#3FBA73" onClick={() => addIngre()} />
+              <AddCircle24Filled style={{ cursor: 'pointer' }} color="#3FBA73" onClick={() => addIngre()} />
             </FormInputContainer>
             <IngreList>
               {ingreInputValues.map((ingre: string, index: number) => {
@@ -493,6 +493,7 @@ const OptionAddButton = styled.div`
   * {
     margin-right: 0.8rem;
   }
+  cursor: pointer;
 `
 const IngreContent = styled.span`
   font-size: ${({ theme }) => theme.FONT_SIZE.small};
@@ -525,11 +526,13 @@ const RedSubtractCircle20Filled = styled(SubtractCircle20Filled)`
 const FormItemInputDecorator = styled.span`
   font-size: ${({ theme }) => theme.FONT_SIZE.medium};
   color: #999999;
+  cursor: default;
 `
 const CompleteButton = styled.button<{ $isActive: boolean }>`
   color: ${(props) => (props.$isActive ? '#3fba73' : '#AAAAAA')};
   font-size: ${({ theme }) => theme.FONT_SIZE.medium};
   background-color: transparent;
+  cursor: pointer;
 `
 
 const UpdateMenuImageButton = styled.label`
