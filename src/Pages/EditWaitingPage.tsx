@@ -8,6 +8,9 @@ import Header from 'Component/Header'
 import styled from 'styled-components'
 import { useEffect, useState } from 'react'
 import { fetchWaitingCall, fetchWaitingCancel, fetchWaitingSeated } from 'Api/updateWaiting'
+import dayjs, { Dayjs } from 'dayjs'
+import duration, { Duration } from 'dayjs/plugin/duration'
+dayjs.extend(duration)
 
 const EditWaitingPage = () => {
   const { restaurant_id } = useParams<{ restaurant_id: string }>()
@@ -94,19 +97,29 @@ const EditWaitingPage = () => {
         {waitings.map((waiting: Waiting) => {
           return (
             <WaitingItem key={waiting._id}>
-              <WaitingItemBanner $status={waiting.status}>{waiting.user_nick}</WaitingItemBanner>
-              <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                <p style={{ margin: 10 }}>{waiting.head_count}명</p>
-                <p style={{ margin: 10 }}>{waiting.status === 1 ? '대기중' : '호출중'}</p>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                <StyledLeftButton onClick={() => handleWaitingCancel(waiting._id)} style={{ margin: 0 }}>
-                  취소
-                </StyledLeftButton>
-                <StyledButton onClick={() => handleWaiting(waiting._id, waiting.status)} style={{ margin: 0 }}>
-                  {waiting.status === 1 ? '호출' : '입장'}
+              <FlexDivBetween>
+                <FlexDivColumn>
+                  <NickNameBox>
+                    {waiting.user_nick} ({waiting.head_count}명)
+                  </NickNameBox>
+                  <DetailBox>{getTimeDiff(dayjs(waiting.created_at))}</DetailBox>
+                </FlexDivColumn>
+                <FlexDivColumn>
+                  <StatusButton $status={waiting.status}>{waiting.status === 1 ? '대기중' : '호출중'}</StatusButton>
+                </FlexDivColumn>
+              </FlexDivBetween>
+              <FlexDivBetween>
+                <StyledButton $status={0} onClick={() => handleWaitingCancel(waiting._id)} style={{ margin: 0 }}>
+                  취소하기
                 </StyledButton>
-              </div>
+                <StyledButton
+                  $status={waiting.status}
+                  onClick={() => handleWaiting(waiting._id, waiting.status)}
+                  style={{ margin: 0 }}
+                >
+                  {waiting.status === 1 ? '호출하기' : '입장하기'}
+                </StyledButton>
+              </FlexDivBetween>
             </WaitingItem>
           )
         })}
@@ -116,6 +129,26 @@ const EditWaitingPage = () => {
 }
 
 export default EditWaitingPage
+
+export const getTimeDiff = (time: Dayjs): string => {
+  const timeDiffDuration: Duration = dayjs.duration(dayjs().diff(time))
+  const dateDiff: number = parseInt(timeDiffDuration.format('D'))
+  const hourDiff: number = parseInt(timeDiffDuration.format('H'))
+  const minuteDiff: number = parseInt(timeDiffDuration.format('m'))
+  const secondDiff: number = parseInt(timeDiffDuration.format('s'))
+
+  if (dateDiff > 0) {
+    return `${dateDiff}일 전`
+  } else if (hourDiff > 0) {
+    return `${hourDiff}시간 전`
+  } else if (minuteDiff > 0) {
+    return `${minuteDiff}분 전`
+  } else if (secondDiff > 0) {
+    return `${secondDiff}초 전`
+  } else {
+    return ''
+  }
+}
 
 const WaitingList = styled.ul`
   display: flex;
@@ -128,19 +161,71 @@ const WaitingList = styled.ul`
 `
 const WaitingItem = styled.li`
   display: flex;
+  overflow: hidden;
+  background-color: ${({ theme }) => theme.COLOR.common.gray[900]};
+  border-radius: 12px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   flex: 1;
-  margin: 20px;
+  margin: 0px 20px 16px;
 `
 const WaitingItemBanner = styled.div<{ $status: number }>`
   width: 100%;
   margin: 0;
-  color: #ffffff;
+  color: ${({ theme }) => theme.COLOR.common.black};
+  font-weight: bold;
   padding: 20px;
   border-radius: 10px 10px 0 0;
+  }};
+`
+const FlexDiv = styled.div`
+  display: flex;
+`
+const FlexDivBetween = styled(FlexDiv)`
+  padding: 16px;
+  width: 100%;
+  justify-content: space-between;
+`
+const FlexDivColumn = styled(FlexDiv)`
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: start;
+`
+const NickNameBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  color: ${({ theme }) => theme.COLOR.common.black};
+  font-weight: bold;
+`
+const DetailBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+  color: ${({ theme }) => theme.COLOR.common.gray[90]};
+`
+const StatusButton = styled.div<{ $status: number }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 16px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: ${({ theme }) => theme.FONT_SIZE.medium};
   background-color: ${(props) => {
+    switch (props.$status) {
+      case 1:
+        return '#ECF8F1'
+      case 2:
+        return '#EAF2FF'
+    }
+  }};
+  color: ${(props) => {
     switch (props.$status) {
       case 1:
         return '#3FBA73'
@@ -149,16 +234,33 @@ const WaitingItemBanner = styled.div<{ $status: number }>`
     }
   }};
 `
-const StyledButton = styled.button`
+const StyledButton = styled.button<{ $status: number }>`
   display: inline-block;
   padding: 10px 20px;
   background-color: darkgray;
-  color: #fff;
+  color: ${(props) => {
+    switch (props.$status) {
+      case 0:
+        return '#666666'
+      case 1:
+        return '#FFFFFF'
+      case 2:
+        return '#FFFFFF'
+    }
+  }};
+  background-color: ${(props) => {
+    switch (props.$status) {
+      case 0:
+        return '#EEEEEE'
+      case 1:
+        return '#3FBA73'
+      case 2:
+        return '#2B81FF'
+    }
+  }};
   border: none;
-  border-radius: 0 0 5px 0;
-  font-size: 16px;
+  border-radius: 12px;
+  font-size: ${({ theme }) => theme.FONT_SIZE.medium};
+  font-weight: 700;
   cursor: pointer;
-`
-const StyledLeftButton = styled(StyledButton)`
-  border-radius: 0 0 0 5px;
 `
