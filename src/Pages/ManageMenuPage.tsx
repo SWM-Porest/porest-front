@@ -58,7 +58,7 @@ const EditMenuPage = () => {
                             return (
                               <MenuItem key={uuidv4()}>
                                 <MenuImage>
-                                  {menu.img.path ? (
+                                  {menu.img && menu.img.path ? (
                                     <img src={process.env.REACT_APP_STATIC_URL + menu.img.path} alt="" />
                                   ) : (
                                     <Image24Filled color="#CCCCCC" />
