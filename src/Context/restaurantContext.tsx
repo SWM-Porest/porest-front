@@ -38,7 +38,7 @@ export interface Menu {
   img: Image
   ingre: string[]
   _id: string
-  options: MenuOption[]
+  menuOptions: MenuOption[]
 }
 
 export const restaurantContextDefaultValue: Restaurant = {
@@ -69,7 +69,7 @@ export const restaurantContextDefaultValue: Restaurant = {
         type: 'string',
       },
       ingre: ['string'],
-      options: [
+      menuOptions: [
         {
           _id: '',
           name: 'string',

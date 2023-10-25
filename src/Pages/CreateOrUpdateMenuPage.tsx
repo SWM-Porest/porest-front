@@ -35,14 +35,33 @@ const CreateOrUpdateMenuPage = () => {
 
   const { state } = useLocation()
 
-  if (!state || !state.menu) {
+  if (id === undefined || (!state && !state?.category)) {
     return <ErrorPage />
   }
 
   const navigate = useNavigate()
 
-  const { menu } = state
+  const menu = {
+    name: '',
+    price: 0,
+    description: '',
+    ingre: [],
+    menuOptions: [],
+    img: null,
+    category: '',
+    ...state?.menu,
+  }
 
+  if (!!state && !!state.menu) {
+    menu.name = state.menu.name
+    menu.price = state.menu.price
+    menu.description = state.menu.description
+    menu.ingre = state.menu.ingre
+    menu.menuOptions = state.menu.menuOptions
+    menu.img = state.menu.img
+    menu.category = state.menu.category
+    menu._id = state.menu._id
+  }
   const { register, handleSubmit, formState, setValue, getValues, reset } = useForm()
 
   const [menuImage, setMenuImage] = useState<Image | null>(null)
@@ -63,7 +82,9 @@ const CreateOrUpdateMenuPage = () => {
       },
     })
 
-    if (res.status !== 200) {
+    if (res.status === 401) {
+      alert('로그인이 필요합니다.')
+    } else if (res.status !== 200) {
       alert('이미지 업로드에 실패했습니다.')
     } else {
       setMenuImage(res.data)
@@ -77,7 +98,9 @@ const CreateOrUpdateMenuPage = () => {
     if (data._id !== undefined) {
       const res = await axios.patch(`${process.env.REACT_APP_API_URL}/restaurants/${id}/menus/`, data)
 
-      if (res.status !== 200) {
+      if (res.status === 401) {
+        alert('로그인이 필요합니다.')
+      } else if (res.status !== 200) {
         alert('메뉴 수정에 실패했습니다.')
       } else {
         alert('메뉴 수정에 성공했습니다.')
@@ -86,7 +109,9 @@ const CreateOrUpdateMenuPage = () => {
     } else {
       const res = await axios.post(`${process.env.REACT_APP_API_URL}/restaurants/${id}/menus`, data)
 
-      if (res.status !== 200) {
+      if (res.status === 401) {
+        alert('로그인이 필요합니다.')
+      } else if (res.status !== 201) {
         alert('메뉴 등록에 실패했습니다.')
       } else {
         alert('메뉴 등록에 성공했습니다.')
@@ -97,7 +122,10 @@ const CreateOrUpdateMenuPage = () => {
 
   const addIngre = () => {
     const ingre = inputIngreValue
-
+    if (ingre === '') {
+      alert('재료를 입력해주세요')
+      return
+    }
     setInputIngreValue('')
 
     const prev = getValues('ingre')
@@ -186,12 +214,24 @@ const CreateOrUpdateMenuPage = () => {
     })
   }
 
-  const handleOptionItemPriceInput = (e: any) => {
-    // console.log(e.)
+  const deleteMenu = async (menuId: string) => {
+    const res = await axios.delete(`${process.env.REACT_APP_API_URL}/restaurants/${id}/menus/${menuId}`)
+
+    if (res.status === 401) {
+      alert('로그인이 필요합니다.')
+    } else if (res.status !== 200) {
+      alert('메뉴 삭제에 실패했습니다.')
+    } else {
+      alert('메뉴 삭제에 성공했습니다.')
+      navigate(-1)
+    }
   }
 
   useEffect(() => {
-    if (menu !== undefined) {
+    if (!!state && !!state.category) {
+      setValue('category', state.category)
+    }
+    if (!!state && !!state.menu) {
       reset(state.menu)
       if (menu.ingre !== undefined) {
         setIngreInputValues(menu.ingre)
@@ -356,7 +396,7 @@ const CreateOrUpdateMenuPage = () => {
                                         placeholder="옵션 항목 이름"
                                       />
                                     </OptionItemName>
-                                    <OptionItemPrice onClick={(e) => handleOptionItemPriceInput(e)}>
+                                    <OptionItemPrice>
                                       <TransparantInput
                                         type="number"
                                         {...register(`menuOptions.${moIdx}.items.${iIdx}.price`, {
@@ -382,15 +422,42 @@ const CreateOrUpdateMenuPage = () => {
               </OptionList>
             </FormItemContainer>
           </FormItemContainer>
-
           <input type="text" {...register('category')} placeholder="카테고리를 입력해주세요" hidden />
         </Form>
       </MenuBody>
+      {/* 메뉴 삭제 버튼 */}
+      {!!menu._id && (
+        <DeleteMenuButtonWrapper onClick={() => deleteMenu(menu._id)}>
+          <DeleteMenuButton>메뉴 삭제</DeleteMenuButton>
+        </DeleteMenuButtonWrapper>
+      )}
     </>
   )
 }
 
 export default CreateOrUpdateMenuPage
+
+const DeleteMenuButton = styled.button`
+  width: 100%;
+  height: 5.2rem;
+  font-size: ${({ theme }) => theme.FONT_SIZE.medium};
+  color: #ff4f4f;
+  border-radius: 1.2rem;
+  background-color: #f7f7f7;
+  border: none;
+  cursor: pointer;
+`
+
+const DeleteMenuButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  bottom: 0;
+  width: 100%;
+  height: 8rem;
+  background-color: #ffffff;
+  padding: 0 2rem 0 2rem;
+`
 
 const TransparantInput = styled.input`
   background-color: transparent;

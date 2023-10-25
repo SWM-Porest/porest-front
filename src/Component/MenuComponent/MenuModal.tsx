@@ -50,7 +50,7 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
     const selectedOptionObjects = selectedItems.map((item) => ({
       name: item,
       price:
-        menu?.options.find((option) => option._id === optionId)?.items.find((optItem) => optItem.name === item)
+        menu?.menuOptions.find((option) => option._id === optionId)?.items.find((optItem) => optItem.name === item)
           ?.price || 0,
     }))
 
@@ -84,8 +84,8 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
 
           <div>
             <Categories ingre={menu ? menu.ingre : []}></Categories>
-            {menu?.options &&
-              menu?.options.map((option) => {
+            {menu?.menuOptions &&
+              menu?.menuOptions.map((option) => {
                 return option._id !== null ? (
                   <OptionSelector
                     key={option._id}

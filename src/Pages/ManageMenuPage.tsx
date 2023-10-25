@@ -35,6 +35,23 @@ const EditMenuPage = () => {
     return <ErrorPage />
   }
 
+  const addCategory = async () => {
+    const newCategory = prompt('추가할 카테고리를 입력해주세요') as string
+
+    const res = await axios.post(`${process.env.REACT_APP_API_URL}/restaurants/${id}/categories`, null, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+      },
+      params: {
+        category: newCategory,
+      },
+    })
+
+    if (res.status !== 201) {
+      alert('카테고리 추가에 실패했습니다.')
+    }
+  }
+
   return (
     <>
       <Header HeaderName="메뉴 관리" />
@@ -54,7 +71,7 @@ const EditMenuPage = () => {
                     <MenuList>
                       {restaurant.menus &&
                         restaurant.menus.map((menu: Menu) => {
-                          if (menu.category !== c)
+                          if (menu.category === c)
                             return (
                               <MenuItem
                                 key={uuidv4()}
@@ -99,7 +116,7 @@ const EditMenuPage = () => {
               )
             })}
         </CategoryList>
-        <CategoryAddButtonWrapper>
+        <CategoryAddButtonWrapper onClick={addCategory}>
           <CategoryAddButton>카테고리 추가</CategoryAddButton>
         </CategoryAddButtonWrapper>
       </EditMenuPageBody>
