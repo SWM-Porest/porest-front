@@ -46,8 +46,8 @@ export const Step2 = ({ data, restaurant, onSubmit, team }: any) => {
   return (
     <Container>
       <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
-        <h4 style={{ flex: '1', margin: '0 20px' }}>{restaurant.name}에</h4>
-        <h4 style={{ flex: '1', margin: '0 20px' }}>웨이팅 등록하시겠어요?</h4>
+        <h2 style={{ flex: '1', margin: '0 20px' }}>{restaurant.name}에</h2>
+        <h2 style={{ flex: '1', margin: '0 20px' }}>웨이팅 등록하시겠어요?</h2>
       </div>
       <NowWaitingBox team={team} head_count={data.head_count}></NowWaitingBox>
       <ButtonContainer>
@@ -140,8 +140,8 @@ const Container1 = styled.div`
 const Container2 = styled.div`
   color: ${({ theme }) => theme.COLOR.common.gray[20]};
   font-family: Pretendard;
-  font-size: 2rem;
+  font-size: ${({ theme }) => theme.FONT_SIZE.medium};
   font-style: normal;
-  font-weight: 600;
+  font-weight: bold;
   line-height: 2rem;
 `

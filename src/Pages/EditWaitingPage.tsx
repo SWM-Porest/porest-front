@@ -49,12 +49,15 @@ const EditWaitingPage = () => {
           })
           .then((response) => {
             if (response) {
-              const newWaitings = waitings.map((waiting) => {
-                if (waiting._id === waitingId) {
-                  waiting.status = 2
-                }
-                return waiting
-              })
+              const newWaitings = waitings
+                .map((waiting) => {
+                  if (waiting._id === waitingId) {
+                    waiting.status = 2
+                    return response
+                  }
+                  return waiting
+                })
+                .sort((a, b) => b.status - a.status)
               setWaitings(newWaitings)
               console.log('호출')
             }

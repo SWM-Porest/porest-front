@@ -57,7 +57,7 @@ const BlackFontBox = styled.div`
   width: 100%;
   padding: 10px 0;
   color: ${({ theme }) => theme.COLOR.common.black};
-  font-size: ${({ theme }) => theme.FONT_SIZE.tiny};
+  font-size: ${({ theme }) => theme.FONT_SIZE.medium};
   font-weight: bold;
 `
 const BetweenBlackFontBox = styled(BlackFontBox)`
@@ -66,18 +66,18 @@ const BetweenBlackFontBox = styled(BlackFontBox)`
 
 const GrayFontBox = styled.div`
   color: ${({ theme }) => theme.COLOR.common.gray[300]};
-  font-size: ${({ theme }) => theme.FONT_SIZE.tiny};
+  font-size: ${({ theme }) => theme.FONT_SIZE.medium};
   font-weight: bold;
 `
 
 const RedFontBox = styled.div`
   color: ${({ theme }) => theme.COLOR.common.red[200]};
-  font-size: ${({ theme }) => theme.FONT_SIZE.small};
+  font-size: ${({ theme }) => theme.FONT_SIZE.medium};
   margin-top: 10px;
   font-weight: bold;
 `
 const TinyRedFontBox = styled(RedFontBox)`
-  font-size: ${({ theme }) => theme.FONT_SIZE.tiny};
+  font-size: ${({ theme }) => theme.FONT_SIZE.medium};
 `
 
 const WaitingDetailBox = styled(InnerContainer)`
