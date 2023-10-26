@@ -91,6 +91,7 @@ const RestaurantList = styled.ul`
   align-items: flex;
   gap: 1.6rem;
   padding: 0 2rem;
+  width: 100%;
 `
 
 const StyledImage = styled.img`

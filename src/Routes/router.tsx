@@ -31,7 +31,7 @@ const router = createBrowserRouter([
         element: <RestaurantPage />,
       },
       {
-        path: '/table', // 레스토랑 id, table number
+        path: '/restaurants/:id/table', // 레스토랑 id, table number
         element: <TablePage />,
       },
       {

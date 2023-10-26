@@ -3,11 +3,16 @@ import Header from 'Component/Header'
 import { Button, Input } from 'antd'
 import { ReactComponent as Chevron } from 'assets/Chevron.svg'
 import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
+
 const TablePage = () => {
   //   const { data: restaurant } = useRestaurantState().restaurant
   //   const cookieData = getCookie(restaurant?._id as string) || {}
-  const cookieData = getCookie('64c51d0ba44e766b22e43adb')
+  const { id } = useParams()
+  const cookieData = getCookie(id as string) || {}
+
+  const navigate = useNavigate()
 
   const [priceTotal, setPriceTotal] = useState(0)
   const [tableNumber, setTableNumber] = useState<string>('')
@@ -24,9 +29,8 @@ const TablePage = () => {
 
   const handleInputComplete = () => {
     if (tableNumber) {
-      console.log(`입력된 테이블 번호: ${tableNumber}`)
-      setTableNumber('')
-      setInputValid(false) // 입력이 완료되면 유효하지 않은 상태로 변경
+      // navigate(`/restaurants/${restaurant?._id}/table/${tableNumber}`)
+      navigate(`/restaurants/${id}?table=${tableNumber}`)
     }
   }
 

@@ -66,7 +66,7 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, orderinfo, handlePriceTotalCh
             ))}
           </MenuInfoDetailsContainer>
         </MenuInfoImageContainer>
-        <Dismiss width="2.4rem" height="2.4rem" onClick={handleRemoveMenu} />
+        <Dismiss width="2.4rem" height="2.4rem" onClick={handleRemoveMenu} cursor="pointer" />
       </MenuInfoContainer>
 
       <MenuPriceContainer>
@@ -87,6 +87,7 @@ const StyledContainer = styled.div`
   align-items: flex-start;
   gap: 1.6rem;
   background-color: ${({ theme }) => theme.COLOR.common.white[0]};
+  cursor: default;
 `
 
 const StyledImage = styled.img`
