@@ -110,7 +110,9 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
       console.log('주문 생성에 성공했습니다.')
       handleRemoveMenu()
       showMessage('주문이 완료되었습니다.\n접수 확인을 기다려주십시오.', 1500, '/img/check.png')
-      navigate(`/orderlist`)
+      response.json().then((data) => {
+        navigate(`/orderlist?orderId=${data._id}`)
+      })
     } else {
       console.error('주문 생성에 실패했습니다.')
     }
