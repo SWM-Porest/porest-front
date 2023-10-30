@@ -167,7 +167,7 @@ const CreateOrUpdateMenuPage = () => {
   }
 
   const addOptionItem = (index: number) => {
-    const option = options[index]
+    const option = getValues('menuOptions')[index]
 
     const item = {
       name: `${option.items.length + 1}번 사이드`,
