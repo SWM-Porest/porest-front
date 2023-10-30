@@ -99,10 +99,10 @@ const EditMenuPage = () => {
                                 </MenuImage>
                                 <MenuBody>
                                   <MenuName>{menu.name}</MenuName>
-                                  <MenuDiscount>
+                                  {/* <MenuDiscount>
                                     <DiscountPercentage>20%</DiscountPercentage>
                                     <OriginalPrice>100,000원</OriginalPrice>
-                                  </MenuDiscount>
+                                  </MenuDiscount> */}
                                   <MenuPrice>{menu.price.toLocaleString()}원</MenuPrice>
                                 </MenuBody>
                                 <ReOrder20Regular color="#AAAAAA" />
