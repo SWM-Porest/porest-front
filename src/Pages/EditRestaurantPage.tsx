@@ -7,7 +7,7 @@ import {
   DismissCircle24Filled,
   ChevronLeft20Regular,
 } from '@fluentui/react-icons'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 import ErrorPage from './ErrorPage'
@@ -26,7 +26,8 @@ const EditRestaurantPage: React.FC = () => {
   const navigate = useNavigate()
 
   const [restaurantImageList, setRestaurantImageList] = useState<Image[]>([])
-  const { register, handleSubmit, reset } = useForm()
+  const { register, handleSubmit, reset, setValue, getValues } = useForm()
+
   // Create a query function for fetching restaurant data
   const fetchRestaurantData = async () => {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/restaurants/${id}`, {
@@ -58,23 +59,7 @@ const EditRestaurantPage: React.FC = () => {
     isLoading,
     isError,
     refetch: refetchRestaurantData,
-  }: UseQueryResult<Restaurant> = useQuery('restaurant', fetchRestaurantData, {
-    onSuccess: (restaurant) => {
-      reset({
-        name: restaurant.name,
-        intro: restaurant.intro,
-        phone_number: restaurant.phone_number,
-        address: restaurant.address,
-      })
-
-      restaurant.banner_images.forEach((image) => {
-        image.path = `${process.env.REACT_APP_STATIC_URL}${image.path}`
-      })
-
-      updateRestaurantImageList(restaurant.banner_images)
-    },
-    staleTime: Infinity,
-  })
+  }: UseQueryResult<Restaurant> = useQuery('restaurant', fetchRestaurantData)
 
   const { data: tableData, refetch: refetchTableData }: UseQueryResult<Table[]> = useQuery('table', fetchTableData)
 
@@ -111,17 +96,10 @@ const EditRestaurantPage: React.FC = () => {
   }
 
   const handleChange = (file: any) => {
-    const new_banner_images: Image[] = []
     const formData = new FormData()
 
     for (let i = 0; i < file.target.files.length; i++) {
       formData.append('image', file.target.files[i])
-
-      new_banner_images.push({
-        filename: file.target.files[i].name,
-        path: URL.createObjectURL(file.target.files[i]),
-        type: file.target.files[i].type,
-      } as Image)
     }
 
     axios
@@ -139,9 +117,12 @@ const EditRestaurantPage: React.FC = () => {
         },
       })
       .then((response) => {
-        for (let i = 0; i < new_banner_images.length; i++) {
-          unshiftImage(new_banner_images[i])
+        for (let i = 0; i < response.data.length; i++) {
+          unshiftImage(response.data[i])
         }
+        const prev = getValues('banner_images') ?? []
+
+        setValue('banner_images', [...prev, response.data])
       })
       .catch((error) => {
         console.log(error)
@@ -161,8 +142,15 @@ const EditRestaurantPage: React.FC = () => {
         },
       })
       .then((response) => {
+        const prev = getValues('banner_images') ?? []
         if (i >= 0 && i < restaurantImageList.length) {
           setRestaurantImageList(restaurantImageList.filter((_, index) => i !== index))
+        }
+        if (i >= 0 && i < prev.length) {
+          setValue(
+            'banner_images',
+            prev.filter((_: any, index: any) => i !== index),
+          )
         }
       })
       .catch((error) => {
@@ -171,9 +159,6 @@ const EditRestaurantPage: React.FC = () => {
   }
 
   const onRetaurantEditSubmit = (data: any) => {
-    // restaurantImageList.forEach((image) => {
-    //   formData.append('banner_images', image)
-    // })
     axios
       .patch(`${process.env.REACT_APP_API_URL}/restaurants/${id}`, data, {
         auth: {
@@ -186,10 +171,11 @@ const EditRestaurantPage: React.FC = () => {
         },
       })
       .then((response) => {
-        // console.log(response)
+        alert('매장 정보 수정되었습니다.')
+        navigate(-1)
       })
       .catch((error) => {
-        console.log(error)
+        alert('매장 정보 수정에 실패했습니다')
       })
   }
 
@@ -205,6 +191,24 @@ const EditRestaurantPage: React.FC = () => {
       </div>
     </UploadBtnContainer>
   )
+
+  useEffect(() => {
+    if (restaurant !== undefined) {
+      reset({
+        name: restaurant.name,
+        intro: restaurant.intro,
+        phone_number: restaurant.phone_number,
+        address: restaurant.address,
+      })
+
+      updateRestaurantImageList(
+        restaurant.banner_images.map((image) => {
+          image.path = `${image.path}`
+          return image
+        }),
+      )
+    }
+  }, [restaurant])
 
   if (isLoading) {
     return <Loading />
@@ -254,7 +258,7 @@ const EditRestaurantPage: React.FC = () => {
                           />
                         </div>
 
-                        <ImageContainer src={image.path} />
+                        <ImageContainer src={process.env.REACT_APP_STATIC_URL + image.path} />
                       </ImageItem>
                     )
                   })
@@ -287,6 +291,7 @@ const EditRestaurantPage: React.FC = () => {
             </FormItmeHeader>
             <FormItemInput type="text" {...register('address')} />
           </FormItemContainer>
+          <input type="hidden" {...register('banner_images')} />
         </form>
         <FormHeader>
           <FormItmeHeader>
