@@ -43,8 +43,8 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
 
   // 중복되지 않은 메뉴 타입 추출
   const uniqueMenuTypes = filteredMenus.reduce((types: string[], menu) => {
-    if (!types.includes(menu.menutype)) {
-      types.push(menu.menutype)
+    if (!types.includes(menu.category)) {
+      types.push(menu.category)
     }
     return types
   }, [])
@@ -119,7 +119,7 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
               </LiContainer>
               {filteredMenus.map(
                 (menu) =>
-                  menu.menutype === menuType &&
+                  menu.category === menuType &&
                   menu._id && (
                     <div
                       key={`menu_${menu._id}`}
