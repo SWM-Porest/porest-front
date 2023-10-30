@@ -231,7 +231,10 @@ const CategoryItem = styled.div`
   margin-bottom: 2rem;
 `
 
-const CategoryList = styled.div``
+const CategoryList = styled.div`
+  max-height: calc(100vh - 130pt);
+  overflow-y: auto;
+`
 
 const CategoryAddButtonWrapper = styled.div`
   display: flex;

@@ -81,7 +81,6 @@ const CartPrice: React.FC = () => {
                 price: order.price,
                 img: order.img,
                 en_name: restaurant?.menus.find((e) => e._id === key)?.en_name || '',
-                menutype: restaurant?.menus.find((e) => e._id === key)?.menutype || '',
                 category: restaurant?.menus.find((e) => e._id === key)?.category || '',
                 description: restaurant?.menus.find((e) => e._id === key)?.description || '',
                 ingre: restaurant?.menus.find((e) => e._id === key)?.ingre || [],

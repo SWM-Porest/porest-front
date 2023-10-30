@@ -31,7 +31,6 @@ export interface Restaurant {
 export interface Menu {
   name: string
   en_name: string
-  menutype: string
   price: number
   category: string
   description: string
@@ -59,7 +58,6 @@ export const restaurantContextDefaultValue: Restaurant = {
       _id: '',
       name: '',
       en_name: 'string',
-      menutype: 'string',
       price: 2000,
       category: 'string',
       description: 'string',
