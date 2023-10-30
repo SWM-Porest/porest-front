@@ -49,11 +49,11 @@ const router = createBrowserRouter([
             element: <EditRestaurantPage />,
           },
           {
-            path: '/waitings/:restaurant_id',
+            path: '/restaurants/:restaurant_id/waitings',
             element: <WaitingPage />,
           },
           {
-            path: '/waitings/:restaurant_id/edit',
+            path: '/restaurants/:restaurant_id/waitings/edit',
             element: <EditWaitingPage />,
           },
           {
