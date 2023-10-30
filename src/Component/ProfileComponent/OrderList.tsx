@@ -3,7 +3,6 @@ import { useAccessToken } from 'Api/tokenCookie'
 import useUserData from 'Api/useUserData'
 import useUserOrderData from 'Api/useUserOrderData'
 import OrderModal from 'Component/Modal/OrderModal'
-import formatDate from 'Utils/formatDate'
 import getImageSrc from 'Utils/getImageSrc'
 import { Table } from 'antd'
 import { ReactComponent as ChevronR } from 'assets/ChevronR.svg'
@@ -182,14 +181,10 @@ const StyledTable = styled(Table)`
   cursor: default;
 `
 
-const StyledContainer = styled.div`
-  border: 1px solid ${({ theme }) => theme.COLOR.common.gray[100]};
-
-  box-shadow: 0 0 4pt rgba(0, 0, 0, 0.1);
-`
+const StyledContainer = styled.div``
 
 const OrderDetails = styled.div`
-  border: 1px solid ${({ theme }) => theme.COLOR.common.gray[100]};
+  border-top: 1px solid ${({ theme }) => theme.COLOR.common.gray[100]};
 
   display: flex;
   cursor: pointer;
