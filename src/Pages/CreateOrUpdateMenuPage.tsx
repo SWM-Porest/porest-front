@@ -232,7 +232,7 @@ const CreateOrUpdateMenuPage = () => {
     if (!!state && !!state.menu) {
       reset(state.menu)
       if (menu.ingre !== undefined) {
-        setIngreInputValues(menu.ingre)
+        setIngreInputValues([...menu.ingre])
       }
       if (menu.menuOptions !== undefined) {
         setOptions(menu.menuOptions)
