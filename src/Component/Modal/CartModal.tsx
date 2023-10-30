@@ -70,7 +70,7 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
     try {
       Notification.requestPermission().then((permission) => {
         if (permission == 'denied') {
-          alert('알림이 거부되었습니다.')
+          createOrder(null)
         } else if (navigator.serviceWorker) {
           navigator.serviceWorker
             .register('../service-worker.js', { scope: '/' })
@@ -82,30 +82,7 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
               return registration.pushManager.subscribe(subscribeOptions)
             })
             .then(async (pushSubscription) => {
-              const response = await fetch(`${process.env.REACT_APP_API_URL}/orders`, {
-                method: 'POST',
-                headers: {
-                  Authorization: `Bearer ${accessToken}`,
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  restaurant_id: restaurant?._id,
-                  restaurant_name: restaurant?.name,
-                  restaurant_address: restaurant?.address,
-                  table_id: table,
-                  menus: cookie,
-                  token: pushSubscription,
-                }),
-              })
-
-              if (response.ok) {
-                console.log('주문 생성에 성공했습니다.')
-                handleRemoveMenu()
-                showMessage('주문이 완료되었습니다.\n접수 확인을 기다려주십시오.', 1500, '/img/check.png')
-                navigate(`/orderlist`)
-              } else {
-                console.error('주문 생성에 실패했습니다.')
-              }
+              createOrder(pushSubscription)
             })
         }
       })
@@ -113,6 +90,33 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
       console.error('주문 생성 중 오류 발생:', error)
     }
   }
+  const createOrder = async (pushSubscription: PushSubscription | null) => {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/orders`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        restaurant_id: restaurant?._id,
+        restaurant_name: restaurant?.name,
+        restaurant_address: restaurant?.address,
+        table_id: table,
+        menus: cookie,
+        token: pushSubscription,
+      }),
+    })
+
+    if (response.ok) {
+      console.log('주문 생성에 성공했습니다.')
+      handleRemoveMenu()
+      showMessage('주문이 완료되었습니다.\n접수 확인을 기다려주십시오.', 1500, '/img/check.png')
+      navigate(`/orderlist`)
+    } else {
+      console.error('주문 생성에 실패했습니다.')
+    }
+  }
+
   const handleRemoveMenu = () => {
     removeAllCookie(restaurant?._id as string)
   }
