@@ -22,9 +22,10 @@ const AddCart: React.FC<Ownprops> = ({ menu, cnt, openModalHandler, selectedOpti
         formattedOptions.push(
           ...selectedOptions[optionId].map((item) => ({
             _id: optionId,
-            name: menu?.options.find((option) => option._id === optionId)?.name || '',
-            isSoldOut: menu?.options.find((option) => option._id === optionId)?.isSoldOut || false,
-            maxSelect: menu?.options.find((option) => option._id === optionId)?.maxSelect || 1,
+            name: menu?.menuOptions.find((option) => option._id === optionId)?.name || '',
+            isSoldOut: menu?.menuOptions.find((option) => option._id === optionId)?.isSoldOut || false,
+            maxSelect: menu?.menuOptions.find((option) => option._id === optionId)?.maxSelect || 1,
+            isRequired: menu?.menuOptions.find((option) => option._id === optionId)?.isRequired || false,
             items: [
               {
                 name: item.name,
@@ -82,7 +83,7 @@ export const StyledButton = styled.button`
   height: 5.6rem;
 
   border-radius: 1.2rem;
-  box-shadow: 0 0.8rem 1.6rem 0 rgba(0, 0, 0, 0.3);
+  /* box-shadow: 0 0.8rem 1.6rem 0 rgba(0, 0, 0, 0.3); */
   border: none;
   transition: 0.4s;
   &:hover {
@@ -135,4 +136,7 @@ const showMessage = (messageText: string, duration: number) => {
       document.body.removeChild(messageContainer)
     }, 300)
   }, duration)
+  if (window.innerWidth >= 800) {
+    containerStyle.left = `calc(50% + ${430 / 2}px)`
+  }
 }

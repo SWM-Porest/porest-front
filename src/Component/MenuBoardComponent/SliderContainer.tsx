@@ -56,6 +56,7 @@ const RestaurantName = styled.h1`
   left: 2rem;
   bottom: 2rem;
   margin: 0;
+  cursor: default;
 `
 export const StyledSpin = styled(Spin)`
   &&& {

@@ -1,3 +1,4 @@
+import ManageMenuPage from 'Pages/ManageMenuPage'
 import EditRestaurantPage from 'Pages/EditRestaurantPage'
 import EditWaitingPage from 'Pages/EditWaitingPage'
 import ErrorPage from 'Pages/ErrorPage'
@@ -7,11 +8,16 @@ import MenuBoardPage from 'Pages/MenuBoardPage'
 import MyPage from 'Pages/MyPage'
 import OrderListPage from 'Pages/OrderListPage'
 import RestaurantListPage from 'Pages/RestaurantListPage'
+import RestaurantOrderPage from 'Pages/RestaurantOrderPage'
 import RestaurantPage from 'Pages/RestaurantPage'
 import WaitingPage from 'Pages/WaitingPage'
 import TablePage from 'Pages/TablePage'
 import PrivateRoute from 'Routes/private'
+import RestaurantTablePage from 'Pages/RestaurantTablePage'
 import { createBrowserRouter } from 'react-router-dom'
+import PrivateRoute from 'Routes/private'
+import CreateOrUpdateMenuPage from 'Pages/CreateOrUpdateMenuPage'
+import TablePage from 'Pages/TablePage'
 
 const router = createBrowserRouter([
   {
@@ -34,7 +40,7 @@ const router = createBrowserRouter([
         element: <RestaurantPage />,
       },
       {
-        path: '/table', // 레스토랑 id, table number
+        path: '/restaurants/:id/table', // 레스토랑 id, table number
         element: <TablePage />,
       },
       {
@@ -51,6 +57,26 @@ const router = createBrowserRouter([
           {
             path: '/restaurants/:restaurant_id/waitings',
             element: <WaitingPage />,
+          },
+          {
+            path: '/restaurants/:id/orders',
+            element: <RestaurantOrderPage />,
+          },
+          {
+            path: '/restaurants/:id/tables',
+            element: <RestaurantTablePage />,
+          },
+          {
+            path: 'restaurants/:id/menus/manage',
+            element: <ManageMenuPage />,
+          },
+          {
+            path: 'restaurants/:id/menus/edit',
+            element: <CreateOrUpdateMenuPage />,
+          },
+          {
+            path: '/mypage',
+            element: <MyPage />,
           },
           {
             path: '/restaurants/:restaurant_id/waitings/edit',

@@ -86,7 +86,7 @@ const CartPrice: React.FC = () => {
                 description: restaurant?.menus.find((e) => e._id === key)?.description || '',
                 ingre: restaurant?.menus.find((e) => e._id === key)?.ingre || [],
                 _id: order.menu_id,
-                options: order.options,
+                menuOptions: order.options,
               }}
               orderinfo={{ count: order.quantity, menu_id: key }}
               handlePriceTotalChange={handlePriceTotalChange}

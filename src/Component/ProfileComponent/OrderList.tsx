@@ -27,6 +27,11 @@ const OrderList = () => {
     setIsOpen(!isOpen)
   }
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString)
+    return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
+  }
+
   if (isLoading) {
     return <div>Loading...</div>
   }
@@ -71,15 +76,22 @@ const OrderList = () => {
     },
   ]
 
-  const totalPrice = userOrderData.orders.reduce((total: number, order: Order) => {
-    if (typeof order.menus === 'object') {
-      const orderTotal = Object.values(order.menus).reduce((menuTotal, menu) => {
-        return menuTotal + menu.price * menu.quantity
-      }, 0)
-      return total + orderTotal
-    }
-    return total
-  }, 0)
+  const calculateOrderTotal = (order: Order): number => {
+    return Object.values(order.menus).reduce((menuTotal: number, menu: OrderMenu) => {
+      let menuPrice = menu.price * menu.quantity
+
+      menu.options.forEach((option) => {
+        if (Array.isArray(option.items)) {
+          option.items.forEach((item) => {
+            menuPrice += item.price
+          })
+        }
+      })
+
+      return menuTotal + menuPrice
+    }, 0)
+  }
+  const totalPrice = userOrderData.orders.reduce((total: number, order: Order) => total + calculateOrderTotal(order), 0)
 
   return (
     <div>
@@ -126,25 +138,12 @@ const OrderList = () => {
                               {Object.values(order.menus).length > 1 ? (
                                 <span>
                                   {menu.menu_name} 외 {Object.values(order.menus).length - 1}개{' '}
-                                  {Object.values(order.menus)
-                                    .reduce(
-                                      (menuTotal: number, menu: OrderMenu) => menuTotal + menu.price * menu.quantity,
-                                      0,
-                                    )
-                                    .toLocaleString()}
-                                  원
+                                  {calculateOrderTotal(order).toLocaleString()} 원
                                 </span>
                               ) : (
                                 <span>
                                   {' '}
-                                  {menu.menu_name}{' '}
-                                  {Object.values(order.menus)
-                                    .reduce(
-                                      (menuTotal: number, menu: OrderMenu) => menuTotal + menu.price * menu.quantity,
-                                      0,
-                                    )
-                                    .toLocaleString()}
-                                  원
+                                  {menu.menu_name} {calculateOrderTotal(order).toLocaleString()} 원
                                 </span>
                               )}
                             </StyledSpan>
@@ -179,7 +178,9 @@ const StyledTitle = styled.div`
 const Container = styled.div`
   padding: 24pt;
 `
-const StyledTable = styled(Table)``
+const StyledTable = styled(Table)`
+  cursor: default;
+`
 
 const StyledContainer = styled.div`
   border: 1px solid ${({ theme }) => theme.COLOR.common.gray[100]};

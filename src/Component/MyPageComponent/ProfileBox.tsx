@@ -1,15 +1,24 @@
+import { useAccessToken } from 'Api/tokenCookie'
+import useUserData from 'Api/useUserData'
 import { ReactComponent as Person } from 'assets/Person.svg'
 import { ReactComponent as Settings } from 'assets/Settings.svg'
 import styled from 'styled-components'
 
 const ProfileBox = () => {
+  const [accessToken, setAccessToken] = useAccessToken()
+
+  const { data: userData } = useUserData(accessToken)
+  if (!userData) {
+    return <div>No orders found.</div>
+  }
+
   return (
     <Container>
       <ProfileContainer>
         <Person width="6.4rem" height="6.4rem" fill="#AAAAAA" />
         <ContentsContainer>
-          <Name>이름</Name>
-          <Mail>이메일</Mail>
+          <Name>{userData.nickname}</Name>
+          <Mail>{userData.email}</Mail>
         </ContentsContainer>
       </ProfileContainer>
       <SettingContainer>
@@ -27,6 +36,7 @@ const Container = styled.div`
   padding: 2rem;
   justify-content: space-between;
   align-items: center;
+  cursor: default;
 `
 
 const ProfileContainer = styled.div`

@@ -6,11 +6,12 @@ export interface OptionItem {
 }
 
 export interface MenuOption {
-  _id: string
+  _id: string | null
   name: string
   isSoldOut: boolean
   maxSelect: number
   items: OptionItem[]
+  isRequired: boolean
 }
 
 export interface OrderMenu {
@@ -30,4 +31,5 @@ export interface Order {
   menus: { [menuId: string]: OrderMenu }
   status: number
   status_updated_at: { [status: number]: string }
+  created_at: string
 }

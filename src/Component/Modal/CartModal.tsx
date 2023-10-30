@@ -7,6 +7,7 @@ import { useCartModal } from 'Context/CartModalContext'
 import { useRestaurantState } from 'Context/restaurantContext'
 import { ReactComponent as Chevron } from 'assets/Chevron.svg'
 import React, { useEffect } from 'react'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { styled } from 'styled-components'
 
 interface OwnProps {
@@ -17,6 +18,11 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
   const cookie = getCookie(restaurant?._id as string) || {}
   const { isModalOpen, closeModal } = useCartModal()
   const [accessToken] = useAccessToken()
+  const location = useLocation()
+  const queryparams = new URLSearchParams(location.search)
+  const table = queryparams.get('table')
+  const { id } = useParams()
+  const navigate = useNavigate()
 
   if (isOpen) {
     document.body.style.overflow = 'hidden'
@@ -41,6 +47,25 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
   }, [isModalOpen, closeModal])
 
   const handleOrder = async () => {
+    const menus = cookie // 카트의 메뉴
+    if (!accessToken) {
+      console.log('AccessToken이 없습니다. 로그인 페이지로 이동합니다.')
+      showMessage('로그인을 진행해주세요.', 1500, '/img/close.png')
+      navigate('/login')
+      return
+    }
+
+    if (Object.keys(menus).length === 0) {
+      console.log('주문할 메뉴가 없습니다.')
+      showMessage('주문할 메뉴가 없습니다.\n주문할 메뉴를 담아주세요.', 1500, '/img/close.png')
+      return
+    }
+    if (!table) {
+      console.log('테이블 번호가 없습니다.')
+      navigate(`/restaurants/${id}/table`)
+      showMessage('테이블 번호를 입력해주세요.', 1500, '/img/close.png')
+      return
+    }
     try {
       // API 요청을 보내는 부분
       const response = await fetch(`${process.env.REACT_APP_API_URL}/orders`, {
@@ -54,7 +79,7 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
           restaurant_name: restaurant?.name,
           restaurant_address: restaurant?.address,
           //테이블 아이디 어디서 받아야할지 모르겠음
-          table_id: 1,
+          table_id: table,
           menus: cookie,
           token: {
             endpoint: 'url',
@@ -70,6 +95,9 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
 
       if (response.ok) {
         console.log('주문 생성에 성공했습니다.')
+        handleRemoveMenu()
+        showMessage('주문이 완료되었습니다.\n접수 확인을 기다려주십시오.', 1500, '/img/check.png')
+        navigate(`/orderlist`)
       } else {
         console.error('주문 생성에 실패했습니다.')
       }
@@ -159,10 +187,11 @@ export const CloseButton = styled(FontAwesomeIcon)`
 `
 const StyledButton = styled.button`
   cursor: pointer;
-  font-size: ${({ theme }) => theme.FONT_SIZE.small};
-  font-weight: bold;
-  text-decoration: none;
+  font-size: ${({ theme }) => theme.FONT_SIZE.medium};
+  font-weight: 700;
+  font-style: normal;
   text-align: center;
+  text-decoration: none;
   background-color: ${({ theme }) => theme.COLOR.main};
   color: ${({ theme }) => theme.COLOR.common.white[0]};
   padding: 20px;
@@ -171,7 +200,7 @@ const StyledButton = styled.button`
   margin: auto;
   margin-bottom: 40pt;
   border-radius: 10pt;
-  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.3);
+  /* box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.3); */
   border: none;
   transition: 0.4s;
   &:hover {
@@ -185,8 +214,60 @@ const Icon = styled.div`
   gap: 1rem;
   border-radius: 2rem;
   background: ${({ theme }) => theme.COLOR.common.white[0]};
+  cursor: pointer;
 `
 
 const ButtonContainer = styled.div`
   background-color: ${({ theme }) => theme.COLOR.common.white[0]};
 `
+
+const showMessage = (messageText: string, duration: number, img: string) => {
+  const messageContainer = document.createElement('div')
+  messageContainer.style.zIndex = '9999'
+  messageContainer.style.display = 'flex'
+  messageContainer.style.alignItems = 'center'
+  messageContainer.style.width = '280px'
+  messageContainer.style.whiteSpace = 'pre-wrap'
+
+  const image = new Image()
+  image.src = img
+  image.style.width = '2rem'
+  image.style.height = '2rem'
+  image.style.marginRight = '1rem'
+
+  const textContainer = document.createElement('div')
+  textContainer.textContent = messageText
+  textContainer.style.fontSize = '1.8rem'
+  textContainer.style.fontWeight = '600'
+
+  messageContainer.appendChild(image)
+  messageContainer.appendChild(textContainer)
+
+  const containerStyle = messageContainer.style
+  containerStyle.position = 'fixed'
+  containerStyle.top = '2rem'
+  containerStyle.left = '50%'
+  containerStyle.transform = 'translateX(-50%)'
+  containerStyle.backgroundColor = '#fff'
+  containerStyle.color = '#333'
+  containerStyle.padding = '1rem 2.4rem'
+  containerStyle.borderRadius = '1rem'
+  containerStyle.opacity = '0'
+  containerStyle.transition = 'opacity 0.3s'
+
+  document.body.appendChild(messageContainer)
+
+  setTimeout(() => {
+    containerStyle.opacity = '1'
+  }, 100)
+
+  setTimeout(() => {
+    containerStyle.opacity = '0'
+    setTimeout(() => {
+      document.body.removeChild(messageContainer)
+    }, 300)
+  }, duration)
+  if (window.innerWidth >= 800) {
+    containerStyle.left = `calc(50% + ${430 / 2}px)`
+  }
+}

@@ -40,6 +40,7 @@ const IconContainer = styled.div`
   align-items: center;
   gap: 0.4rem;
   flex: 1 0 0;
+  cursor: pointer;
 `
 
 const Text = styled.div`

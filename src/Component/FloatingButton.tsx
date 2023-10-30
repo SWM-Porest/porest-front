@@ -1,5 +1,6 @@
 import { getTotalCartItems } from 'Api/cartCookie'
 import { useAccessToken } from 'Api/tokenCookie'
+import CartModal from 'Component/Modal/CartModal'
 import { useCartModal } from 'Context/CartModalContext'
 import { Restaurant, useRestaurantState } from 'Context/restaurantContext'
 import { Badge, Modal } from 'antd'
@@ -7,9 +8,8 @@ import { ReactComponent as SimpleOrder } from 'assets/Call.svg'
 import { ReactComponent as Cart } from 'assets/Cart.svg'
 import { ReactComponent as ChatBot } from 'assets/Group 19.svg'
 import React, { useEffect, useState } from 'react'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
-
-import CartModal from 'Component/Modal/CartModal'
 
 interface OwnProps {
   info: Restaurant
@@ -25,12 +25,21 @@ const FloatingButton: React.FC<OwnProps> = ({ info }) => {
   const [isOrderModalVisible, setIsOrderModalVisible] = useState(false)
   const [accessToken, setAccessToken] = useAccessToken()
   const { data: restaurant, loading, error } = useRestaurantState().restaurant
+  const location = useLocation()
+  const queryparams = new URLSearchParams(location.search)
+  const table = queryparams.get('table')
+  const { id } = useParams()
+  const navigate = useNavigate()
 
   const toggleMenu = (menu: MenuType) => {
     setSelectedMenu(menu)
     setIsOrderModalVisible(true)
   }
   const handleOrder = async () => {
+    if (!table) {
+      navigate(`/restaurants/${id}/table`)
+      return
+    }
     try {
       // API 요청을 보내는 부분
       const response = await fetch(`${process.env.REACT_APP_API_URL}/orders`, {
@@ -43,8 +52,7 @@ const FloatingButton: React.FC<OwnProps> = ({ info }) => {
           restaurant_id: info._id,
           restaurant_name: info.name,
           restaurant_address: info.address,
-          //테이블 아이디 어디서 받아야할지 모르겠음
-          table_id: 1,
+          table_id: table,
           menus: {
             '': {
               menu_name: selectedMenu?.name,
@@ -75,6 +83,7 @@ const FloatingButton: React.FC<OwnProps> = ({ info }) => {
 
       if (response.ok) {
         setIsOrderModalVisible(false)
+        navigate(`/orderlist`)
       } else {
         console.error('주문 생성에 실패했습니다.')
       }

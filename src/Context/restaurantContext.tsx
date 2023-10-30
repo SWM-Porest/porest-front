@@ -1,6 +1,11 @@
 import { MenuOption } from 'Api/OrderInterface'
 import axios, { AxiosError } from 'axios'
 import React, { Dispatch, createContext, useContext, useReducer } from 'react'
+
+export const isInstanceOfImage = (object: any): boolean => {
+  return typeof object === 'object' && object !== null && 'filename' in object && 'path' in object && 'type' in object
+}
+
 export interface Image {
   filename: string
   path: string
@@ -33,7 +38,7 @@ export interface Menu {
   img: Image
   ingre: string[]
   _id: string
-  options: MenuOption[]
+  menuOptions: MenuOption[]
 }
 
 export const restaurantContextDefaultValue: Restaurant = {
@@ -64,12 +69,13 @@ export const restaurantContextDefaultValue: Restaurant = {
         type: 'string',
       },
       ingre: ['string'],
-      options: [
+      menuOptions: [
         {
           _id: '',
           name: 'string',
           isSoldOut: false,
           maxSelect: 1,
+          isRequired: false,
           items: [
             {
               name: 'string',
