@@ -1,4 +1,4 @@
-export const useNotification = () => {
+export const useNotification = async (accessToken: string, restaurant: any, table: any, cookie: any) => {
   Notification.requestPermission().then((permission) => {
     if (permission == 'denied') {
       alert('알림이 거부되었습니다.')
@@ -12,15 +12,22 @@ export const useNotification = () => {
           }
           return registration.pushManager.subscribe(subscribeOptions)
         })
-        .then((pushSubscription) => {
-          fetch('http://localhost:3001/orders/testNotify', {
+        .then(async (pushSubscription) => {
+          await fetch(`${process.env.REACT_APP_API_URL}/orders`, {
             method: 'POST',
             headers: {
+              Authorization: `Bearer ${accessToken}`,
               'Content-Type': 'application/json',
-              Authorization:
-                'Baerer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGY1OGM5Y2U4OTIxYmYwNjNhYjViOTgiLCJ1c2VyTmljayI6Iuq5gO2YhOykkSIsInVzZXJsZXZlbCI6NTAsInJlc3RhdXJhbnRzSWQiOlsiNjRjNzAzMTQyM2ViMTE1YzM3NmQ2NDg4IiwiNjRjNzAzMTQyM2ViMTE1YzM3NmQ2NDg3IiwiNjBiOWIwYjllNmIzYjNhMGU0YjllMGEwIl0sInVzZXJUb2tlbiI6ImFjY2Vzc1Rva2VuIiwiaWF0IjoxNjk0Nzc5MDUyLCJleHAiOjE2OTUzODM4NTJ9.FR34P7TAkSaQhQN07ivA0uAVYPxazpDV9S2rzwM4bm8',
             },
-            body: JSON.stringify(pushSubscription),
+            body: JSON.stringify({
+              restaurant_id: restaurant?._id,
+              restaurant_name: restaurant?.name,
+              restaurant_address: restaurant?.address,
+              //테이블 아이디 어디서 받아야할지 모르겠음
+              table_id: table,
+              menus: cookie,
+              token: pushSubscription,
+            }),
           })
         })
     }

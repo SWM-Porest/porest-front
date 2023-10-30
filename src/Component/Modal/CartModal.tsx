@@ -127,7 +127,7 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
         <ButtonContainer style={{ display: 'flex' }}>
           <StyledButton
             onClick={() => {
-              useNotification()
+              useNotification(accessToken, restaurant, table, cookie)
               handleOrder()
             }}
           >
