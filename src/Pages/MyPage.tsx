@@ -51,8 +51,6 @@ const MyPage = () => {
       </LoadingContainer>
     )
   }
-  console.log(userData)
-  console.log(restaurants)
   if (error || restaurants.length === 0) {
     return (
       <Container>
