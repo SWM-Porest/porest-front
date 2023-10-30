@@ -68,40 +68,47 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
       return
     }
     try {
-      // API 요청을 보내는 부분
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/orders`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          restaurant_id: restaurant?._id,
-          restaurant_name: restaurant?.name,
-          restaurant_address: restaurant?.address,
-          //테이블 아이디 어디서 받아야할지 모르겠음
-          table_id: table,
-          menus: cookie,
-          token: {
-            endpoint: 'url',
-            //keys 뭐 들어가야하는지 모르겠음
-            keys: {
-              auth: 'string',
-              p256dh: 'string',
-            },
-            expirationTime: null,
-          },
-        }),
-      })
+      Notification.requestPermission().then((permission) => {
+        if (permission == 'denied') {
+          alert('알림이 거부되었습니다.')
+        } else if (navigator.serviceWorker) {
+          navigator.serviceWorker
+            .register('../service-worker.js', { scope: '/' })
+            .then((registration) => {
+              const subscribeOptions = {
+                userVisibleOnly: true,
+                applicationServerKey: process.env.REACT_APP_PUBLIC_VAPID_KEY,
+              }
+              return registration.pushManager.subscribe(subscribeOptions)
+            })
+            .then(async (pushSubscription) => {
+              const response = await fetch(`${process.env.REACT_APP_API_URL}/orders`, {
+                method: 'POST',
+                headers: {
+                  Authorization: `Bearer ${accessToken}`,
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  restaurant_id: restaurant?._id,
+                  restaurant_name: restaurant?.name,
+                  restaurant_address: restaurant?.address,
+                  table_id: table,
+                  menus: cookie,
+                  token: pushSubscription,
+                }),
+              })
 
-      if (response.ok) {
-        console.log('주문 생성에 성공했습니다.')
-        handleRemoveMenu()
-        showMessage('주문이 완료되었습니다.\n접수 확인을 기다려주십시오.', 1500, '/img/check.png')
-        navigate(`/orderlist`)
-      } else {
-        console.error('주문 생성에 실패했습니다.')
-      }
+              if (response.ok) {
+                console.log('주문 생성에 성공했습니다.')
+                handleRemoveMenu()
+                showMessage('주문이 완료되었습니다.\n접수 확인을 기다려주십시오.', 1500, '/img/check.png')
+                navigate(`/orderlist`)
+              } else {
+                console.error('주문 생성에 실패했습니다.')
+              }
+            })
+        }
+      })
     } catch (error) {
       console.error('주문 생성 중 오류 발생:', error)
     }
@@ -127,7 +134,6 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
         <ButtonContainer style={{ display: 'flex' }}>
           <StyledButton
             onClick={() => {
-              useNotification(accessToken, restaurant, table, cookie)
               handleOrder()
             }}
           >
