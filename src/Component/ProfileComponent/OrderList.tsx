@@ -6,13 +6,16 @@ import OrderModal from 'Component/Modal/OrderModal'
 import getImageSrc from 'Utils/getImageSrc'
 import { Table } from 'antd'
 import { ReactComponent as ChevronR } from 'assets/ChevronR.svg'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 const OrderList = () => {
   const page = 1 // page 변수 정의
   const pageSize = 10 // pageSize 변수 정의
   const sort = 0 // sort 변수 정의
+
+  const queryparams = new URLSearchParams(location.search)
+  const defaultOrderId = queryparams.get('orderId')
 
   const [accessToken, setAccessToken] = useAccessToken()
   const [orderId, setOrderId] = useState('')
@@ -30,6 +33,12 @@ const OrderList = () => {
     const date = new Date(dateString)
     return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
   }
+
+  useEffect(() => {
+    if (defaultOrderId) {
+      openModalHandler(defaultOrderId)
+    }
+  }, [])
 
   if (isLoading) {
     return <div>Loading...</div>
