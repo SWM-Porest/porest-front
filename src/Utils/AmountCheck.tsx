@@ -12,12 +12,12 @@ interface AmountContainerProps {
 const AmountCheck: React.FC<AmountContainerProps> = ({ count, handleIncrement, handleDecrement }) => {
   return (
     <Container>
-      <MinusButton>
-        <Minus onClick={handleDecrement} />
+      <MinusButton onClick={handleDecrement}>
+        <Minus />
       </MinusButton>
       <CountSpan>{count}</CountSpan>
-      <PlusButton>
-        <Plus onClick={handleIncrement} />
+      <PlusButton onClick={handleIncrement}>
+        <Plus />
       </PlusButton>
     </Container>
   )
