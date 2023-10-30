@@ -29,6 +29,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { styled } from 'styled-components'
 import { v4 as uuidv4 } from 'uuid'
 import ErrorPage from './ErrorPage'
+import { useAccessToken } from 'Api/tokenCookie'
 
 const CreateOrUpdateMenuPage = () => {
   const { id } = useParams()
@@ -76,8 +77,11 @@ const CreateOrUpdateMenuPage = () => {
     const formData = new FormData()
     formData.append('image', e.target.files[0])
 
+    const [accessToken] = useAccessToken()
+
     const res = await axios.patch(`${process.env.REACT_APP_API_URL}/restaurants/${id}/menus/images`, formData, {
       headers: {
+        Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'multipart/form-data',
       },
     })
@@ -94,7 +98,11 @@ const CreateOrUpdateMenuPage = () => {
 
   const submitMenuForm = async (data: any) => {
     if (data._id !== undefined) {
-      const res = await axios.patch(`${process.env.REACT_APP_API_URL}/restaurants/${id}/menus/`, data)
+      const res = await axios.patch(`${process.env.REACT_APP_API_URL}/restaurants/${id}/menus/`, data, {
+        headers: {
+          Authorization: `Bearer ${useAccessToken()}`,
+        },
+      })
 
       if (res.status === 401) {
         alert('로그인이 필요합니다.')
@@ -105,7 +113,11 @@ const CreateOrUpdateMenuPage = () => {
         navigate(-1)
       }
     } else {
-      const res = await axios.post(`${process.env.REACT_APP_API_URL}/restaurants/${id}/menus`, data)
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/restaurants/${id}/menus`, data, {
+        headers: {
+          Authorization: `Bearer ${useAccessToken()}`,
+        },
+      })
 
       if (res.status === 401) {
         alert('로그인이 필요합니다.')
@@ -213,7 +225,11 @@ const CreateOrUpdateMenuPage = () => {
   }
 
   const deleteMenu = async (menuId: string) => {
-    const res = await axios.delete(`${process.env.REACT_APP_API_URL}/restaurants/${id}/menus/${menuId}`)
+    const res = await axios.delete(`${process.env.REACT_APP_API_URL}/restaurants/${id}/menus/${menuId}`, {
+      headers: {
+        Authorization: `Bearer ${useAccessToken()}`,
+      },
+    })
 
     if (res.status === 401) {
       alert('로그인이 필요합니다.')

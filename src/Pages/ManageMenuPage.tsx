@@ -14,12 +14,15 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { styled } from 'styled-components'
 import { v4 as uuidv4 } from 'uuid'
 import ErrorPage from './ErrorPage'
+import { useAccessToken } from 'Api/tokenCookie'
 
 const EditMenuPage = () => {
   const { id } = useParams()
   if (id === undefined) {
     return <ErrorPage />
   }
+
+  const [accesstoken] = useAccessToken()
 
   const navigate = useNavigate()
 
@@ -48,7 +51,7 @@ const EditMenuPage = () => {
 
     const res = await axios.post(`${process.env.REACT_APP_API_URL}/restaurants/${id}/categories`, null, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+        Authorization: `Bearer ${accesstoken}`,
       },
       params: {
         category: newCategory,
