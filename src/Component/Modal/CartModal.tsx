@@ -1,26 +1,22 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { CreateOrder, createOrder } from 'Api/createOrder'
 import { getCookie, removeAllCookie } from 'Api/cartCookie'
 import { useAccessToken } from 'Api/tokenCookie'
-import { useNotification } from 'Api/useNotification'
 import CartPrice from 'Component/CartComponent/CartPrice'
 import Header from 'Component/Header'
 import { useCartModal } from 'Context/CartModalContext'
 import { useRestaurantState } from 'Context/restaurantContext'
 import { ReactComponent as Chevron } from 'assets/Chevron.svg'
 import React, { useEffect } from 'react'
-import { useMutation } from 'react-query'
-import { useSearchParams } from 'react-router-dom'
 import { styled } from 'styled-components'
 
 interface OwnProps {
   isOpen: boolean
 }
 const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
-  const { data: restaurant, loading, error } = useRestaurantState().restaurant
+  const { data: restaurant } = useRestaurantState().restaurant
   const cookie = getCookie(restaurant?._id as string) || {}
   const { isModalOpen, closeModal } = useCartModal()
-  const [accessToken, setAccessToken] = useAccessToken()
+  const [accessToken] = useAccessToken()
 
   if (isOpen) {
     document.body.style.overflow = 'hidden'

@@ -49,7 +49,7 @@ const WaitingBox = styled(InnerContainer)`
   margin: 0 20px;
   padding: 40px;
   border-radius: 12px;
-  border: 1px solid ${({ theme }) => theme.COLOR.common.gray[700]};
+  border: 1px solid ${({ theme }) => theme.COLOR.common.gray[100]};
 `
 
 const BlackFontBox = styled.div`
@@ -65,7 +65,7 @@ const BetweenBlackFontBox = styled(BlackFontBox)`
 `
 
 const GrayFontBox = styled.div`
-  color: ${({ theme }) => theme.COLOR.common.gray[300]};
+  color: ${({ theme }) => theme.COLOR.common.gray[40]};
   font-size: ${({ theme }) => theme.FONT_SIZE.medium};
   font-weight: bold;
 `
@@ -82,13 +82,13 @@ const TinyRedFontBox = styled(RedFontBox)`
 
 const WaitingDetailBox = styled(InnerContainer)`
   margin: 0 20px;
-  border-bottom: 1px solid ${({ theme }) => theme.COLOR.common.gray[700]};
+  border-bottom: 1px solid ${({ theme }) => theme.COLOR.common.gray[100]};
 `
 
 const NoticeBox = styled(InnerContainer)`
   margin: 20px 20px;
   padding: 20px;
-  background-color: ${({ theme }) => theme.COLOR.common.gray[800]};
+  background-color: ${({ theme }) => theme.COLOR.common.gray[110]};
   border-radius: 12px;
   align-items: flex-start;
 `
