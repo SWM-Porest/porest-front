@@ -73,11 +73,11 @@ const CreateOrUpdateMenuPage = () => {
 
   const [options, setOptions] = useState<MenuOption[]>([])
 
+  const [accessToken] = useAccessToken()
+
   const uploadImage = async (e: any) => {
     const formData = new FormData()
     formData.append('image', e.target.files[0])
-
-    const [accessToken] = useAccessToken()
 
     const res = await axios.patch(`${process.env.REACT_APP_API_URL}/restaurants/${id}/menus/images`, formData, {
       headers: {
@@ -100,7 +100,7 @@ const CreateOrUpdateMenuPage = () => {
     if (data._id !== undefined) {
       const res = await axios.patch(`${process.env.REACT_APP_API_URL}/restaurants/${id}/menus/`, data, {
         headers: {
-          Authorization: `Bearer ${useAccessToken()}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       })
 
@@ -115,7 +115,7 @@ const CreateOrUpdateMenuPage = () => {
     } else {
       const res = await axios.post(`${process.env.REACT_APP_API_URL}/restaurants/${id}/menus`, data, {
         headers: {
-          Authorization: `Bearer ${useAccessToken()}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       })
 
