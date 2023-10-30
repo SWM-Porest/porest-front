@@ -301,7 +301,13 @@ const CreateOrUpdateMenuPage = () => {
                 type="number"
                 {...register('price', {
                   required: true,
+                  pattern: /^[0-9]*$/,
                 })}
+                value={getValues('price')}
+                onChange={(e) => {
+                  const newValue = e.target.value.replace(/[^0-9]/g, '')
+                  setValue('price', newValue)
+                }}
                 placeholder="가격을 입력해주세요"
               />
               <FormItemInputDecorator>원</FormItemInputDecorator>
