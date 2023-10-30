@@ -18,6 +18,7 @@ import Loading from 'Component/Loading'
 import { useForm } from 'react-hook-form'
 import { Table } from 'Api/table'
 import { FormItemContainer, FormItemInput, FormItemLabel, FormItmeHeader } from 'Component/Form/FormElement'
+import { useAccessToken } from 'Api/tokenCookie'
 
 const EditRestaurantPage: React.FC = () => {
   const { id } = useParams()
@@ -28,22 +29,18 @@ const EditRestaurantPage: React.FC = () => {
   const [restaurantImageList, setRestaurantImageList] = useState<Image[]>([])
   const { register, handleSubmit, reset, setValue, getValues } = useForm()
 
+  const [accesstoken] = useAccessToken()
+
   // Create a query function for fetching restaurant data
   const fetchRestaurantData = async () => {
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/restaurants/${id}`, {
-      auth: {
-        username: process.env.REACT_APP_BASIC_AUTH_USERNAME ? process.env.REACT_APP_BASIC_AUTH_USERNAME : 'myusername',
-        password: process.env.REACT_APP_BASIC_AUTH_PASSWORD ? process.env.REACT_APP_BASIC_AUTH_PASSWORD : 'password123',
-      },
-    })
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/restaurants/${id}`)
     return response.data
   }
 
   const fetchTableData = async () => {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/tables/restaurants/${id}/`, {
-      auth: {
-        username: process.env.REACT_APP_BASIC_AUTH_USERNAME ? process.env.REACT_APP_BASIC_AUTH_USERNAME : 'myusername',
-        password: process.env.REACT_APP_BASIC_AUTH_PASSWORD ? process.env.REACT_APP_BASIC_AUTH_PASSWORD : 'password123',
+      headers: {
+        Authorization: `Bearer ${accesstoken}`,
       },
     })
     return response.data
@@ -58,7 +55,6 @@ const EditRestaurantPage: React.FC = () => {
     data: restaurant,
     isLoading,
     isError,
-    refetch: refetchRestaurantData,
   }: UseQueryResult<Restaurant> = useQuery('restaurant', fetchRestaurantData)
 
   const { data: tableData, refetch: refetchTableData }: UseQueryResult<Table[]> = useQuery('table', fetchTableData)
@@ -72,10 +68,18 @@ const EditRestaurantPage: React.FC = () => {
     if (tableData !== undefined) len = tableData.length
 
     axios
-      .post(`${process.env.REACT_APP_API_URL}/tables`, {
-        restaurant_id: id,
-        name: `${len + 1} 번째 테이블`,
-      })
+      .post(
+        `${process.env.REACT_APP_API_URL}/tables`,
+        {
+          restaurant_id: id,
+          name: `${len + 1} 번째 테이블`,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
+      )
       .then(() => {
         refetchTableData()
       })
@@ -86,7 +90,11 @@ const EditRestaurantPage: React.FC = () => {
 
   const deleteTable = async (table_id: string) => {
     axios
-      .delete(`${process.env.REACT_APP_API_URL}/tables/${table_id}`)
+      .delete(`${process.env.REACT_APP_API_URL}/tables/${table_id}`, {
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      })
       .then(() => {
         refetchTableData()
       })
@@ -105,15 +113,8 @@ const EditRestaurantPage: React.FC = () => {
     axios
       .patch(`${process.env.REACT_APP_API_URL}/restaurants/${id}/images`, formData, {
         headers: {
+          Authorization: `Bearer ${accesstoken}`,
           'Content-Type': 'multipart/form-data',
-        },
-        auth: {
-          username: process.env.REACT_APP_BASIC_AUTH_USERNAME
-            ? process.env.REACT_APP_BASIC_AUTH_USERNAME
-            : 'myusername',
-          password: process.env.REACT_APP_BASIC_AUTH_PASSWORD
-            ? process.env.REACT_APP_BASIC_AUTH_PASSWORD
-            : 'password123',
         },
       })
       .then((response) => {
@@ -132,13 +133,8 @@ const EditRestaurantPage: React.FC = () => {
   const deleteImage = (i: number) => {
     axios
       .delete(`${process.env.REACT_APP_API_URL}/restaurants/${id}/images/${restaurantImageList[i].filename}`, {
-        auth: {
-          username: process.env.REACT_APP_BASIC_AUTH_USERNAME
-            ? process.env.REACT_APP_BASIC_AUTH_USERNAME
-            : 'myusername',
-          password: process.env.REACT_APP_BASIC_AUTH_PASSWORD
-            ? process.env.REACT_APP_BASIC_AUTH_PASSWORD
-            : 'password123',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
         },
       })
       .then((response) => {
@@ -161,13 +157,8 @@ const EditRestaurantPage: React.FC = () => {
   const onRetaurantEditSubmit = (data: any) => {
     axios
       .patch(`${process.env.REACT_APP_API_URL}/restaurants/${id}`, data, {
-        auth: {
-          username: process.env.REACT_APP_BASIC_AUTH_USERNAME
-            ? process.env.REACT_APP_BASIC_AUTH_USERNAME
-            : 'myusername',
-          password: process.env.REACT_APP_BASIC_AUTH_PASSWORD
-            ? process.env.REACT_APP_BASIC_AUTH_PASSWORD
-            : 'password123',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
         },
       })
       .then((response) => {

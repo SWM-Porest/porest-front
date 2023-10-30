@@ -7,9 +7,7 @@ export const useRestaurantContextValue = (id: string) => {
   useEffect(() => {
     const getRestaurant = async (id: string) => {
       try {
-        const res = await axios.get<Restaurant>(`${process.env.REACT_APP_API_URL}/restaurants/${id}`, {
-          headers: { Authorization: 'Basic YWRtaW46c3dtMTRwb3Jlc3QhIQ==' },
-        })
+        const res = await axios.get<Restaurant>(`${process.env.REACT_APP_API_URL}/restaurants/${id}`)
         setRestaurant(res.data)
       } catch (e) {
         setRestaurant(null) // 에러 발생 시 레스토랑 데이터를 null로 설정
