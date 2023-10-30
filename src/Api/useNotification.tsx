@@ -1,5 +1,7 @@
-export const useNotification = async (accessToken: string, restaurant: any, table: any, cookie: any) => {
-  Notification.requestPermission().then((permission) => {
+import { CreateOrder, createOrder } from './createOrder'
+
+export const useNotification = async (order: CreateOrder, accessToken: string) => {
+  Notification.requestPermission().then(async (permission) => {
     if (permission == 'denied') {
       return await createOrder(order, accessToken)
     } else if (navigator.serviceWorker) {
@@ -20,12 +22,7 @@ export const useNotification = async (accessToken: string, restaurant: any, tabl
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              restaurant_id: restaurant?._id,
-              restaurant_name: restaurant?.name,
-              restaurant_address: restaurant?.address,
-              //테이블 아이디 어디서 받아야할지 모르겠음
-              table_id: table,
-              menus: cookie,
+              ...order,
               token: pushSubscription,
             }),
           })
