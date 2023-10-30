@@ -5,9 +5,10 @@ import {
   ReOrder24Regular,
   SubtractCircle24Filled,
   DismissCircle24Filled,
+  ChevronLeft20Regular,
 } from '@fluentui/react-icons'
 import { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 import ErrorPage from './ErrorPage'
 import { useQuery, UseQueryResult } from 'react-query'
@@ -21,6 +22,8 @@ import { FormItemContainer, FormItemInput, FormItemLabel, FormItmeHeader } from 
 const EditRestaurantPage: React.FC = () => {
   const { id } = useParams()
   if (id === undefined) throw new Error('id가 없습니다.')
+
+  const navigate = useNavigate()
 
   const [restaurantImageList, setRestaurantImageList] = useState<Image[]>([])
   const { register, handleSubmit, reset } = useForm()
@@ -212,6 +215,7 @@ const EditRestaurantPage: React.FC = () => {
     <div>
       <Header
         HeaderName={'가게 관리'}
+        Left={<ChevronLeft20Regular style={{ cursor: 'pointer' }} onClick={() => navigate(-1)} />}
         Right={
           <CompleteButton type="submit" form="form">
             완료
@@ -410,7 +414,7 @@ const CompleteButton = styled.button`
   background-color: transparent;
   font-weight: bold;
   color: #3fba73;
-  font-size: ${({ theme }) => theme.FONT_SIZE.tiny};
+  font-size: ${({ theme }) => theme.FONT_SIZE.medium};
   cursor: pointer;
 `
 const Container = styled.div`
