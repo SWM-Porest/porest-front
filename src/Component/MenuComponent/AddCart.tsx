@@ -22,9 +22,10 @@ const AddCart: React.FC<Ownprops> = ({ menu, cnt, openModalHandler, selectedOpti
         formattedOptions.push(
           ...selectedOptions[optionId].map((item) => ({
             _id: optionId,
-            name: menu?.options.find((option) => option._id === optionId)?.name || '',
-            isSoldOut: menu?.options.find((option) => option._id === optionId)?.isSoldOut || false,
-            maxSelect: menu?.options.find((option) => option._id === optionId)?.maxSelect || 1,
+            name: menu?.menuOptions.find((option) => option._id === optionId)?.name || '',
+            isSoldOut: menu?.menuOptions.find((option) => option._id === optionId)?.isSoldOut || false,
+            maxSelect: menu?.menuOptions.find((option) => option._id === optionId)?.maxSelect || 1,
+            isRequired: menu?.menuOptions.find((option) => option._id === optionId)?.isRequired || false,
             items: [
               {
                 name: item.name,

@@ -21,6 +21,12 @@ const App: React.FC = () => {
               <GlobalStyles />
               <CartModalProvider>
                 <RestaurantProvider>
+                  <StyledSurveySection>
+                    <div>PocketRestaurant에 피드백 남기고, ☕️ 커피 받아가세요! </div>
+                    <a href="https://forms.gle/LFdXnHPbZnBwH8U98" target="_blank">
+                      설문하러 가기
+                    </a>
+                  </StyledSurveySection>
                   <RouterProvider router={router} />
                 </RestaurantProvider>
               </CartModalProvider>
@@ -48,5 +54,29 @@ const Contents = styled.div`
     background-color: #fff;
     box-shadow: 0 0 22px -2px rgba(0, 0, 0, 0.75);
     overflow-y: auto;
+  }
+`
+
+const StyledSurveySection = styled.div`
+  background-color: #f4f4f4;
+  padding: 1rem 2rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  div {
+    font-size: 1.2rem;
+    margin-right: 1rem;
+  }
+
+  a {
+    text-decoration: none;
+    color: #3fba73;
+    font-weight: bold;
+
+    &:hover {
+      font-size: 1.2rem;
+      text-decoration: underline;
+    }
   }
 `

@@ -50,7 +50,7 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
     const selectedOptionObjects = selectedItems.map((item) => ({
       name: item,
       price:
-        menu?.options.find((option) => option._id === optionId)?.items.find((optItem) => optItem.name === item)
+        menu?.menuOptions.find((option) => option._id === optionId)?.items.find((optItem) => optItem.name === item)
           ?.price || 0,
     }))
 
@@ -84,14 +84,19 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
 
           <div>
             <Categories ingre={menu ? menu.ingre : []}></Categories>
-            {menu?.options.map((option) => (
-              <OptionSelector
-                key={option._id}
-                option={option}
-                selectedItems={selectedOptions[option._id]?.map((item) => item.name) || []}
-                onSelect={(selectedItems) => handleOptionSelect(option._id, selectedItems)}
-              />
-            ))}
+            {menu?.menuOptions &&
+              menu?.menuOptions.map((option) => {
+                return option._id !== null ? (
+                  <OptionSelector
+                    key={option._id}
+                    option={option}
+                    selectedItems={selectedOptions[option._id]?.map((item) => item.name) || []}
+                    onSelect={(selectedItems) => handleOptionSelect(option._id ?? '', selectedItems)}
+                  />
+                ) : (
+                  <></>
+                )
+              })}
           </div>
           <Container1>
             <Container2>수량 선택</Container2>
