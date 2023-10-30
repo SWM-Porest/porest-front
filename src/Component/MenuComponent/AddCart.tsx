@@ -68,7 +68,7 @@ const ButtonContainer = styled.div`
   align-items: flex-start;
 `
 
-const StyledButton = styled.button`
+export const StyledButton = styled.button`
   cursor: pointer;
   font-size: ${({ theme }) => theme.FONT_SIZE.medium};
   font-weight: 700;

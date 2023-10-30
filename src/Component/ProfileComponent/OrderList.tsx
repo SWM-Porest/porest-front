@@ -9,6 +9,7 @@ import { Table } from 'antd'
 import { ReactComponent as ChevronR } from 'assets/ChevronR.svg'
 import { useState } from 'react'
 import styled from 'styled-components'
+
 const OrderList = () => {
   const page = 1 // page 변수 정의
   const pageSize = 10 // pageSize 변수 정의

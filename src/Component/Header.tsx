@@ -21,7 +21,7 @@ const Header: React.FC<HeaderProps> = ({ Left, HeaderName, Right }) => {
 
 export default Header
 
-const StyledNavbar = styled.nav`
+export const StyledNavbar = styled.nav`
   display: flex;
   justify-content: space-between; /* 영역들 간의 공간을 동일하게 분배 */
   align-items: center; /* 세로 방향으로 가운데 정렬 */
