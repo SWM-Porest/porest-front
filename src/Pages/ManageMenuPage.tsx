@@ -1,10 +1,16 @@
-import { AddCircle20Filled, ChevronRight20Regular, Image24Filled, ReOrder20Regular } from '@fluentui/react-icons'
+import {
+  AddCircle20Filled,
+  ChevronLeft20Regular,
+  ChevronRight20Regular,
+  Image24Filled,
+  ReOrder20Regular,
+} from '@fluentui/react-icons'
 import Header from 'Component/Header'
 import Loading from 'Component/Loading'
 import { Menu, Restaurant } from 'Context/restaurantContext'
 import axios from 'axios'
 import { UseQueryResult, useQuery } from 'react-query'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { styled } from 'styled-components'
 import { v4 as uuidv4 } from 'uuid'
 import ErrorPage from './ErrorPage'
@@ -14,6 +20,8 @@ const EditMenuPage = () => {
   if (id === undefined) {
     return <ErrorPage />
   }
+
+  const navigate = useNavigate()
 
   const fetchRestaurant = async () => {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/restaurants/${id}`)
@@ -54,7 +62,10 @@ const EditMenuPage = () => {
 
   return (
     <>
-      <Header HeaderName="메뉴 관리" />
+      <Header
+        HeaderName="메뉴 관리"
+        Left={<ChevronLeft20Regular style={{ cursor: 'pointer' }} onClick={() => navigate(-1)} />}
+      />
       <EditMenuPageBody>
         <CategoryList>
           {restaurant &&

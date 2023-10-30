@@ -93,8 +93,6 @@ const CreateOrUpdateMenuPage = () => {
   }
 
   const submitMenuForm = async (data: any) => {
-    console.log(data)
-
     if (data._id !== undefined) {
       const res = await axios.patch(`${process.env.REACT_APP_API_URL}/restaurants/${id}/menus/`, data)
 
@@ -234,7 +232,7 @@ const CreateOrUpdateMenuPage = () => {
     if (!!state && !!state.menu) {
       reset(state.menu)
       if (menu.ingre !== undefined) {
-        setIngreInputValues(menu.ingre)
+        setIngreInputValues([...menu.ingre])
       }
       if (menu.menuOptions !== undefined) {
         setOptions(menu.menuOptions)
