@@ -20,9 +20,3 @@ export const useRestaurantContextValue = (id: string) => {
 
   return { restaurant }
 }
-
-export const useRestaurantLoading = () => {
-  useEffect(() => {
-    useRestaurantContextValue('64be5622cdbb9385ac6851b9')
-  }, [])
-}

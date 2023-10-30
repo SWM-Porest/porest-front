@@ -33,6 +33,9 @@ const COLOR = {
       110: '#EEEEEE',
       120: '#F7F7F7',
     },
+    red: {
+      200: '#FF4F4F',
+    },
   },
 }
 

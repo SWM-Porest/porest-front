@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { getCookie, removeAllCookie } from 'Api/cartCookie'
 import { useAccessToken } from 'Api/tokenCookie'
-import { useNotification } from 'Api/useNotification'
 import CartPrice from 'Component/CartComponent/CartPrice'
 import Header from 'Component/Header'
 import { useCartModal } from 'Context/CartModalContext'
@@ -15,10 +14,10 @@ interface OwnProps {
   isOpen: boolean
 }
 const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
-  const { data: restaurant, loading, error } = useRestaurantState().restaurant
+  const { data: restaurant } = useRestaurantState().restaurant
   const cookie = getCookie(restaurant?._id as string) || {}
   const { isModalOpen, closeModal } = useCartModal()
-  const [accessToken, setAccessToken] = useAccessToken()
+  const [accessToken] = useAccessToken()
   const location = useLocation()
   const queryparams = new URLSearchParams(location.search)
   const table = queryparams.get('table')

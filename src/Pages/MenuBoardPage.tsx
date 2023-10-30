@@ -15,6 +15,7 @@ import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import ErrorPage from './ErrorPage'
+import Loading from 'Component/Loading'
 
 import { useNavigate } from 'react-router-dom'
 
@@ -34,11 +35,7 @@ const MenuBoardPage: React.FC = () => {
   }, [dispatch, id])
 
   if (loading) {
-    return (
-      <StyledSpin tip="Loading" size="large">
-        <div className="content" />
-      </StyledSpin>
-    )
+    return <Loading />
   }
   if (error) return <ErrorPage errorCode={500} />
 
@@ -80,7 +77,7 @@ export const StyledSpin = styled(Spin)`
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(4);
+    transform: translate(-50%, -50%) scale(2);
   }
 `
 const Icon = styled.div`

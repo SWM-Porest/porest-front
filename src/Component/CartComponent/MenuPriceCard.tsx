@@ -19,7 +19,7 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, orderinfo, handlePriceTotalCh
   const handleIncrement = () => {
     const newCount = count + 1
     setCount(newCount)
-    setCookie(restaurant?._id as string, info, 1, info.options)
+    setCookie(restaurant?._id as string, info, 1, info.menuOptions)
     handlePriceTotalChange()
   }
 
@@ -27,7 +27,7 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, orderinfo, handlePriceTotalCh
     if (count > 1) {
       const newCount = count - 1
       setCount(newCount)
-      setCookie(restaurant?._id as string, info, -1, info.options)
+      setCookie(restaurant?._id as string, info, -1, info.menuOptions)
       handlePriceTotalChange()
     } else {
       removeCookie(restaurant?._id as string, info._id)
@@ -39,7 +39,7 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, orderinfo, handlePriceTotalCh
     removeCookie(restaurant?._id as string, info._id)
     handlePriceTotalChange()
   }
-  const optionPricesSum = info.options.reduce((acc, option) => {
+  const optionPricesSum = info.menuOptions.reduce((acc, option) => {
     const itemPricesSum = option.items.reduce((itemAcc, item) => itemAcc + item.price, 0)
     return acc + itemPricesSum
   }, 0)
@@ -56,7 +56,7 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, orderinfo, handlePriceTotalCh
           <StyledImage src={getImageSrc(info.img)} alt="메뉴 이미지" />
           <MenuInfoDetailsContainer>
             <MenuName>{info.name}</MenuName>
-            {info.options.map((option, index) => (
+            {info.menuOptions.map((option, index) => (
               <MenuOption key={index}>
                 <span style={{ margin: 0, padding: '8pt 0' }}>{option.name}:</span>
                 {option.items.map((item, index) => (

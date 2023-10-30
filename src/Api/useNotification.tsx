@@ -1,9 +1,9 @@
 export const useNotification = async (accessToken: string, restaurant: any, table: any, cookie: any) => {
   Notification.requestPermission().then((permission) => {
     if (permission == 'denied') {
-      alert('알림이 거부되었습니다.')
+      return await createOrder(order, accessToken)
     } else if (navigator.serviceWorker) {
-      navigator.serviceWorker
+      const data = await navigator.serviceWorker
         .register('../service-worker.js', { scope: '/' })
         .then((registration) => {
           const subscribeOptions = {
@@ -30,6 +30,7 @@ export const useNotification = async (accessToken: string, restaurant: any, tabl
             }),
           })
         })
+      return data
     }
   })
 }
