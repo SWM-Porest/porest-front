@@ -20,6 +20,7 @@ const MyPage = () => {
   const [accessToken, setAccessToken] = useAccessToken()
   const { data: userData } = useUserData(accessToken)
   const navigate = useNavigate()
+  let filteredRestaurants = []
 
   const handleListClick = () => {
     navigate('/orderlist')
@@ -59,8 +60,10 @@ const MyPage = () => {
       </Container>
     )
   }
-  const filteredRestaurants = restaurants.filter((restaurant) => userData.restaurants_id.includes(restaurant._id))
-  console.log(filteredRestaurants)
+  if (userData && userData.restaurants_id) {
+    filteredRestaurants = restaurants.filter((restaurant) => userData.restaurants_id.includes(restaurant._id))
+  }
+
   return (
     <div>
       <ProfileBox />
