@@ -350,7 +350,7 @@ const CreateOrUpdateMenuPage = () => {
             <IngreList>
               {ingreInputValues.map((ingre: string, index: number) => {
                 return (
-                  <IngreContainer key={uuidv4()}>
+                  <IngreContainer key={`key-ingre-${Number}`}>
                     <RedSubtractCircle20Filled
                       onClick={() => {
                         removeIngre(index)
@@ -374,7 +374,7 @@ const CreateOrUpdateMenuPage = () => {
               <OptionList>
                 {options.map((option: MenuOption, moIdx: number) => {
                   return (
-                    <OptionContainer key={uuidv4()}>
+                    <OptionContainer key={`key-option-${moIdx}`}>
                       <OptionHeader>
                         <OptionHeaderFront>
                           <RedSubtractCircle20Filled onClick={() => removeOption(moIdx)} />
@@ -402,7 +402,7 @@ const CreateOrUpdateMenuPage = () => {
                         {option.items &&
                           option.items.map((item, iIdx) => {
                             return (
-                              <OptionItem key={uuidv4()} $index={iIdx}>
+                              <OptionItem key={`key-optionItem-${iIdx}`} $index={iIdx}>
                                 <OptionItemLeft>
                                   <RedSubtractCircle20Filled onClick={() => removeOptionItem(iIdx, moIdx)} />
                                   <OptionItemContent>
