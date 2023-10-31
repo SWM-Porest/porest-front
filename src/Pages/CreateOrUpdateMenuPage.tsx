@@ -97,6 +97,10 @@ const CreateOrUpdateMenuPage = () => {
   }
 
   const submitMenuForm = async (data: any) => {
+    if (data.price) {
+      data.price = Number(data.price)
+    }
+
     if (data._id !== undefined) {
       const res = await axios.patch(`${process.env.REACT_APP_API_URL}/restaurants/${id}/menus/`, data, {
         headers: {
@@ -317,6 +321,7 @@ const CreateOrUpdateMenuPage = () => {
                 type="number"
                 {...register('price', {
                   required: true,
+                  pattern: /^[0-9]*$/,
                 })}
                 placeholder="가격을 입력해주세요"
               />
