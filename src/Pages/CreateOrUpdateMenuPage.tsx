@@ -177,7 +177,7 @@ const CreateOrUpdateMenuPage = () => {
   }
 
   const addOptionItem = (index: number) => {
-    const option = options[index]
+    const option = getValues(`menuOptions.${index}`)
 
     const item = {
       name: `${option.items.length + 1}번 사이드`,
@@ -227,7 +227,7 @@ const CreateOrUpdateMenuPage = () => {
   const deleteMenu = async (menuId: string) => {
     const res = await axios.delete(`${process.env.REACT_APP_API_URL}/restaurants/${id}/menus/${menuId}`, {
       headers: {
-        Authorization: `Bearer ${useAccessToken()}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     })
 
@@ -317,13 +317,7 @@ const CreateOrUpdateMenuPage = () => {
                 type="number"
                 {...register('price', {
                   required: true,
-                  pattern: /^[0-9]*$/,
                 })}
-                value={getValues('price')}
-                onChange={(e) => {
-                  const newValue = e.target.value.replace(/[^0-9]/g, '')
-                  setValue('price', newValue)
-                }}
                 placeholder="가격을 입력해주세요"
               />
               <FormItemInputDecorator>원</FormItemInputDecorator>
