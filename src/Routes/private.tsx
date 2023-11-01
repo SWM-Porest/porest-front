@@ -29,7 +29,7 @@ function PrivateRoute() {
     }
   }, [])
 
-  return accessToken ? <Outlet /> : <Navigate to={'/login'} />
+  return accessToken ? <Outlet /> : <Navigate to={'/restaurants'} />
 }
 
 export default PrivateRoute
