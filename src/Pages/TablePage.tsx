@@ -62,7 +62,7 @@ const TablePage = () => {
     <div>
       <Header
         Left={
-          <Icon>
+          <Icon onClick={() => navigate(`/restaurants/${id}`)}>
             <Chevron width="2rem" height="2rem" fill="#212121" />
           </Icon>
         }
