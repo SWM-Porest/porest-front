@@ -220,7 +220,7 @@ const CreateOrUpdateMenuPage = () => {
     setValue(`menuOptions.${moIdx}.items`, items)
     setOptions((prev) => {
       const newOptions = [...prev]
-      newOptions[iIdx].items = items
+      newOptions[moIdx].items = items
       return newOptions
     })
   }
