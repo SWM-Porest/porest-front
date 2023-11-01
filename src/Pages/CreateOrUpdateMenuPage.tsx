@@ -101,6 +101,16 @@ const CreateOrUpdateMenuPage = () => {
       data.price = Number(data.price)
     }
 
+    if (data.menuOptions) {
+      data.menuOptions.forEach((option: MenuOption) => {
+        if (option.items) {
+          option.items.forEach((item: any) => {
+            item.price = Number(item.price)
+          })
+        }
+      })
+    }
+
     if (data._id !== undefined) {
       const res = await axios.patch(`${process.env.REACT_APP_API_URL}/restaurants/${id}/menus/`, data, {
         headers: {
@@ -210,7 +220,7 @@ const CreateOrUpdateMenuPage = () => {
     setValue(`menuOptions.${moIdx}.items`, items)
     setOptions((prev) => {
       const newOptions = [...prev]
-      newOptions[iIdx].items = items
+      newOptions[moIdx].items = items
       return newOptions
     })
   }
@@ -319,6 +329,7 @@ const CreateOrUpdateMenuPage = () => {
             <FormInputContainer>
               <FormInputInContainer
                 type="number"
+                onWheel={(e) => (e.target as HTMLInputElement).blur()}
                 {...register('price', {
                   required: true,
                   pattern: /^[0-9]*$/,
@@ -418,6 +429,7 @@ const CreateOrUpdateMenuPage = () => {
                                     <OptionItemPrice>
                                       <TransparantInput
                                         type="number"
+                                        onWheel={(e) => (e.target as HTMLInputElement).blur()}
                                         {...register(`menuOptions.${moIdx}.items.${iIdx}.price`, {
                                           required: true,
                                         })}
