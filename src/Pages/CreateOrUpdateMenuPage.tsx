@@ -11,6 +11,7 @@ import {
   SubtractCircle20Filled,
 } from '@fluentui/react-icons'
 import { MenuOption } from 'Api/OrderInterface'
+import { useAccessToken } from 'Api/tokenCookie'
 import {
   FormInputContainer,
   FormInputInContainer,
@@ -27,9 +28,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { styled } from 'styled-components'
-import { v4 as uuidv4 } from 'uuid'
 import ErrorPage from './ErrorPage'
-import { useAccessToken } from 'Api/tokenCookie'
 
 const CreateOrUpdateMenuPage = () => {
   const { id } = useParams()
@@ -172,7 +171,7 @@ const CreateOrUpdateMenuPage = () => {
     const option: MenuOption = {
       name: `${opt.length + 1}번 옵션`,
       items: [],
-      _id: null,
+      _id: '',
       isSoldOut: false,
       maxSelect: 0,
       isRequired: false,
