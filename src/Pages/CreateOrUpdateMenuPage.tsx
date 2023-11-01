@@ -101,6 +101,16 @@ const CreateOrUpdateMenuPage = () => {
       data.price = Number(data.price)
     }
 
+    if (data.menuOptions) {
+      data.menuOptions.forEach((option: MenuOption) => {
+        if (option.items) {
+          option.items.forEach((item: any) => {
+            item.price = Number(item.price)
+          })
+        }
+      })
+    }
+
     if (data._id !== undefined) {
       const res = await axios.patch(`${process.env.REACT_APP_API_URL}/restaurants/${id}/menus/`, data, {
         headers: {
