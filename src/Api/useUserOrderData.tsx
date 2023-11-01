@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useQuery } from 'react-query'
 
 // 사용자 데이터를 가져오는 함수
-const fetchUserData = async (page: number, pageSize: number, sort: number, accessToken: string) => {
+const fetchUserOrderData = async (page: number, pageSize: number, sort: number, accessToken: string) => {
   const response = await axios.get(
     `${process.env.REACT_APP_API_URL}/orders/user?page=${page}&pageSize=${pageSize}&sort=${sort}`,
     {
@@ -16,7 +16,7 @@ const fetchUserData = async (page: number, pageSize: number, sort: number, acces
 }
 
 const useUserOrderData = (page: number, pageSize: number, sort: number, accessToken: string) => {
-  return useQuery(['userData', page, pageSize, sort], () => fetchUserData(page, pageSize, sort, accessToken), {
+  return useQuery(['userData', page, pageSize, sort], () => fetchUserOrderData(page, pageSize, sort, accessToken), {
     staleTime: 60000,
     retry: 3,
     retryDelay: 1000,

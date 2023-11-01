@@ -1,17 +1,39 @@
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { getCookie, removeAllCookie } from 'Api/cartCookie'
+import { getTableNumberCookie } from 'Api/tableCookie'
+import { useAccessToken } from 'Api/tokenCookie'
 import CartPrice from 'Component/CartComponent/CartPrice'
 import Header from 'Component/Header'
 import { useCartModal } from 'Context/CartModalContext'
+import { useRestaurantState } from 'Context/restaurantContext'
+import { ReactComponent as Chevron } from 'assets/Chevron.svg'
 import React, { useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { styled } from 'styled-components'
+interface OwnProps {
+  isOpen: boolean
+}
+const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
+  const { data: restaurant } = useRestaurantState().restaurant
+  const cookie = getCookie(restaurant?._id as string) || {}
+  const { isModalOpen, closeModal } = useCartModal()
+  const [accessToken] = useAccessToken()
 
-const CartModal: React.FC = () => {
-  const showAlert = () => {
-    alert(`현재 준비중인 기능입니다.\n직원을 호출해주세요.`)
+  const { id } = useParams()
+  const navigate = useNavigate()
+  const getTableFromCookie = () => {
+    const tableCookie = getTableNumberCookie()
+    return tableCookie || ''
   }
 
-  const { isModalOpen, closeModal } = useCartModal()
+  const table = getTableFromCookie()
+
+  if (isOpen) {
+    document.body.style.overflow = 'hidden'
+  } else {
+    document.body.style.overflow = 'auto'
+  }
+
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && isModalOpen) {
@@ -28,59 +50,132 @@ const CartModal: React.FC = () => {
     }
   }, [isModalOpen, closeModal])
 
-  const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    // 배경 클릭 시 모달 닫기
-    if (event.target === event.currentTarget) {
-      closeModal()
+  const handleOrder = async () => {
+    const menus = cookie // 카트의 메뉴
+    if (!accessToken) {
+      console.log('AccessToken이 없습니다. 로그인 페이지로 이동합니다.')
+      showMessage('로그인을 진행해주세요.', 1500, '/img/close.png')
+      navigate('/login')
+      return
+    }
+
+    if (Object.keys(menus).length === 0) {
+      console.log('주문할 메뉴가 없습니다.')
+      showMessage('주문할 메뉴가 없습니다.\n주문할 메뉴를 담아주세요.', 1500, '/img/close.png')
+      return
+    }
+    if (!table) {
+      console.log('테이블 번호가 없습니다.')
+      navigate(`/restaurants/${id}/table`)
+      showMessage('테이블 번호를 입력해주세요.', 1500, '/img/close.png')
+      return
+    }
+    try {
+      Notification.requestPermission().then((permission) => {
+        if (permission == 'denied') {
+          createOrder(null)
+        } else if (navigator.serviceWorker) {
+          navigator.serviceWorker
+            .register('../service-worker.js', { scope: '/' })
+            .then((registration) => {
+              const subscribeOptions = {
+                userVisibleOnly: true,
+                applicationServerKey: process.env.REACT_APP_PUBLIC_VAPID_KEY,
+              }
+              return registration.pushManager.subscribe(subscribeOptions)
+            })
+            .then(async (pushSubscription) => {
+              createOrder(pushSubscription)
+            })
+        }
+      })
+    } catch (error) {
+      console.error('주문 생성 중 오류 발생:', error)
+    }
+  }
+  const createOrder = async (pushSubscription: PushSubscription | null) => {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/orders`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        restaurant_id: restaurant?._id,
+        restaurant_name: restaurant?.name,
+        restaurant_address: restaurant?.address,
+        table_id: table,
+        menus: cookie,
+        token: pushSubscription,
+      }),
+    })
+
+    if (response.ok) {
+      console.log('주문 생성에 성공했습니다.')
+      handleRemoveMenu()
+      showMessage('주문이 완료되었습니다.\n접수 확인을 기다려주십시오.', 1500, '/img/check.png')
+      response.json().then((data) => {
+        navigate(`/orderlist?orderId=${data._id}`)
+      })
+    } else {
+      console.error('주문 생성에 실패했습니다.')
     }
   }
 
-  const handleContentClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    // 모달 내부(ModalContent) 클릭 시 모달 닫기 방지
-    event.stopPropagation()
+  const handleRemoveMenu = () => {
+    removeAllCookie(restaurant?._id as string)
   }
+
   return (
-    <ModalOverlay className={isModalOpen ? 'open' : ''} onClick={handleOverlayClick}>
-      <ModalContent onClick={handleContentClick}>
+    <ModalContainer>
+      <ModalView $load={isOpen} onClick={(e) => e.stopPropagation()}>
         {/* 모달 내용 */}
         <Header
-          HeaderName="주문서"
-          Right={
-            <CloseButtonContainer>
-              <CloseButton icon={faXmark} onClick={closeModal} size="2xl" />
-            </CloseButtonContainer>
+          Left={
+            <Icon onClick={closeModal}>
+              <Chevron width="2rem" height="2rem" fill="#212121" />
+            </Icon>
           }
-        ></Header>
+          HeaderName="주문서"
+          Right={<Icon onClick={handleRemoveMenu}>전체삭제</Icon>}
+        />
         <CartPrice />
-        <div style={{ display: 'flex' }}>
-          <StyledButton onClick={showAlert}>주문하기</StyledButton>
-        </div>
-      </ModalContent>
-    </ModalOverlay>
+        <ButtonContainer style={{ display: 'flex' }}>
+          <StyledButton
+            onClick={() => {
+              handleOrder()
+            }}
+          >
+            주문하기
+          </StyledButton>
+        </ButtonContainer>
+      </ModalView>
+    </ModalContainer>
   )
 }
 
 export default CartModal
-
-const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+const ModalContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  height: 100%;
+  @media screen and (min-width: ${({ theme }) => theme.MEDIA.tablet}) {
+    width: ${({ theme }) => theme.MEDIA.mobile};
+  }
 `
 
-const ModalContent = styled.div`
-  background-color: #ffffff;
-  position: relative;
-  width: 100%;
+const ModalView = styled.div<{ $load: boolean }>`
+  z-index: 31;
+  position: fixed;
+  bottom: ${(props) => (props.$load ? '0' : '-100%')};
+  width: 100vw;
   height: 100%;
-  overflow: auto;
+  background-color: ${({ theme }) => theme.COLOR.common.white[0]};
+  transition: all 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  @media screen and (min-width: ${({ theme }) => theme.MEDIA.tablet}) {
+    width: ${({ theme }) => theme.MEDIA.mobile};
+  }
 `
 
 export const CloseButtonContainer = styled.div`
@@ -93,7 +188,7 @@ export const CloseButtonContainer = styled.div`
   align-items: center;
   transition: background 0.3s ease-in-out; /* hover 시 배경색 변경 애니메이션 */
   &:hover {
-    background: #1d9255; /* hover 시 색상 변경 */
+    background: ${({ theme }) => theme.COLOR.main}; /* hover 시 색상 변경 */
   }
 `
 export const CloseButton = styled(FontAwesomeIcon)`
@@ -101,26 +196,27 @@ export const CloseButton = styled(FontAwesomeIcon)`
   cursor: pointer;
   width: 54px;
   height: 54px;
-  color: #c5c9cc; /* 아이콘 색상 */
+  color: ${({ theme }) => theme.COLOR.common.gray[70]};
   display: flex;
   justify-content: center;
   align-items: center;
 `
 const StyledButton = styled.button`
   cursor: pointer;
-  font-size: ${({ theme }) => theme.FONT_SIZE.small};
-  font-weight: bold;
-  text-decoration: none;
+  font-size: ${({ theme }) => theme.FONT_SIZE.medium};
+  font-weight: 700;
+  font-style: normal;
   text-align: center;
+  text-decoration: none;
   background-color: ${({ theme }) => theme.COLOR.main};
-  color: ${({ theme }) => theme.COLOR.common.white};
+  color: ${({ theme }) => theme.COLOR.common.white[0]};
   padding: 20px;
   width: 90%;
   height: 100%;
   margin: auto;
   margin-bottom: 40pt;
   border-radius: 10pt;
-  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.3);
+  /* box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.3); */
   border: none;
   transition: 0.4s;
   &:hover {
@@ -128,3 +224,66 @@ const StyledButton = styled.button`
     transition: 0.4s;
   }
 `
+const Icon = styled.div`
+  display: flex;
+  padding: 1rem;
+  gap: 1rem;
+  border-radius: 2rem;
+  background: ${({ theme }) => theme.COLOR.common.white[0]};
+  cursor: pointer;
+`
+
+const ButtonContainer = styled.div`
+  background-color: ${({ theme }) => theme.COLOR.common.white[0]};
+`
+
+const showMessage = (messageText: string, duration: number, img: string) => {
+  const messageContainer = document.createElement('div')
+  messageContainer.style.zIndex = '9999'
+  messageContainer.style.display = 'flex'
+  messageContainer.style.alignItems = 'center'
+  messageContainer.style.width = '280px'
+  messageContainer.style.whiteSpace = 'pre-wrap'
+
+  const image = new Image()
+  image.src = img
+  image.style.width = '2rem'
+  image.style.height = '2rem'
+  image.style.marginRight = '1rem'
+
+  const textContainer = document.createElement('div')
+  textContainer.textContent = messageText
+  textContainer.style.fontSize = '1.8rem'
+  textContainer.style.fontWeight = '600'
+
+  messageContainer.appendChild(image)
+  messageContainer.appendChild(textContainer)
+
+  const containerStyle = messageContainer.style
+  containerStyle.position = 'fixed'
+  containerStyle.top = '2rem'
+  containerStyle.left = '50%'
+  containerStyle.transform = 'translateX(-50%)'
+  containerStyle.backgroundColor = '#fff'
+  containerStyle.color = '#333'
+  containerStyle.padding = '1rem 2.4rem'
+  containerStyle.borderRadius = '1rem'
+  containerStyle.opacity = '0'
+  containerStyle.transition = 'opacity 0.3s'
+
+  document.body.appendChild(messageContainer)
+
+  setTimeout(() => {
+    containerStyle.opacity = '1'
+  }, 100)
+
+  setTimeout(() => {
+    containerStyle.opacity = '0'
+    setTimeout(() => {
+      document.body.removeChild(messageContainer)
+    }, 300)
+  }, duration)
+  if (window.innerWidth >= 800) {
+    containerStyle.left = `calc(50% + ${430 / 2}px)`
+  }
+}

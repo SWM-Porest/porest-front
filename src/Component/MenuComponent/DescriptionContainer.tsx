@@ -3,70 +3,60 @@ interface OwnProps {
   title: string
   price: number
   description: string
-  img: string
 }
 
-const DescriptionContainer: React.FC<OwnProps> = ({ title, price, description, img }) => {
+const DescriptionContainer: React.FC<OwnProps> = ({ title, price, description }) => {
   return (
-    <div style={{ display: 'block', cursor: 'default' }}>
-      <DContainerImg>{img ? <StyledImage src={`${img}`} alt="메뉴 이미지" /> : <BackDiv></BackDiv>}</DContainerImg>
-      <DContainerDes>
-        <TitleBox>
-          <TitleInner>
-            <span>{title}</span>
-          </TitleInner>
-          <TitleInner>
-            <PriceSpan>{price.toLocaleString()}원</PriceSpan>
-          </TitleInner>
-          <TitleInner>
-            <DescriptionSpan>{description}</DescriptionSpan>
-          </TitleInner>
-        </TitleBox>
-      </DContainerDes>
+    <div style={{ cursor: 'default' }}>
+      <TitleContainer>
+        <Title>{title}</Title>
+        <Description>{description}</Description>
+      </TitleContainer>
+      <PriceContainer>
+        <PriceSpan>가격</PriceSpan>
+        <PriceSpan>{price.toLocaleString()}원</PriceSpan>
+      </PriceContainer>
     </div>
   )
 }
 
 export default DescriptionContainer
 
-const DContainerImg = styled.div`
-  position: relative;
-  z-index: 10;
-  margin: 0pt 0pt 24pt 0pt;
+const TitleContainer = styled.div`
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.8rem;
+  padding: 2rem;
 `
-const DContainerDes = styled.div`
-  position: relative;
-  bottom: 56pt;
-`
-const TitleBox = styled.div`
-  position: relative;
-  padding: 32pt 32pt 24pt;
-  border-radius: 16pt;
-  background: #fff;
-  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.15);
-  width: 90%;
-  margin: auto;
-  z-index: 20;
-`
-const TitleInner = styled.div`
-  width: 90%;
-  margin: auto;
-  padding: 0;
-  font-size: 3.5rem;
-  font-weight: bold;
-`
-const PriceSpan = styled.span`
-  color: ${({ theme }) => theme.COLOR.number_price};
-`
-const StyledImage = styled.img`
-  width: 100%;
-`
-const DescriptionSpan = styled.p`
+const Title = styled.h2`
+  color: ${({ theme }) => theme.COLOR.common.gray[10]};
   margin: 0;
-  color: ${({ theme }) => theme.COLOR.common.gray[400]};
-  font-size: 2rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 2.8rem;
 `
-const BackDiv = styled.div`
-  background-color: #c4c4c4;
-  height: 128pt;
+
+const Description = styled.h4`
+  color: ${({ theme }) => theme.COLOR.common.gray[40]};
+  margin: 0;
+  font-size: 1.4rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 2rem;
+`
+
+const PriceContainer = styled.div`
+  display: flex;
+  padding: 2rem;
+  justify-content: space-between;
+  align-items: flex-start;
+`
+
+const PriceSpan = styled.h3`
+  color: ${({ theme }) => theme.COLOR.common.gray[10]};
+  margin: 0;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 2.4rem;
 `

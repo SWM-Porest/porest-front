@@ -1,36 +1,28 @@
+import { Order, OrderMenu } from 'Api/OrderInterface'
 import { useAccessToken } from 'Api/tokenCookie'
 import useUserData from 'Api/useUserData'
 import useUserOrderData from 'Api/useUserOrderData'
 import OrderModal from 'Component/Modal/OrderModal'
-import getImageSrc from 'Component/getImageSrc'
-import { Image } from 'Context/restaurantContext'
-import { Table } from 'antd'
-import { useState } from 'react'
+import { getTimeDiff } from 'Pages/EditWaitingPage'
+import getImageSrc from 'Utils/getImageSrc'
+import { ReactComponent as ChevronR } from 'assets/ChevronR.svg'
+import dayjs from 'dayjs'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-interface Menu {
-  menu_name: string
-  price: number
-  quantity: number
-  img: Image
-}
 
-interface Order {
-  restaurant_id: number
-  restaurant_name: string
-  updated_at: string
-  _id: string
-  menus: Menu[]
-  status: number
-}
+import { Pagination, Select, Table } from 'antd'
+const { Option } = Select
 
 const OrderList = () => {
-  const page = 1 // page 변수 정의
-  const pageSize = 10 // pageSize 변수 정의
-  const sort = 0 // sort 변수 정의
-
   const [accessToken, setAccessToken] = useAccessToken()
   const [orderId, setOrderId] = useState('')
   const [isOpen, setIsOpen] = useState(false)
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
+  const [sort, setSort] = useState(1)
+
+  const queryparams = new URLSearchParams(location.search)
+  const defaultOrderId = queryparams.get('orderId')
 
   const { data: userOrderData, isLoading, isError } = useUserOrderData(page, pageSize, sort, accessToken)
   const { data: userData } = useUserData(accessToken)
@@ -40,9 +32,22 @@ const OrderList = () => {
     setIsOpen(!isOpen)
   }
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
+  useEffect(() => {
+    if (defaultOrderId) {
+      openModalHandler(defaultOrderId)
+    }
+  }, [])
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage)
+  }
+
+  const handlePageSizeChange = (newSize: number) => {
+    setPageSize(newSize)
+    setPage(1)
+  }
+  const handleSortChange = (newSort: number) => {
+    setSort(newSort)
   }
 
   if (isLoading) {
@@ -56,62 +61,44 @@ const OrderList = () => {
   if (!userData || !userOrderData || !Array.isArray(userOrderData.orders)) {
     return <div>No orders found.</div>
   }
+  const totalPages = Math.ceil(userOrderData.totalCount / pageSize)
 
-  const restaurantOrders: Record<string, { name: string; count: number }> = {}
-  userOrderData.orders.forEach((order: Order) => {
-    const { restaurant_id, restaurant_name } = order
-    if (restaurant_id in restaurantOrders) {
-      restaurantOrders[restaurant_id].count++
-    } else {
-      restaurantOrders[restaurant_id] = {
-        name: restaurant_name,
-        count: 1,
-      }
-    }
-  })
-  const restaurantOrderDataSource = Object.keys(restaurantOrders).map((restaurant_id) => ({
-    key: restaurant_id,
-    restaurant: restaurantOrders[restaurant_id].name,
-    orderCount: restaurantOrders[restaurant_id].count,
-  }))
+  const calculateOrderTotal = (order: Order): number => {
+    return Object.values(order.menus).reduce((menuTotal: number, menu: OrderMenu) => {
+      let menuPrice = menu.price * menu.quantity
 
-  const restaurantOrderColumns = [
-    {
-      title: '레스토랑',
-      dataIndex: 'restaurant',
-      key: 'restaurant',
-    },
-    {
-      title: '주문 횟수',
-      dataIndex: 'orderCount',
-      key: 'orderCount',
-      render: (text: number) => <span>{text}회</span>,
-    },
-  ]
+      menu.options.forEach((option) => {
+        if (Array.isArray(option.items)) {
+          option.items.forEach((item) => {
+            menuPrice += item.price
+          })
+        }
+      })
 
-  const totalPrice = userOrderData.orders.reduce((total: number, order: Order) => {
-    if (typeof order.menus === 'object') {
-      const orderTotal = Object.values(order.menus).reduce((menuTotal, menu) => {
-        return menuTotal + menu.price * menu.quantity
-      }, 0)
-      return total + orderTotal
-    }
-    return total
-  }, 0)
-
+      return menuTotal + menuPrice
+    }, 0)
+  }
+  // const totalPrice = userOrderData.orders.reduce((total: number, order: Order) => total + calculateOrderTotal(order), 0)
+  console.log(userOrderData)
   return (
     <div>
       <div>
         {userData && userOrderData ? (
           <StyledContainer>
-            <StyledTitle>
-              {userData.nickname}님은 <ColoredText>{userOrderData.orders.length}</ColoredText>회 주문하셨고,
-            </StyledTitle>
-            <StyledTitle>
-              <ColoredText>{totalPrice.toLocaleString()}</ColoredText>원 결제하셨어요.
-            </StyledTitle>
-            <StyledTable columns={restaurantOrderColumns} dataSource={restaurantOrderDataSource} pagination={false} />
-
+            <Container>
+              <StyledTitle>
+                {userData.nickname}님은 <ColoredText>{userOrderData.totalCount}</ColoredText>회 주문하셨습니다.
+              </StyledTitle>
+              <Select value={pageSize} style={{ width: 120, marginRight: '1rem' }} onChange={handlePageSizeChange}>
+                <Option value={10}>10개씩 보기</Option>
+                <Option value={20}>20개씩 보기</Option>
+                <Option value={30}>30개씩 보기</Option>
+              </Select>
+              <Select value={sort} style={{ width: 120 }} onChange={handleSortChange}>
+                <Option value={0}>최신순</Option>
+                <Option value={1}>오래된 순</Option>
+              </Select>
+            </Container>
             {userOrderData.orders.map((order: Order) => (
               <div key={order._id}>
                 <OrderModal
@@ -121,50 +108,42 @@ const OrderList = () => {
                     openModalHandler(order._id)
                   }}
                 />
-                <OrderDetails>
-                  <MenuImageContainer>
+                <OrderDetails
+                  onClick={() => {
+                    openModalHandler(order._id)
+                  }}
+                >
+                  <InfoContainer>
                     {Object.values(order.menus)
                       .slice(0, 1)
-                      .map((menu: Menu, menuIndex: number) => (
+                      .map((menu, menuIndex) => (
                         <MenuImage key={menuIndex} src={getImageSrc(menu.img)} alt="메뉴 이미지" />
                       ))}
-                  </MenuImageContainer>
-                  <MenuDetailsContainer
-                    key={`menu_${order._id}`}
-                    onClick={() => {
-                      openModalHandler(order._id)
-                    }}
-                  >
-                    {Object.values(order.menus)
-                      .slice(0, 1)
-                      .map((menu: Menu, menuIndex: number) => (
-                        <MenuNameContainer key={menuIndex}>
-                          <div>
-                            {Object.values(order.menus).length > 1 ? (
-                              <div>
-                                {menu.menu_name} 외 {Object.values(order.menus).length - 1}개
-                              </div>
-                            ) : (
-                              <div> {menu.menu_name} </div>
-                            )}
-                          </div>
-                        </MenuNameContainer>
-                      ))}
-
-                    <MenuInfoContainer>
-                      <MenuDateContainer>{formatDate(order.updated_at)}</MenuDateContainer>
-
+                    <MenuDetailsContainer key={`menu_${order._id}`}>
+                      <MenuDateContainer>{getTimeDiff(dayjs(order.updated_at))}</MenuDateContainer>
+                      <RestaurantNameContainer>{order.restaurant_name}</RestaurantNameContainer>
                       <div>
-                        <RestaurantNameContainer>{order.restaurant_name}</RestaurantNameContainer>
-                        <ColoredText>
-                          {Object.values(order.menus)
-                            .reduce((menuTotal: number, menu: Menu) => menuTotal + menu.price * menu.quantity, 0)
-                            .toLocaleString()}
-                          원
-                        </ColoredText>
+                        {Object.values(order.menus)
+                          .slice(0, 1)
+                          .map((menu, menuIndex) => (
+                            <StyledSpan key={menuIndex}>
+                              {Object.values(order.menus).length > 1 ? (
+                                <span>
+                                  {menu.menu_name} 외 {Object.values(order.menus).length - 1}개{' '}
+                                  {calculateOrderTotal(order).toLocaleString()} 원
+                                </span>
+                              ) : (
+                                <span>
+                                  {' '}
+                                  {menu.menu_name} {calculateOrderTotal(order).toLocaleString()} 원
+                                </span>
+                              )}
+                            </StyledSpan>
+                          ))}
                       </div>
-                    </MenuInfoContainer>
-                  </MenuDetailsContainer>
+                    </MenuDetailsContainer>
+                  </InfoContainer>
+                  <ChevronR />
                 </OrderDetails>
               </div>
             ))}
@@ -175,6 +154,13 @@ const OrderList = () => {
           </StyledContainer>
         )}
       </div>
+      <StyledPagination
+        current={page}
+        total={userOrderData.totalCount}
+        pageSize={pageSize}
+        showSizeChanger={false}
+        onChange={handlePageChange}
+      />
     </div>
   )
 }
@@ -186,77 +172,77 @@ const StyledTitle = styled.div`
   font-weight: bold;
   margin-bottom: 8pt;
   cursor: default;
-  padding-left: 8pt;
 `
 
+const Container = styled.div`
+  padding: 24pt;
+`
 const StyledTable = styled(Table)`
-  margin-top: 24pt;
-  margin-bottom: 24pt;
-
-  th {
-    font-size: 2rem;
-  }
-
-  td.ant-table-cell {
-    font-size: 2rem;
-  }
+  cursor: default;
 `
 
-const StyledContainer = styled.div`
-  padding: 48pt;
-  border: 1px solid #ddd;
-  border-radius: 4pt;
-  box-shadow: 0 0 4pt rgba(0, 0, 0, 0.1);
-`
+const StyledContainer = styled.div``
 
 const OrderDetails = styled.div`
-  border: 1px solid #ddd;
+  border-top: 1px solid ${({ theme }) => theme.COLOR.common.gray[100]};
 
-  height: 160pt;
   display: flex;
-  padding: 24pt 48pt;
-  justify-content: space-between;
   cursor: pointer;
+
+  width: 100%;
+  padding: 2rem;
+  justify-content: space-between;
+  align-items: center;
 `
-const MenuImageContainer = styled.div`
-  position: relative;
-  width: 112pt;
-  padding-top: 112pt;
+const InfoContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 1.6rem;
 `
 
-const MenuDetailsContainer = styled.div`
-  padding-left: 24pt;
-  width: 80%;
-`
-const MenuNameContainer = styled.div`
-  font-size: 2rem;
-  font-weight: bold;
-  padding: 16pt 0;
-`
-
-const MenuDateContainer = styled.div`
-  color: ${({ theme }) => theme.COLOR.common.gray[400]};
-`
-
-const RestaurantNameContainer = styled.span`
-  padding-right: 8pt;
-`
 const ColoredText = styled.span`
   color: ${({ theme }) => theme.COLOR.main};
 `
 
-const MenuInfoContainer = styled.div`
-  display: flex;
-  padding: 8pt 0;
-  justify-content: space-between;
-  font-size: 1.8rem;
+const MenuImage = styled.img`
+  width: 6.2rem;
+  aspect-ratio: 1/1;
+  border-radius: 1.2rem;
+  border: 0.5px solid rgba(0, 0, 0, 0.04);
+  background: url(<path-to-image>), lightgray 50% / cover no-repeat;
 `
 
-const MenuImage = styled.img`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  border-radius: 50%;
+const MenuDetailsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+`
+
+const MenuDateContainer = styled.h5`
+  color: ${({ theme }) => theme.COLOR.common.gray[40]};
+  margin: 0;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.6rem;
+`
+const RestaurantNameContainer = styled.h4`
+  color: ${({ theme }) => theme.COLOR.common.gray[20]};
+  margin: 0;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 2rem;
+`
+
+const StyledSpan = styled.span`
+  color: ${({ theme }) => theme.COLOR.common.gray[30]};
+  font-size: 1.4rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.8rem;
+`
+const StyledPagination = styled(Pagination)`
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
 `

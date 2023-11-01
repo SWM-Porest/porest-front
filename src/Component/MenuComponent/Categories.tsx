@@ -7,37 +7,70 @@ const Categories = ({ ingre }: ingre) => {
   let ulelem
   if (ingre) {
     ulelem = ingre.map((elem: string) => {
-      return <Categoryli>{elem}</Categoryli>
+      return (
+        <LiContainer>
+          <CategoryLi>{elem}</CategoryLi>
+        </LiContainer>
+      )
     })
   }
 
   return (
-    <div style={{ cursor: 'default' }}>
-      <h2 style={{ fontSize: '2rem', margin: '16pt' }}>주요 재료</h2>
+    <Container style={{ cursor: 'default' }}>
+      <CategoryContainer>
+        <Category style={{ margin: 0 }}>주요 재료</Category>
+      </CategoryContainer>
       <Categoryul>{ulelem}</Categoryul>
-    </div>
+    </Container>
   )
 }
 
 export default Categories
 
-const Categoryul = styled.ul`
-  margin: 8pt;
-  display: flex;
-  padding: 0;
+const Container = styled.div`
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 `
 
-const Categoryli = styled.li`
-  display: inline;
-  font-size: 2rem;
-  font-weight: bold;
-  border-radius: 14.5px;
-  color: #fff;
-  position: realtive;
-  padding: 8pt 16pt;
-  margin: 8pt;
-  letter-spacing: -0.3px;
-  text-align: center;
-  background-color: #424242;
-  box-shadow: 0 3px 9px 0 rgba(0, 0, 0, 0.4);
+const CategoryContainer = styled.div`
+  display: flex;
+  width: 100%;
+  padding: 2rem;
+  justify-content: space-between;
+  align-items: flex-start;
+`
+const Category = styled.h3`
+  color: ${({ theme }) => theme.COLOR.common.gray[20]};
+  margin: 0;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 2.4rem;
+`
+const Categoryul = styled.div`
+  width: 100%;
+  display: flex;
+  padding-bottom: 0;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  padding: 0 2rem;
+`
+const LiContainer = styled.div`
+  display: flex;
+  padding: 0.6rem 1.2rem;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  border-radius: 1.5rem;
+  background: ${({ theme }) => theme.COLOR.common.gray[120]};
+`
+const CategoryLi = styled.li`
+  color: ${({ theme }) => theme.COLOR.common.gray[30]};
+  font-size: 1.4rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.8rem;
 `
