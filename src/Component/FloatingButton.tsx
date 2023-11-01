@@ -87,7 +87,10 @@ const FloatingButton: React.FC<OwnProps> = ({ info }) => {
 
       if (response.ok) {
         setIsOrderModalVisible(false)
-        navigate(`/orderlist`)
+        showMessage('주문이 완료되었습니다.\n접수 확인을 기다려주십시오.', 1500, '/img/check.png')
+        response.json().then((data) => {
+          navigate(`/orderlist?orderId=${data._id}`)
+        })
       } else {
         console.error('주문 생성에 실패했습니다.')
       }
@@ -218,3 +221,54 @@ const StyledBadge = styled(Badge)`
     border-radius: 50%;
   }
 `
+
+const showMessage = (messageText: string, duration: number, img: string) => {
+  const messageContainer = document.createElement('div')
+  messageContainer.style.zIndex = '9999'
+  messageContainer.style.display = 'flex'
+  messageContainer.style.alignItems = 'center'
+  messageContainer.style.width = '280px'
+  messageContainer.style.whiteSpace = 'pre-wrap'
+
+  const image = new Image()
+  image.src = img
+  image.style.width = '2rem'
+  image.style.height = '2rem'
+  image.style.marginRight = '1rem'
+
+  const textContainer = document.createElement('div')
+  textContainer.textContent = messageText
+  textContainer.style.fontSize = '1.8rem'
+  textContainer.style.fontWeight = '600'
+
+  messageContainer.appendChild(image)
+  messageContainer.appendChild(textContainer)
+
+  const containerStyle = messageContainer.style
+  containerStyle.position = 'fixed'
+  containerStyle.top = '2rem'
+  containerStyle.left = '50%'
+  containerStyle.transform = 'translateX(-50%)'
+  containerStyle.backgroundColor = '#fff'
+  containerStyle.color = '#333'
+  containerStyle.padding = '1rem 2.4rem'
+  containerStyle.borderRadius = '1rem'
+  containerStyle.opacity = '0'
+  containerStyle.transition = 'opacity 0.3s'
+
+  document.body.appendChild(messageContainer)
+
+  setTimeout(() => {
+    containerStyle.opacity = '1'
+  }, 100)
+
+  setTimeout(() => {
+    containerStyle.opacity = '0'
+    setTimeout(() => {
+      document.body.removeChild(messageContainer)
+    }, 300)
+  }, duration)
+  if (window.innerWidth >= 800) {
+    containerStyle.left = `calc(50% + ${430 / 2}px)`
+  }
+}
