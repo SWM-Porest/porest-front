@@ -16,7 +16,6 @@ function PrivateRoute() {
             await axios(`${process.env.REACT_APP_API_URL}/auth/refresh-accesstoken`, {
               method: 'GET',
             })
-            window.location.reload()
           } catch (error) {
             console.log(error)
             navigate('/login')
