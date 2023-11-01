@@ -42,7 +42,6 @@ export const Step1 = ({ nextPage, data }: any) => {
 }
 
 export const Step2 = ({ data, restaurant, onSubmit, team }: any) => {
-  console.log(data)
   // 데이터 확인 및 제출 로직 넣어야 함.
   return (
     <Container>

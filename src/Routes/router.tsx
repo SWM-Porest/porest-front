@@ -53,7 +53,7 @@ const router = createBrowserRouter([
             element: <EditRestaurantPage />,
           },
           {
-            path: '/restaurants/:restaurant_id/waitings',
+            path: '/waitings/:restaurant_id',
             element: <WaitingPage />,
           },
           {

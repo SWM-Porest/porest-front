@@ -1,6 +1,5 @@
 import { getWaiting, getWaitingTeam } from 'Api/getWaiting'
 import { useAccessToken } from 'Api/tokenCookie'
-import fetchWaitingRegistration from 'Api/waitingRegistration'
 import Header from 'Component/Header'
 import { getRestaurant, useRestaurantDispatch, useRestaurantState } from 'Context/restaurantContext'
 import { useEffect, useState } from 'react'
@@ -9,6 +8,8 @@ import { StyledSpin } from './MenuBoardPage'
 import { FullPageDiv, RotateButton, Step1, Step2, Step3 } from 'Component/WaitingComponent/HeadCountForm'
 import { fetchWaitingCancel } from 'Api/updateWaiting'
 import { ReactComponent as Chevron } from 'assets/Chevron.svg'
+import { Waiting, fetchWaitingRegistration } from 'Api/waitingRegistration'
+import axios from 'axios'
 
 enum StepNumber {
   SelectHeadCounter = 1,
@@ -42,12 +43,47 @@ const WaitingPage = () => {
   }
 
   const onSubmit = async () => {
+    const waitingRegistration = async (pushSubscription: PushSubscription | null): Promise<Waiting> => {
+      const body = { ...data, token: pushSubscription }
+      const response = await axios({
+        method: 'POST',
+        url: `${process.env.REACT_APP_API_URL}/waitings`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        data: body,
+      })
+      console.log(response)
+      return response.data
+    }
+
     try {
-      const waiting = await fetchWaitingRegistration(data, accessToken)
-      setData({ ...waiting })
-      setStepNumber(StepNumber.WaitingData)
-    } catch (err) {
-      window.location.reload()
+      Notification.requestPermission().then((permission) => {
+        if (permission == 'denied') {
+          return waitingRegistration(null)
+        } else if (navigator.serviceWorker) {
+          navigator.serviceWorker
+            .register(`../service-worker.js`, { scope: '/' })
+            .then((registration) => {
+              const subscribeOptions = {
+                userVisibleOnly: true,
+                applicationServerKey: process.env.REACT_APP_PUBLIC_VAPID_KEY,
+              }
+              return registration.pushManager.subscribe(subscribeOptions)
+            })
+            .then(async (pushSubscription) => {
+              const response = await waitingRegistration(pushSubscription)
+              setData({ ...response })
+              setStepNumber(StepNumber.WaitingData)
+            })
+            .catch((err) => {
+              console.log(err)
+            })
+        }
+      })
+    } catch (error) {
+      // 오류 처리 로직 추가
+      console.error('오류 발생:', error)
     }
   }
 
@@ -75,7 +111,7 @@ const WaitingPage = () => {
     )
   }
 
-  if (waiting && waitingTeam && stepNumber !== StepNumber.WaitingData) {
+  if (waiting && waiting.status < 3 && waitingTeam && stepNumber !== StepNumber.WaitingData) {
     setData({ ...waiting })
     setStepNumber(StepNumber.WaitingData)
   }
