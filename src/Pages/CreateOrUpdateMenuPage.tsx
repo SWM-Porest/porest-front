@@ -97,6 +97,10 @@ const CreateOrUpdateMenuPage = () => {
   }
 
   const submitMenuForm = async (data: any) => {
+    if (data.price) {
+      data.price = Number(data.price)
+    }
+
     if (data._id !== undefined) {
       const res = await axios.patch(`${process.env.REACT_APP_API_URL}/restaurants/${id}/menus/`, data, {
         headers: {
@@ -177,7 +181,7 @@ const CreateOrUpdateMenuPage = () => {
   }
 
   const addOptionItem = (index: number) => {
-    const option = options[index]
+    const option = getValues(`menuOptions.${index}`)
 
     const item = {
       name: `${option.items.length + 1}번 사이드`,
@@ -227,7 +231,7 @@ const CreateOrUpdateMenuPage = () => {
   const deleteMenu = async (menuId: string) => {
     const res = await axios.delete(`${process.env.REACT_APP_API_URL}/restaurants/${id}/menus/${menuId}`, {
       headers: {
-        Authorization: `Bearer ${useAccessToken()}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     })
 
@@ -319,11 +323,6 @@ const CreateOrUpdateMenuPage = () => {
                   required: true,
                   pattern: /^[0-9]*$/,
                 })}
-                value={getValues('price')}
-                onChange={(e) => {
-                  const newValue = e.target.value.replace(/[^0-9]/g, '')
-                  setValue('price', newValue)
-                }}
                 placeholder="가격을 입력해주세요"
               />
               <FormItemInputDecorator>원</FormItemInputDecorator>
@@ -351,7 +350,7 @@ const CreateOrUpdateMenuPage = () => {
             <IngreList>
               {ingreInputValues.map((ingre: string, index: number) => {
                 return (
-                  <IngreContainer key={uuidv4()}>
+                  <IngreContainer key={`key-ingre-${Number}`}>
                     <RedSubtractCircle20Filled
                       onClick={() => {
                         removeIngre(index)
@@ -375,7 +374,7 @@ const CreateOrUpdateMenuPage = () => {
               <OptionList>
                 {options.map((option: MenuOption, moIdx: number) => {
                   return (
-                    <OptionContainer key={uuidv4()}>
+                    <OptionContainer key={`key-option-${moIdx}`}>
                       <OptionHeader>
                         <OptionHeaderFront>
                           <RedSubtractCircle20Filled onClick={() => removeOption(moIdx)} />
@@ -403,7 +402,7 @@ const CreateOrUpdateMenuPage = () => {
                         {option.items &&
                           option.items.map((item, iIdx) => {
                             return (
-                              <OptionItem key={uuidv4()} $index={iIdx}>
+                              <OptionItem key={`key-optionItem-${iIdx}`} $index={iIdx}>
                                 <OptionItemLeft>
                                   <RedSubtractCircle20Filled onClick={() => removeOptionItem(iIdx, moIdx)} />
                                   <OptionItemContent>
