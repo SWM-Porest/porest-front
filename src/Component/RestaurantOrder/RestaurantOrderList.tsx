@@ -1,15 +1,17 @@
+import { CheckCircleOutlined, ClockCircleOutlined, MinusCircleOutlined, SyncOutlined } from '@ant-design/icons'
+import { Order } from 'Api/OrderInterface'
 import { orderService } from 'Api/orderService'
 import { useAccessToken } from 'Api/tokenCookie'
 import Loading from 'Component/Loading'
+import { getTimeDiff } from 'Pages/EditWaitingPage'
 import ErrorPage from 'Pages/ErrorPage'
+import { onOrder } from 'Socket/socketio'
 import { Button, List, Space, Tabs, TabsProps, Tag, message } from 'antd'
+import dayjs from 'dayjs'
+import { useEffect } from 'react'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useParams } from 'react-router-dom'
 import { styled } from 'styled-components'
-import { CheckCircleOutlined, ClockCircleOutlined, MinusCircleOutlined, SyncOutlined } from '@ant-design/icons'
-import { onOrder } from 'Socket/socketio'
-import { useEffect } from 'react'
-import { Order } from 'Api/OrderInterface'
 
 const RestaurantOrderList = () => {
   const { id } = useParams()
@@ -164,7 +166,7 @@ const RestaurantOrderList = () => {
                   {Object.values(item.menus)[0].menu_name} 외 {Object.values(item.menus).length - 1}개
                 </Space>
               }
-              description={formatDate(item.created_at.toString())}
+              description={getTimeDiff(dayjs(item.created_at))}
             ></List.Item.Meta>
 
             <List

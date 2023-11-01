@@ -3,9 +3,11 @@ import { useAccessToken } from 'Api/tokenCookie'
 import useUserData from 'Api/useUserData'
 import useUserOrderData from 'Api/useUserOrderData'
 import OrderModal from 'Component/Modal/OrderModal'
+import { getTimeDiff } from 'Pages/EditWaitingPage'
 import getImageSrc from 'Utils/getImageSrc'
 import { Table } from 'antd'
 import { ReactComponent as ChevronR } from 'assets/ChevronR.svg'
+import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
@@ -136,7 +138,7 @@ const OrderList = () => {
                         <MenuImage key={menuIndex} src={getImageSrc(menu.img)} alt="메뉴 이미지" />
                       ))}
                     <MenuDetailsContainer key={`menu_${order._id}`}>
-                      <MenuDateContainer>{formatDate(order.updated_at)}</MenuDateContainer>
+                      <MenuDateContainer>{getTimeDiff(dayjs(order.updated_at))}</MenuDateContainer>
                       <RestaurantNameContainer>{order.restaurant_name}</RestaurantNameContainer>
                       <div>
                         {Object.values(order.menus)
