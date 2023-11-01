@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRightRotate, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import NowWaitingBox from './NowWaitingBox'
 import { StyledButton } from 'Component/MenuComponent/AddCart'
 import AmountCheck from 'Utils/AmountCheck'
+import axios from 'axios'
 
 export const Step1 = ({ nextPage, data }: any) => {
   const [formData, setFormData] = useState(data)
@@ -49,7 +50,7 @@ export const Step2 = ({ data, restaurant, onSubmit, team }: any) => {
         <h2 style={{ flex: '1', margin: '0 20px' }}>{restaurant.name}에</h2>
         <h2 style={{ flex: '1', margin: '0 20px' }}>웨이팅 등록하시겠어요?</h2>
       </div>
-      <NowWaitingBox team={team} head_count={data.head_count}></NowWaitingBox>
+      <NowWaitingBox team={team} head_count={data.head_count} stand={0}></NowWaitingBox>
       <ButtonContainer>
         <StyledNextButton onClick={onSubmit}>웨이팅 등록하기</StyledNextButton>
       </ButtonContainer>
@@ -57,12 +58,25 @@ export const Step2 = ({ data, restaurant, onSubmit, team }: any) => {
   )
 }
 
-export const Step3 = ({ data, cancel, team }: any) => {
-  console.log(data)
-  console.log(team)
+export const Step3 = ({ data, cancel, team, accessToken }: any) => {
+  const [standData, setStandData] = useState<number>(0)
+  useEffect(() => {
+    const getStandData = async () => {
+      await axios({
+        method: 'GET',
+        url: `${process.env.REACT_APP_API_URL}/waitings/${data.restaurant_id}/team/${data._id}`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }).then((res) => {
+        setStandData(res.data)
+      })
+    }
+    getStandData()
+  }, [])
   return (
     <Container>
-      <NowWaitingBox team={team} head_count={data.head_count}></NowWaitingBox>
+      <NowWaitingBox team={team} head_count={data.head_count} stand={standData}></NowWaitingBox>
       <ButtonContainer>
         <StyledRedButton onClick={() => cancel(data._id)}>웨이팅 취소하기</StyledRedButton>
       </ButtonContainer>
@@ -74,6 +88,17 @@ export const PreviousButton = ({ prevPage }: any) => {
   return (
     <PrevButton onClick={prevPage}>
       <FontAwesomeIcon icon={faChevronLeft} />
+    </PrevButton>
+  )
+}
+
+export const RotateButton = () => {
+  const refresh = () => {
+    window.location.reload()
+  }
+  return (
+    <PrevButton onClick={refresh}>
+      <FontAwesomeIcon width="2rem" height="2rem" icon={faArrowRightRotate} />
     </PrevButton>
   )
 }
@@ -92,6 +117,7 @@ const PrevButton = styled.button`
   border: none;
   font-size: 24pt;
   cursor: pointer;
+  margin-right: 5px;
 `
 const ButtonContainer = styled.div`
   @media screen and (min-width: 800px) {

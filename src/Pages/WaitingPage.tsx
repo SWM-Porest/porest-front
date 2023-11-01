@@ -6,8 +6,9 @@ import { getRestaurant, useRestaurantDispatch, useRestaurantState } from 'Contex
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { StyledSpin } from './MenuBoardPage'
-import { FullPageDiv, PreviousButton, Step1, Step2, Step3 } from 'Component/WaitingComponent/HeadCountForm'
+import { FullPageDiv, RotateButton, Step1, Step2, Step3 } from 'Component/WaitingComponent/HeadCountForm'
 import { fetchWaitingCancel } from 'Api/updateWaiting'
+import { ReactComponent as Chevron } from 'assets/Chevron.svg'
 
 enum StepNumber {
   SelectHeadCounter = 1,
@@ -63,7 +64,7 @@ const WaitingPage = () => {
         console.log('취소 안함')
       }
     } catch (err) {
-      window.location.reload()
+      alert('취소 중 오류가 발생했습니다.')
     }
   }
   if (loading && isLoading && isLoading2) {
@@ -82,15 +83,20 @@ const WaitingPage = () => {
   return (
     <FullPageDiv>
       <Header
-        Left={stepNumber === StepNumber.RegisterWaiting && <PreviousButton prevPage={prevPage} />}
+        Left={
+          stepNumber === StepNumber.RegisterWaiting && (
+            <Chevron width="2rem" height="2rem" fill="#212121" onClick={prevPage} />
+          )
+        }
         HeaderName={headerNames[stepNumber]}
+        Right={stepNumber === StepNumber.WaitingData && <RotateButton />}
       />
       {stepNumber === StepNumber.SelectHeadCounter && <Step1 nextPage={nextPage} data={data} />}
       {stepNumber === StepNumber.RegisterWaiting && (
         <Step2 data={data} restaurant={restaurant} team={waitingTeam.waiting_teams} onSubmit={onSubmit} />
       )}
       {stepNumber === StepNumber.WaitingData && (
-        <Step3 data={data} cancel={cancelWaiting} team={waitingTeam.waiting_teams} />
+        <Step3 data={data} cancel={cancelWaiting} team={waitingTeam.waiting_teams} accessToken={accessToken} />
       )}
     </FullPageDiv>
   )
