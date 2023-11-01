@@ -26,10 +26,6 @@ const MyPage = () => {
     navigate('/orderlist')
   }
 
-  const handleHomeClick = () => {
-    navigate('/restaurants')
-  }
-
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/restaurants`)
@@ -88,7 +84,7 @@ const MyPage = () => {
       <NavContainer>
         <Navbar
           Icon={{
-            홈: <Home width="2.4rem" height="2.4rem" fill="#BBBBBB" onClick={handleHomeClick} />,
+            홈: <Home width="2.4rem" height="2.4rem" fill="#BBBBBB" />,
             '': <></>,
             마이: <Person width="2.4rem" height="2.4rem" fill="#3FBA73" />,
           }}

@@ -5,18 +5,13 @@ import { ReactComponent as Home } from 'assets/Home.svg'
 import { ReactComponent as Person } from 'assets/Person.svg'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 const RestaurantListPage = () => {
   const [restaurants, setRestaurants] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const navigate = useNavigate()
-
-  const handlePersonClick = () => {
-    navigate('/mypage')
-  }
 
   useEffect(() => {
     axios
@@ -75,7 +70,7 @@ const RestaurantListPage = () => {
           Icon={{
             홈: <Home width="2.4rem" height="2.4rem" fill="#3FBA73" />,
             '': <></>,
-            마이: <Person width="2.4rem" height="2.4rem" fill="#BBBBBB" onClick={handlePersonClick} />,
+            마이: <Person width="2.4rem" height="2.4rem" fill="#BBBBBB" />,
           }}
           index={0}
         />
@@ -92,6 +87,8 @@ const RestaurantList = styled.ul`
   gap: 1.6rem;
   padding: 0 2rem;
   width: 100%;
+  overflow-y: auto;
+  max-height: calc(100vh - 6rem - 6rem);
 `
 
 const StyledImage = styled.img`

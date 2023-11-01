@@ -150,7 +150,7 @@ export default FloatingButton
 
 const FloatingButtonContainer = styled.div`
   position: fixed;
-  bottom: 3.6rem;
+  bottom: calc(3.6rem + 6rem);
   right: 3.6rem;
   display: inline-flex;
   flex-direction: column;

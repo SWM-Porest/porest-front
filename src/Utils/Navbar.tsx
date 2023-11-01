@@ -1,17 +1,30 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-
 interface HeaderProps {
   Icon?: { [key: string]: React.ReactNode }
   index: number
 }
 
 const Navbar: React.FC<HeaderProps> = ({ Icon, index }) => {
+  const navigate = useNavigate()
+
+  const handleHomeClick = () => {
+    navigate('/restaurants')
+  }
+
+  const handlePersonClick = () => {
+    navigate('/mypage')
+  }
+
   return (
     <StyledNavbar>
       {Icon &&
         Object.keys(Icon).map((propName, mapIndex) => (
-          <IconContainer key={mapIndex}>
+          <IconContainer
+            key={mapIndex}
+            onClick={propName === '홈' ? handleHomeClick : propName === '마이' ? handlePersonClick : undefined}
+          >
             {Icon[propName]}
             <Text style={{ color: mapIndex === index ? 'green' : 'black' }}>{propName}</Text>
           </IconContainer>
