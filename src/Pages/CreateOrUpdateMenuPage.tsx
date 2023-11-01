@@ -329,7 +329,6 @@ const CreateOrUpdateMenuPage = () => {
             <FormInputContainer>
               <FormInputInContainer
                 type="number"
-                onWheel={(e) => (e.target as HTMLInputElement).blur()}
                 {...register('price', {
                   required: true,
                   pattern: /^[0-9]*$/,
@@ -429,7 +428,6 @@ const CreateOrUpdateMenuPage = () => {
                                     <OptionItemPrice>
                                       <TransparantInput
                                         type="number"
-                                        onWheel={(e) => (e.target as HTMLInputElement).blur()}
                                         {...register(`menuOptions.${moIdx}.items.${iIdx}.price`, {
                                           required: true,
                                         })}

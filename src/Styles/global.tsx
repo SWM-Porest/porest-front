@@ -73,10 +73,4 @@ input, textarea, button {
 input:focus{
 	outline:none;
 }
-
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
-}
 `
