@@ -31,11 +31,6 @@ const OrderList = () => {
     setIsOpen(!isOpen)
   }
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
-  }
-
   useEffect(() => {
     if (defaultOrderId) {
       openModalHandler(defaultOrderId)
@@ -66,25 +61,25 @@ const OrderList = () => {
       }
     }
   })
-  const restaurantOrderDataSource = Object.keys(restaurantOrders).map((restaurant_id) => ({
-    key: restaurant_id,
-    restaurant: restaurantOrders[restaurant_id].name,
-    orderCount: restaurantOrders[restaurant_id].count,
-  }))
+  // const restaurantOrderDataSource = Object.keys(restaurantOrders).map((restaurant_id) => ({
+  //   key: restaurant_id,
+  //   restaurant: restaurantOrders[restaurant_id].name,
+  //   orderCount: restaurantOrders[restaurant_id].count,
+  // }))
 
-  const restaurantOrderColumns = [
-    {
-      title: '레스토랑',
-      dataIndex: 'restaurant',
-      key: 'restaurant',
-    },
-    {
-      title: '주문 횟수',
-      dataIndex: 'orderCount',
-      key: 'orderCount',
-      render: (text: number) => <span>{text}회</span>,
-    },
-  ]
+  // const restaurantOrderColumns = [
+  //   {
+  //     title: '레스토랑',
+  //     dataIndex: 'restaurant',
+  //     key: 'restaurant',
+  //   },
+  //   {
+  //     title: '주문 횟수',
+  //     dataIndex: 'orderCount',
+  //     key: 'orderCount',
+  //     render: (text: number) => <span>{text}회</span>,
+  //   },
+  // ]
 
   const calculateOrderTotal = (order: Order): number => {
     return Object.values(order.menus).reduce((menuTotal: number, menu: OrderMenu) => {
@@ -101,8 +96,8 @@ const OrderList = () => {
       return menuTotal + menuPrice
     }, 0)
   }
-  const totalPrice = userOrderData.orders.reduce((total: number, order: Order) => total + calculateOrderTotal(order), 0)
-
+  // const totalPrice = userOrderData.orders.reduce((total: number, order: Order) => total + calculateOrderTotal(order), 0)
+  console.log(userOrderData)
   return (
     <div>
       <div>
@@ -110,12 +105,15 @@ const OrderList = () => {
           <StyledContainer>
             <Container>
               <StyledTitle>
+                {userData.nickname}님은 <ColoredText>{userOrderData.totalCount}</ColoredText>회 주문하셨습니다.
+              </StyledTitle>
+              {/* <StyledTitle>
                 {userData.nickname}님은 <ColoredText>{userOrderData.orders.length}</ColoredText>회 주문하셨고,
               </StyledTitle>
               <StyledTitle>
                 <ColoredText>{totalPrice.toLocaleString()}</ColoredText>원 결제하셨어요.
               </StyledTitle>
-              <StyledTable columns={restaurantOrderColumns} dataSource={restaurantOrderDataSource} pagination={false} />
+              <StyledTable columns={restaurantOrderColumns} dataSource={restaurantOrderDataSource} pagination={false} /> */}
             </Container>
             {userOrderData.orders.map((order: Order) => (
               <div key={order._id}>
