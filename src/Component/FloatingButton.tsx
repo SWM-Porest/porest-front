@@ -1,4 +1,5 @@
 import { getTotalCartItems } from 'Api/cartCookie'
+import { getTableNumberCookie } from 'Api/tableCookie'
 import { useAccessToken } from 'Api/tokenCookie'
 import CartModal from 'Component/Modal/CartModal'
 import { useCartModal } from 'Context/CartModalContext'
@@ -8,9 +9,8 @@ import { ReactComponent as SimpleOrder } from 'assets/Call.svg'
 import { ReactComponent as Cart } from 'assets/Cart.svg'
 import { ReactComponent as ChatBot } from 'assets/Group 19.svg'
 import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
-
 interface OwnProps {
   info: Restaurant
 }
@@ -25,9 +25,13 @@ const FloatingButton: React.FC<OwnProps> = ({ info }) => {
   const [isOrderModalVisible, setIsOrderModalVisible] = useState(false)
   const [accessToken, setAccessToken] = useAccessToken()
   const { data: restaurant, loading, error } = useRestaurantState().restaurant
-  const location = useLocation()
-  const queryparams = new URLSearchParams(location.search)
-  const table = queryparams.get('table')
+  const getTableFromCookie = () => {
+    const tableCookie = getTableNumberCookie()
+    return tableCookie || ''
+  }
+
+  const table = getTableFromCookie()
+
   const { id } = useParams()
   const navigate = useNavigate()
 
