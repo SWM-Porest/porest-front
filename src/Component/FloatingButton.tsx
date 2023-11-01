@@ -39,6 +39,14 @@ const FloatingButton: React.FC<OwnProps> = ({ info }) => {
     setSelectedMenu(menu)
     setIsOrderModalVisible(true)
   }
+  const handleSimpleOrderClick = () => {
+    if (simplifiedMenus.length > 0) {
+      setIsMenuOpen(!isMenuOpen)
+    } else {
+      alert('간편 주문이 없습니다.')
+    }
+  }
+
   const handleOrder = async () => {
     if (!table) {
       navigate(`/restaurants/${id}/table`)
@@ -124,10 +132,10 @@ const FloatingButton: React.FC<OwnProps> = ({ info }) => {
             ))}
           </div>
         )}
-        <SimpleOrderIcon onClick={() => setIsMenuOpen(!isMenuOpen)}>
+        <SimpleOrderIcon onClick={handleSimpleOrderClick}>
           <SimpleOrder width="2.4rem" height="2.4rem" />
         </SimpleOrderIcon>
-        <ChatBotIcon>
+        <ChatBotIcon onClick={() => alert('현재 준비 중인 기능입니다.')}>
           <ChatBot width="2.4rem" height="2.4rem" />
         </ChatBotIcon>
 
