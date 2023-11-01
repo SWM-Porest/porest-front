@@ -5,9 +5,10 @@ interface OwnProps {
   Icon?: React.ReactNode | undefined
   Name: string
   onClick?: () => void
+  RightIcon?: React.ReactNode | undefined
 }
 
-const SelectionList: React.FC<OwnProps> = ({ Icon, Name, onClick }) => {
+const SelectionList: React.FC<OwnProps> = ({ Icon, Name, onClick, RightIcon }) => {
   const handleItemClick = () => {
     if (onClick) {
       onClick()
@@ -20,7 +21,7 @@ const SelectionList: React.FC<OwnProps> = ({ Icon, Name, onClick }) => {
         {Icon}
         <ListName>{Name}</ListName>
       </ListContainer>
-      <ChevronR />
+      {RightIcon || <ChevronR />}
     </Container>
   )
 }
@@ -33,8 +34,8 @@ const Container = styled.div`
   padding: 2rem;
   justify-content: space-between;
   align-items: center;
-  background-color: ${({ theme }) => theme.COLOR.common.white[0]};
   cursor: pointer;
+  border-top: 1px solid ${({ theme }) => theme.COLOR.common.gray[110]};
 `
 
 const ListContainer = styled.div`

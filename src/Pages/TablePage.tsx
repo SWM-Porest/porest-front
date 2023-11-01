@@ -1,36 +1,34 @@
 import { getCookie } from 'Api/cartCookie'
+import { getTableNumberCookie, setTableNumberCookie } from 'Api/tableCookie'
 import Header from 'Component/Header'
 import { Button, Input } from 'antd'
 import { ReactComponent as Chevron } from 'assets/Chevron.svg'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
-
 const TablePage = () => {
-  //   const { data: restaurant } = useRestaurantState().restaurant
-  //   const cookieData = getCookie(restaurant?._id as string) || {}
   const { id } = useParams()
+  const storedTableNumber = getTableNumberCookie() || '' // 쿠키에서 테이블 번호 가져오기
   const cookieData = getCookie(id as string) || {}
 
   const navigate = useNavigate()
 
   const [priceTotal, setPriceTotal] = useState(0)
-  const [tableNumber, setTableNumber] = useState<string>('')
-  const [isInputValid, setInputValid] = useState(false) // 새로운 상태 추가
+  const [tableNumber, setTableNumber] = useState<string>(storedTableNumber)
+  const [isInputValid, setInputValid] = useState(!!storedTableNumber)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value
     setTableNumber(inputValue)
 
-    // 입력값이 숫자인지 확인
     const isNumber = /^\d+$/.test(inputValue)
     setInputValid(isNumber)
   }
 
   const handleInputComplete = () => {
     if (tableNumber) {
-      // navigate(`/restaurants/${restaurant?._id}/table/${tableNumber}`)
-      navigate(`/restaurants/${id}?table=${tableNumber}`)
+      setTableNumberCookie(tableNumber)
+      navigate(`/restaurants/${id}`)
     }
   }
 
@@ -64,7 +62,7 @@ const TablePage = () => {
     <div>
       <Header
         Left={
-          <Icon>
+          <Icon onClick={() => navigate(`/restaurants/${id}`)}>
             <Chevron width="2rem" height="2rem" fill="#212121" />
           </Icon>
         }

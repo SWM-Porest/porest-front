@@ -22,7 +22,7 @@ const ProfileBox = () => {
         </ContentsContainer>
       </ProfileContainer>
       <SettingContainer>
-        <Settings width="2.4rem" height="2.4rem" />
+        <Settings width="2.4rem" height="2.4rem" onClick={() => alert('현재 준비 중인 기능입니다.')} />
       </SettingContainer>
     </Container>
   )

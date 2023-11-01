@@ -1,4 +1,5 @@
 import { getTotalCartItems } from 'Api/cartCookie'
+import { getTableNumberCookie } from 'Api/tableCookie'
 import { useAccessToken } from 'Api/tokenCookie'
 import CartModal from 'Component/Modal/CartModal'
 import { useCartModal } from 'Context/CartModalContext'
@@ -8,9 +9,8 @@ import { ReactComponent as SimpleOrder } from 'assets/Call.svg'
 import { ReactComponent as Cart } from 'assets/Cart.svg'
 import { ReactComponent as ChatBot } from 'assets/Group 19.svg'
 import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
-
 interface OwnProps {
   info: Restaurant
 }
@@ -25,9 +25,13 @@ const FloatingButton: React.FC<OwnProps> = ({ info }) => {
   const [isOrderModalVisible, setIsOrderModalVisible] = useState(false)
   const [accessToken, setAccessToken] = useAccessToken()
   const { data: restaurant, loading, error } = useRestaurantState().restaurant
-  const location = useLocation()
-  const queryparams = new URLSearchParams(location.search)
-  const table = queryparams.get('table')
+  const getTableFromCookie = () => {
+    const tableCookie = getTableNumberCookie()
+    return tableCookie || ''
+  }
+
+  const table = getTableFromCookie()
+
   const { id } = useParams()
   const navigate = useNavigate()
 
@@ -35,6 +39,14 @@ const FloatingButton: React.FC<OwnProps> = ({ info }) => {
     setSelectedMenu(menu)
     setIsOrderModalVisible(true)
   }
+  const handleSimpleOrderClick = () => {
+    if (simplifiedMenus.length > 0) {
+      setIsMenuOpen(!isMenuOpen)
+    } else {
+      alert('간편 주문이 없습니다.')
+    }
+  }
+
   const handleOrder = async () => {
     if (!table) {
       navigate(`/restaurants/${id}/table`)
@@ -83,7 +95,10 @@ const FloatingButton: React.FC<OwnProps> = ({ info }) => {
 
       if (response.ok) {
         setIsOrderModalVisible(false)
-        navigate(`/orderlist`)
+        showMessage('주문이 완료되었습니다.\n접수 확인을 기다려주십시오.', 1500, '/img/check.png')
+        response.json().then((data) => {
+          navigate(`/orderlist?orderId=${data._id}`)
+        })
       } else {
         console.error('주문 생성에 실패했습니다.')
       }
@@ -117,10 +132,10 @@ const FloatingButton: React.FC<OwnProps> = ({ info }) => {
             ))}
           </div>
         )}
-        <SimpleOrderIcon onClick={() => setIsMenuOpen(!isMenuOpen)}>
+        <SimpleOrderIcon onClick={handleSimpleOrderClick}>
           <SimpleOrder width="2.4rem" height="2.4rem" />
         </SimpleOrderIcon>
-        <ChatBotIcon>
+        <ChatBotIcon onClick={() => alert('현재 준비 중인 기능입니다.')}>
           <ChatBot width="2.4rem" height="2.4rem" />
         </ChatBotIcon>
 
@@ -150,7 +165,7 @@ export default FloatingButton
 
 const FloatingButtonContainer = styled.div`
   position: fixed;
-  bottom: 3.6rem;
+  bottom: calc(3.6rem + 6rem);
   right: 3.6rem;
   display: inline-flex;
   flex-direction: column;
@@ -214,3 +229,54 @@ const StyledBadge = styled(Badge)`
     border-radius: 50%;
   }
 `
+
+const showMessage = (messageText: string, duration: number, img: string) => {
+  const messageContainer = document.createElement('div')
+  messageContainer.style.zIndex = '9999'
+  messageContainer.style.display = 'flex'
+  messageContainer.style.alignItems = 'center'
+  messageContainer.style.width = '280px'
+  messageContainer.style.whiteSpace = 'pre-wrap'
+
+  const image = new Image()
+  image.src = img
+  image.style.width = '2rem'
+  image.style.height = '2rem'
+  image.style.marginRight = '1rem'
+
+  const textContainer = document.createElement('div')
+  textContainer.textContent = messageText
+  textContainer.style.fontSize = '1.8rem'
+  textContainer.style.fontWeight = '600'
+
+  messageContainer.appendChild(image)
+  messageContainer.appendChild(textContainer)
+
+  const containerStyle = messageContainer.style
+  containerStyle.position = 'fixed'
+  containerStyle.top = '2rem'
+  containerStyle.left = '50%'
+  containerStyle.transform = 'translateX(-50%)'
+  containerStyle.backgroundColor = '#fff'
+  containerStyle.color = '#333'
+  containerStyle.padding = '1rem 2.4rem'
+  containerStyle.borderRadius = '1rem'
+  containerStyle.opacity = '0'
+  containerStyle.transition = 'opacity 0.3s'
+
+  document.body.appendChild(messageContainer)
+
+  setTimeout(() => {
+    containerStyle.opacity = '1'
+  }, 100)
+
+  setTimeout(() => {
+    containerStyle.opacity = '0'
+    setTimeout(() => {
+      document.body.removeChild(messageContainer)
+    }, 300)
+  }, duration)
+  if (window.innerWidth >= 800) {
+    containerStyle.left = `calc(50% + ${430 / 2}px)`
+  }
+}
