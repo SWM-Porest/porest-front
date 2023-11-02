@@ -143,7 +143,7 @@ const ModalView = styled.div<{ $load: boolean }>`
 `
 const ContentContainer = styled.div`
   overflow-y: auto;
-  max-height: calc(100% - 72pt);
+  max-height: 100%;
   position: relative;
 `
 
