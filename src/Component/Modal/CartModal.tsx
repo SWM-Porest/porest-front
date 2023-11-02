@@ -176,6 +176,7 @@ const ModalView = styled.div<{ $load: boolean }>`
   @media screen and (min-width: ${({ theme }) => theme.MEDIA.tablet}) {
     width: ${({ theme }) => theme.MEDIA.mobile};
   }
+  overflow-y: auto;
 `
 
 export const CloseButtonContainer = styled.div`
