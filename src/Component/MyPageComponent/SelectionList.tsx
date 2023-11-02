@@ -21,7 +21,7 @@ const SelectionList: React.FC<OwnProps> = ({ Icon, Name, onClick, RightIcon }) =
         {Icon}
         <ListName>{Name}</ListName>
       </ListContainer>
-      {RightIcon || <ChevronR />}
+      {RightIcon || <ChevronR width="2rem" height="2rem" fill="#AAAAA" />}
     </Container>
   )
 }
