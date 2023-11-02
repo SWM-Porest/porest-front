@@ -46,11 +46,6 @@ const RestaurantOrderList = () => {
     },
   )
 
-  // 최신순으로 정렬
-  // data?.sort((a, b) => {
-  //   return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-  // })
-
   const getStatusColor = (status: number) => {
     switch (status) {
       case 1:
@@ -66,16 +61,6 @@ const RestaurantOrderList = () => {
       default:
         return 'default'
     }
-  }
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    function pad(n: number) {
-      return n < 10 ? '0' + n : n
-    }
-    return `${date.getFullYear()}.${pad(date.getMonth() + 1)}.${pad(date.getDate())} ${pad(date.getHours())}:${pad(
-      date.getMinutes(),
-    )}:${pad(date.getSeconds())}`
   }
 
   const getStatusButtonText = (status: number) => {
@@ -144,7 +129,9 @@ const RestaurantOrderList = () => {
         return '상태 없음'
     }
   }
+
   const OrderList = (data: Order[] | undefined) => {
+    console.log(data)
     return (
       <List
         itemLayout="vertical"
@@ -163,7 +150,9 @@ const RestaurantOrderList = () => {
                   <Tag color={getStatusColor(item.status)} icon={getStatusIcon(item.status)}>
                     {getStatusText(item.status)}
                   </Tag>
-                  {Object.values(item.menus)[0].menu_name} 외 {Object.values(item.menus).length - 1}개
+                  {Object.values(item.menus).length === 1
+                    ? Object.values(item.menus)[0].menu_name
+                    : `${Object.values(item.menus)[0].menu_name} 외 ${Object.values(item.menus).length - 1}개`}
                 </Space>
               }
               description={getTimeDiff(dayjs(item.created_at))}
