@@ -45,6 +45,8 @@ const Container = styled.div`
     background: #fff;
     overflow: hidden;
   }
+
+  user-select: none;
 `
 const Contents = styled.div`
   @media screen and (min-width: 800px) {
