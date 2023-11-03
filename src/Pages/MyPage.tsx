@@ -91,7 +91,13 @@ const MyPage = () => {
               Icon={<Settings width="2rem" height="2rem" fill="#212121" />}
               Name={`${restaurant.name} 관리`}
               onClick={() => handleRestaurantClick(restaurant)}
-              RightIcon={subMenuVisible[restaurant._id] ? <ChevronD /> : <ChevronR />}
+              RightIcon={
+                subMenuVisible[restaurant._id] ? (
+                  <ChevronD width="2rem" height="2rem" fill="#AAAAA" />
+                ) : (
+                  <ChevronR width="2rem" height="2rem" fill="#AAAAA" />
+                )
+              }
             />
             {subMenuVisible[restaurant._id] && (
               <SubMenuContainer>

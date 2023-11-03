@@ -32,4 +32,5 @@ export interface Order {
   status: number
   status_updated_at: { [status: number]: string }
   created_at: string
+  table_id: number
 }

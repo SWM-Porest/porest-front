@@ -7,11 +7,13 @@ import { getTimeDiff } from 'Pages/EditWaitingPage'
 import ErrorPage from 'Pages/ErrorPage'
 import { onOrder } from 'Socket/socketio'
 import { Button, List, Space, Tabs, TabsProps, Tag, message } from 'antd'
+import { ReactComponent as ChevronD } from 'assets/ChevronD.svg'
+import { ReactComponent as ChevronR } from 'assets/ChevronR.svg'
 import dayjs from 'dayjs'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useParams } from 'react-router-dom'
-import { styled } from 'styled-components'
+import styled from 'styled-components'
 
 const RestaurantOrderList = () => {
   const { id } = useParams()
@@ -46,11 +48,6 @@ const RestaurantOrderList = () => {
     },
   )
 
-  // 최신순으로 정렬
-  // data?.sort((a, b) => {
-  //   return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-  // })
-
   const getStatusColor = (status: number) => {
     switch (status) {
       case 1:
@@ -66,16 +63,6 @@ const RestaurantOrderList = () => {
       default:
         return 'default'
     }
-  }
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    function pad(n: number) {
-      return n < 10 ? '0' + n : n
-    }
-    return `${date.getFullYear()}.${pad(date.getMonth() + 1)}.${pad(date.getDate())} ${pad(date.getHours())}:${pad(
-      date.getMinutes(),
-    )}:${pad(date.getSeconds())}`
   }
 
   const getStatusButtonText = (status: number) => {
@@ -144,40 +131,76 @@ const RestaurantOrderList = () => {
         return '상태 없음'
     }
   }
+
+  const [expandedOrder, setExpandedOrder] = useState<Order | null>(null)
+
+  const toggleExpandedOrder = (order: Order) => {
+    if (expandedOrder && expandedOrder._id === order._id) {
+      setExpandedOrder(null)
+    } else {
+      setExpandedOrder(order)
+    }
+  }
+
+  const renderExpandedContent = (order: Order) => {
+    return (
+      <ExpandedOrderContainer>
+        <div>
+          {Object.values(order.menus).map((menu) => (
+            <div key={menu.menu_name}>
+              <div>
+                {menu.menu_name} - {menu.quantity}개
+              </div>
+            </div>
+          ))}
+        </div>
+      </ExpandedOrderContainer>
+    )
+  }
+
   const OrderList = (data: Order[] | undefined) => {
+    console.log(data)
     return (
       <List
-        itemLayout="vertical"
+        itemLayout="horizontal"
         dataSource={data}
         renderItem={(item) => (
-          <List.Item
-            actions={[
-              <Button type="primary" onClick={() => changeStatus(item)} disabled={item.status > 2 ? true : false}>
-                {getStatusButtonText(item.status)}
-              </Button>,
-            ]}
-          >
+          <List.Item>
             <List.Item.Meta
               title={
-                <Space>
-                  <Tag color={getStatusColor(item.status)} icon={getStatusIcon(item.status)}>
-                    {getStatusText(item.status)}
-                  </Tag>
-                  {Object.values(item.menus)[0].menu_name} 외 {Object.values(item.menus).length - 1}개
-                </Space>
+                <StyledSpace>
+                  <div>
+                    <StyledTag color={getStatusColor(item.status)} icon={getStatusIcon(item.status)}>
+                      {getStatusText(item.status)}
+                    </StyledTag>
+                    {item.table_id}번 테이블
+                  </div>
+                </StyledSpace>
               }
-              description={getTimeDiff(dayjs(item.created_at))}
-            ></List.Item.Meta>
-
-            <List
-              itemLayout="horizontal"
-              dataSource={Object.values(item.menus)}
-              renderItem={(item) => (
-                <List.Item>
-                  <List.Item.Meta title={item.menu_name} description={item.quantity + '개'} />
-                </List.Item>
-              )}
-            ></List>
+              description={
+                <div>
+                  <div>{getTimeDiff(dayjs(item.created_at))}</div>
+                  <StyledMenuContainer>
+                    <span onClick={() => toggleExpandedOrder(item)}>
+                      {expandedOrder && expandedOrder._id === item._id ? (
+                        <ChevronD width="2rem" height="2rem" fill="#212121" />
+                      ) : (
+                        <ChevronR width="2rem" height="2rem" fill="#212121" />
+                      )}
+                    </span>
+                    {Object.values(item.menus).length === 1
+                      ? Object.values(item.menus)[0].menu_name
+                      : `${Object.values(item.menus)[0].menu_name} 외 ${Object.values(item.menus).length - 1}개`}
+                  </StyledMenuContainer>
+                  {expandedOrder && expandedOrder._id === item._id && renderExpandedContent(item)}
+                </div>
+              }
+            />
+            <div>
+              <StyledButton type="primary" onClick={() => changeStatus(item)} disabled={item.status > 2 ? true : false}>
+                {getStatusButtonText(item.status)}
+              </StyledButton>
+            </div>
           </List.Item>
         )}
       />
@@ -230,12 +253,46 @@ const RestaurantOrderList = () => {
 export default RestaurantOrderList
 
 const StyledContainer = styled.div`
-  padding: 10pt;
-  font-size: 2rem;
-  * {
-    font-size: inherit !important;
+  padding: 1rem;
+`
+
+const StyledSpace = styled(Space)`
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+  font-weight: lighter;
+`
+
+const StyledTag = styled(Tag)`
+  padding: 0.5rem;
+  margin-right: 2rem;
+  font-weight: bold;
+`
+
+const StyledButton = styled(Button)`
+  height: 100%;
+  padding: 1rem;
+  aspect-ratio: 1;
+`
+
+const ExpandedOrderContainer = styled.div`
+  padding: 1rem;
+  background-color: ${({ theme }) => theme.COLOR.common.gray[120]};
+  margin-right: 2rem;
+`
+const StyledMenuContainer = styled.div`
+  display: flex;
+  align-items: center;
+  color: ${({ theme }) => theme.COLOR.common.black[0]};
+  :hover {
+    color: ${({ theme }) => theme.COLOR.common.gray[100]};
   }
-  button {
-    height: fit-content !important;
+  span {
+    padding: 0 1rem 0 0;
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+    justify-content: center;
   }
 `

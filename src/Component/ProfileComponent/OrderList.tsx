@@ -143,7 +143,7 @@ const OrderList = () => {
                       </div>
                     </MenuDetailsContainer>
                   </InfoContainer>
-                  <ChevronR />
+                  <ChevronR width="2rem" height="2rem" fill="#AAAAA" />
                 </OrderDetails>
               </div>
             ))}
