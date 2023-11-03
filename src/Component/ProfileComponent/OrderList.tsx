@@ -116,9 +116,11 @@ const OrderList = () => {
                   <InfoContainer>
                     {Object.values(order.menus)
                       .slice(0, 1)
-                      .map((menu, menuIndex) => (
-                        <MenuImage key={menuIndex} src={getImageSrc(menu.img)} alt="메뉴 이미지" />
-                      ))}
+                      .map(
+                        (menu, menuIndex) =>
+                          menu.img && <MenuImage key={menuIndex} src={getImageSrc(menu.img)} alt="메뉴 이미지" />,
+                        // <MenuImage key={menuIndex} src={getImageSrc(menu.img)} alt="메뉴 이미지" />
+                      )}
                     <MenuDetailsContainer key={`menu_${order._id}`}>
                       <MenuDateContainer>{getTimeDiff(dayjs(order.updated_at))}</MenuDateContainer>
                       <RestaurantNameContainer>{order.restaurant_name}</RestaurantNameContainer>
