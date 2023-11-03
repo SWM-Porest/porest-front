@@ -87,6 +87,10 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
             .then(async (pushSubscription) => {
               createOrder(pushSubscription)
             })
+            .catch((err) => {
+              console.log(err)
+              createOrder(null)
+            })
         }
       })
     } catch (error) {
