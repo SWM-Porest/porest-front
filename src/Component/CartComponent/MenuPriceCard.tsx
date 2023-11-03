@@ -55,7 +55,7 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, orderinfo, handlePriceTotalCh
     <StyledContainer>
       <MenuInfoContainer>
         <MenuInfoImageContainer>
-          <StyledImage src={getImageSrc(info.img)} alt="메뉴 이미지" />
+          {info.img && <StyledImage src={getImageSrc(info.img)} alt="메뉴 이미지" />}
           <MenuInfoDetailsContainer>
             <MenuName>{info.name}</MenuName>
             {info.menuOptions.map((option, index) => (
