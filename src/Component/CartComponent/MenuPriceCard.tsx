@@ -1,5 +1,5 @@
 import { Dismiss24Filled } from '@fluentui/react-icons'
-import { removeCookie, setCookie } from 'Api/cartCookie'
+import { getCookie, removeCookie, setCookie } from 'Api/cartCookie'
 import { Menu, useRestaurantState } from 'Context/restaurantContext'
 import AmountCheck from 'Utils/AmountCheck'
 import getImageSrc from 'Utils/getImageSrc'
@@ -13,6 +13,7 @@ interface OwnProps {
 
 const MenuPriceCard: React.FC<OwnProps> = ({ info, orderinfo, handlePriceTotalChange }) => {
   const { data: restaurant } = useRestaurantState().restaurant
+  const cookie = getCookie(restaurant?._id as string) || {}
   const [count, setCount] = useState(orderinfo.count)
   const [totalprice, setTotalPrice] = useState((info.price * count).toLocaleString())
   const price = info.price.toLocaleString()
@@ -47,7 +48,8 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, orderinfo, handlePriceTotalCh
   useEffect(() => {
     const newTotalPrice = ((info.price + optionPricesSum) * count).toLocaleString()
     setTotalPrice(newTotalPrice)
-  }, [count, info.price, optionPricesSum])
+    setCount(orderinfo.count)
+  }, [cookie, count, info.price, optionPricesSum])
 
   return (
     <StyledContainer>
