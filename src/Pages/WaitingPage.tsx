@@ -1,13 +1,15 @@
 import { getWaiting, getWaitingTeam } from 'Api/getWaiting'
 import { useAccessToken } from 'Api/tokenCookie'
-import fetchWaitingRegistration from 'Api/waitingRegistration'
 import Header from 'Component/Header'
 import { getRestaurant, useRestaurantDispatch, useRestaurantState } from 'Context/restaurantContext'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { StyledSpin } from './MenuBoardPage'
-import { FullPageDiv, PreviousButton, Step1, Step2, Step3 } from 'Component/WaitingComponent/HeadCountForm'
+import { FullPageDiv, RotateButton, Step1, Step2, Step3 } from 'Component/WaitingComponent/HeadCountForm'
 import { fetchWaitingCancel } from 'Api/updateWaiting'
+import { ReactComponent as Chevron } from 'assets/Chevron.svg'
+import { Waiting, fetchWaitingRegistration } from 'Api/waitingRegistration'
+import axios from 'axios'
 
 enum StepNumber {
   SelectHeadCounter = 1,
@@ -20,6 +22,7 @@ const WaitingPage = () => {
   const defaultId = restaurant_id || ''
   const [data, setData] = useState({ head_count: 2, restaurant_id: defaultId })
   const [stepNumber, setStepNumber] = useState(StepNumber.SelectHeadCounter)
+  const [apiLoading, setApiLoading] = useState(false)
   const headerNames = ['', '방문 인원 선택하기', '웨이팅 등록하기', '현재 대기 정보']
   const [accessToken] = useAccessToken()
   const dispatch = useRestaurantDispatch()
@@ -41,12 +44,48 @@ const WaitingPage = () => {
   }
 
   const onSubmit = async () => {
+    setApiLoading(true)
+    const waitingRegistration = async (pushSubscription: PushSubscription | null): Promise<Waiting> => {
+      const body = { ...data, token: pushSubscription }
+      const response = await axios({
+        method: 'POST',
+        url: `${process.env.REACT_APP_API_URL}/waitings`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        data: body,
+      })
+      return response.data
+    }
+
     try {
-      const waiting = await fetchWaitingRegistration(data, accessToken)
-      setData({ ...waiting })
-      setStepNumber(StepNumber.WaitingData)
-    } catch (err) {
-      window.location.reload()
+      Notification.requestPermission().then((permission) => {
+        if (permission == 'denied') {
+          setApiLoading(false)
+          return waitingRegistration(null)
+        } else if (navigator.serviceWorker) {
+          navigator.serviceWorker
+            .register(`../service-worker.js`, { scope: '/' })
+            .then((registration) => {
+              const subscribeOptions = {
+                userVisibleOnly: true,
+                applicationServerKey: process.env.REACT_APP_PUBLIC_VAPID_KEY,
+              }
+              return registration.pushManager.subscribe(subscribeOptions)
+            })
+            .then(async (pushSubscription) => {
+              const response = await waitingRegistration(pushSubscription)
+              setData({ ...response })
+              setStepNumber(StepNumber.WaitingData)
+            })
+            .catch((err) => {
+              console.log(err)
+            })
+        }
+      })
+    } catch (error) {
+      // 오류 처리 로직 추가
+      console.error('오류 발생:', error)
     }
   }
 
@@ -63,10 +102,11 @@ const WaitingPage = () => {
         // console.log('취소 안함')
       }
     } catch (err) {
-      window.location.reload()
+      alert('취소 중 오류가 발생했습니다.')
     }
   }
-  if (loading && isLoading && isLoading2) {
+
+  if (!(!loading && !isLoading && !isLoading2)) {
     return (
       <StyledSpin tip="Loading" size="large">
         <div className="content" />
@@ -74,7 +114,7 @@ const WaitingPage = () => {
     )
   }
 
-  if (waiting && waitingTeam && stepNumber !== StepNumber.WaitingData) {
+  if (waiting && waiting.status < 3 && waitingTeam && stepNumber !== StepNumber.WaitingData) {
     setData({ ...waiting })
     setStepNumber(StepNumber.WaitingData)
   }
@@ -82,15 +122,26 @@ const WaitingPage = () => {
   return (
     <FullPageDiv>
       <Header
-        Left={stepNumber === StepNumber.RegisterWaiting && <PreviousButton prevPage={prevPage} />}
+        Left={
+          stepNumber === StepNumber.RegisterWaiting && (
+            <Chevron width="2rem" height="2rem" fill="#212121" onClick={prevPage} />
+          )
+        }
         HeaderName={headerNames[stepNumber]}
+        Right={stepNumber === StepNumber.WaitingData && <RotateButton />}
       />
       {stepNumber === StepNumber.SelectHeadCounter && <Step1 nextPage={nextPage} data={data} />}
       {stepNumber === StepNumber.RegisterWaiting && (
-        <Step2 data={data} restaurant={restaurant} team={waitingTeam.waiting_teams} onSubmit={onSubmit} />
+        <Step2
+          data={data}
+          restaurant={restaurant}
+          team={waitingTeam.waiting_teams}
+          onSubmit={onSubmit}
+          apiLoading={apiLoading}
+        />
       )}
       {stepNumber === StepNumber.WaitingData && (
-        <Step3 data={data} cancel={cancelWaiting} team={waitingTeam.waiting_teams} />
+        <Step3 data={data} cancel={cancelWaiting} team={waitingTeam.waiting_teams} accessToken={accessToken} />
       )}
     </FullPageDiv>
   )
