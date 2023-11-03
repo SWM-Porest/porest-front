@@ -1,4 +1,4 @@
-import { ReactComponent as ChevronR } from 'assets/ChevronR.svg'
+import { ChevronRight20Filled } from '@fluentui/react-icons'
 import styled from 'styled-components'
 
 interface OwnProps {
@@ -21,7 +21,7 @@ const SelectionList: React.FC<OwnProps> = ({ Icon, Name, onClick, RightIcon }) =
         {Icon}
         <ListName>{Name}</ListName>
       </ListContainer>
-      {RightIcon || <ChevronR width="2rem" height="2rem" fill="#AAAAA" />}
+      {RightIcon || <ChevronRight20Filled color="#AAAAA" />}
     </Container>
   )
 }

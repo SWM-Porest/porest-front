@@ -1,3 +1,4 @@
+import { AlertUrgent24Filled, Cart24Filled } from '@fluentui/react-icons'
 import { getTotalCartItems } from 'Api/cartCookie'
 import { getTableNumberCookie } from 'Api/tableCookie'
 import { useAccessToken } from 'Api/tokenCookie'
@@ -5,8 +6,6 @@ import CartModal from 'Component/Modal/CartModal'
 import { useCartModal } from 'Context/CartModalContext'
 import { Restaurant, useRestaurantState } from 'Context/restaurantContext'
 import { Badge, Modal } from 'antd'
-import { ReactComponent as SimpleOrder } from 'assets/Call.svg'
-import { ReactComponent as Cart } from 'assets/Cart.svg'
 import { ReactComponent as ChatBot } from 'assets/Group 19.svg'
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -133,7 +132,7 @@ const FloatingButton: React.FC<OwnProps> = ({ info }) => {
           </div>
         )}
         <SimpleOrderIcon onClick={handleSimpleOrderClick}>
-          <SimpleOrder width="2.4rem" height="2.4rem" />
+          <AlertUrgent24Filled />
         </SimpleOrderIcon>
         <ChatBotIcon onClick={() => alert('현재 준비 중인 기능입니다.')}>
           <ChatBot width="2.4rem" height="2.4rem" />
@@ -142,7 +141,7 @@ const FloatingButton: React.FC<OwnProps> = ({ info }) => {
         <CartIconContainer onClick={openModal}>
           <StyledBadge count={totalCartItems}></StyledBadge>
           <CartIcon>
-            <Cart width="2.4rem" height="2.4rem" fill="#fff" />
+            <Cart24Filled color="#fff" />
           </CartIcon>
         </CartIconContainer>
         <Modal

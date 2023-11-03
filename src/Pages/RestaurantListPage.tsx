@@ -1,8 +1,7 @@
 import { LoadingOutlined } from '@ant-design/icons'
+import { Home24Filled, Person24Filled } from '@fluentui/react-icons'
 import Navbar from 'Utils/Navbar'
 import getImageSrc from 'Utils/getImageSrc'
-import { ReactComponent as Home } from 'assets/Home.svg'
-import { ReactComponent as Person } from 'assets/Person.svg'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -68,9 +67,9 @@ const RestaurantListPage = () => {
       <NavContainer>
         <Navbar
           Icon={{
-            홈: <Home width="2.4rem" height="2.4rem" fill="#3FBA73" />,
+            홈: <Home24Filled color="#3FBA73" />,
             '': <></>,
-            마이: <Person width="2.4rem" height="2.4rem" fill="#BBBBBB" />,
+            마이: <Person24Filled color="#BBBBBB" />,
           }}
           index={0}
         />

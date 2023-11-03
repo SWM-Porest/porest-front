@@ -5,11 +5,11 @@ import useUserOrderData from 'Api/useUserOrderData'
 import OrderModal from 'Component/Modal/OrderModal'
 import { getTimeDiff } from 'Pages/EditWaitingPage'
 import getImageSrc from 'Utils/getImageSrc'
-import { ReactComponent as ChevronR } from 'assets/ChevronR.svg'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
+import { ChevronRight20Filled } from '@fluentui/react-icons'
 import { Pagination, Select, Table } from 'antd'
 const { Option } = Select
 
@@ -143,7 +143,7 @@ const OrderList = () => {
                       </div>
                     </MenuDetailsContainer>
                   </InfoContainer>
-                  <ChevronR width="2rem" height="2rem" fill="#AAAAA" />
+                  <ChevronRight20Filled color="#AAAAA" />
                 </OrderDetails>
               </div>
             ))}

@@ -1,7 +1,7 @@
+import { Settings24Filled } from '@fluentui/react-icons'
 import { useAccessToken } from 'Api/tokenCookie'
 import useUserData from 'Api/useUserData'
 import { ReactComponent as Person } from 'assets/Person.svg'
-import { ReactComponent as Settings } from 'assets/Settings.svg'
 import styled from 'styled-components'
 
 const ProfileBox = () => {
@@ -22,7 +22,7 @@ const ProfileBox = () => {
         </ContentsContainer>
       </ProfileContainer>
       <SettingContainer>
-        <Settings width="2.4rem" height="2.4rem" onClick={() => alert('현재 준비 중인 기능입니다.')} />
+        <Settings24Filled onClick={() => alert('현재 준비 중인 기능입니다.')} />
       </SettingContainer>
     </Container>
   )

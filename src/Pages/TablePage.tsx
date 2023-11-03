@@ -1,8 +1,8 @@
+import { ChevronLeft20Filled } from '@fluentui/react-icons'
 import { getCookie } from 'Api/cartCookie'
 import { getTableNumberCookie, setTableNumberCookie } from 'Api/tableCookie'
 import Header from 'Component/Header'
 import { Button, Input } from 'antd'
-import { ReactComponent as Chevron } from 'assets/Chevron.svg'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
@@ -63,7 +63,7 @@ const TablePage = () => {
       <Header
         Left={
           <Icon onClick={() => navigate(`/restaurants/${id}`)}>
-            <Chevron width="2rem" height="2rem" fill="#212121" />
+            <ChevronLeft20Filled color="#212121" />
           </Icon>
         }
         HeaderName={''}

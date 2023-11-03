@@ -1,4 +1,4 @@
-import { ReactComponent as ChebronR } from 'assets/ChevronR.svg'
+import { ChevronRight20Filled } from '@fluentui/react-icons'
 import { ReactComponent as Meal } from 'assets/Meal.svg'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -25,7 +25,7 @@ const RestaurantInfo: React.FC<OwnProps> = ({ restaurant_id, restaurant_name, re
           <Address>{restaurant_address}</Address>
         </TextContainer>
       </ContentsContainer>
-      <ChebronR />
+      <ChevronRight20Filled />
     </Container>
   )
 }
