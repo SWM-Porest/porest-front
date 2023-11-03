@@ -42,7 +42,7 @@ const fetchWaitingRegistration = async (data: CreateWaitingDto, accessToken: str
 
     return response.data
   } catch (error) {
-    console.log(error)
+    // console.log(error)
     throw new Error()
   }
 }

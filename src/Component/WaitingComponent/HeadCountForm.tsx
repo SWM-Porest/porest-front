@@ -41,7 +41,7 @@ export const Step1 = ({ nextPage, data }: any) => {
 }
 
 export const Step2 = ({ data, restaurant, onSubmit, team }: any) => {
-  console.log(data)
+  // console.log(data)
   // 데이터 확인 및 제출 로직 넣어야 함.
   return (
     <Container>
@@ -58,8 +58,8 @@ export const Step2 = ({ data, restaurant, onSubmit, team }: any) => {
 }
 
 export const Step3 = ({ data, cancel, team }: any) => {
-  console.log(data)
-  console.log(team)
+  // console.log(data)
+  // console.log(team)
   return (
     <Container>
       <NowWaitingBox team={team} head_count={data.head_count}></NowWaitingBox>
