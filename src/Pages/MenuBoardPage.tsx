@@ -50,6 +50,7 @@ const MenuBoardPage: React.FC = () => {
               : []
           }
           title={restaurant ? restaurant.name : ''}
+          intro={restaurant ? restaurant.intro : ''}
           lefticon={
             <IconLeft onClick={handleIconLeftClick}>
               <ChevronLeft20Filled color="#212121" />

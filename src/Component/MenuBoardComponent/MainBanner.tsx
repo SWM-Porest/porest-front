@@ -18,11 +18,17 @@ const MainBanner: React.FC<SliderProps> = ({ images }) => {
   return (
     <SliderContainer>
       <Carousel autoplay dots={false} afterChange={handleSlideChange}>
-        {images.map((image, index) => (
-          <div key={index}>
-            <SliderImage src={image} alt={`이미지 ${index + 1}`} />
+        {images.length > 0 ? (
+          images.map((image, index) => (
+            <div key={index}>
+              <SliderImage src={image} alt={`이미지 ${index + 1}`} />
+            </div>
+          ))
+        ) : (
+          <div>
+            <DefualtImage />
           </div>
-        ))}
+        )}
       </Carousel>
       <SliderStatus>
         <WhiteText>{currentSlide + 1}</WhiteText>
@@ -42,6 +48,12 @@ const SliderContainer = styled.div`
 const SliderImage = styled.img`
   aspect-ratio: 1 / 1;
   width: 100%;
+`
+
+const DefualtImage = styled.div`
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  background-color: ${({ theme }) => theme.COLOR.common.gray[40]};
 `
 
 const SliderStatus = styled.div`
