@@ -1,8 +1,8 @@
+import { Dismiss20Filled } from '@fluentui/react-icons'
 import SliderContainer from 'Component/MenuBoardComponent/SliderContainer'
 import { useRestaurantState } from 'Context/restaurantContext'
 import AmountCheck from 'Utils/AmountCheck'
 import getImageSrc from 'Utils/getImageSrc'
-import { ReactComponent as Dismiss } from 'assets/Dismiss.svg'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import AddCart from './AddCart'
@@ -72,7 +72,7 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
                   openModalHandler(menu ? menu._id : '')
                 }}
               >
-                <Dismiss width="2rem" height="2rem" />
+                <Dismiss20Filled />
               </IconLeft>
             }
           />

@@ -1,3 +1,4 @@
+import { ChevronLeft20Filled, Home24Filled, Person24Filled } from '@fluentui/react-icons'
 import FloatingButton from 'Component/FloatingButton'
 import Footer from 'Component/Footer'
 import Loading from 'Component/Loading'
@@ -12,9 +13,6 @@ import {
 import Navbar from 'Utils/Navbar'
 import getImageSrc from 'Utils/getImageSrc'
 import { Spin } from 'antd'
-import { ReactComponent as Chevron } from 'assets/Chevron.svg'
-import { ReactComponent as Home } from 'assets/Home.svg'
-import { ReactComponent as Person } from 'assets/Person.svg'
 import React, { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
@@ -54,7 +52,7 @@ const MenuBoardPage: React.FC = () => {
           title={restaurant ? restaurant.name : ''}
           lefticon={
             <IconLeft onClick={handleIconLeftClick}>
-              <Chevron width="2rem" height="2rem" fill="#212121" />
+              <ChevronLeft20Filled color="#212121" />
             </IconLeft>
           }
         />
@@ -68,9 +66,9 @@ const MenuBoardPage: React.FC = () => {
       <NavContainer>
         <Navbar
           Icon={{
-            홈: <Home width="2.4rem" height="2.4rem" fill="#BBBBBB" />,
+            홈: <Home24Filled color="#BBBBBB" />,
             '': <></>,
-            마이: <Person width="2.4rem" height="2.4rem" fill="#BBBBBB" />,
+            마이: <Person24Filled color="#BBBBBB" />,
           }}
           index={1}
         />

@@ -1,5 +1,5 @@
+import { Dismiss20Filled } from '@fluentui/react-icons'
 import { Button } from 'antd'
-import { ReactComponent as Dismiss } from 'assets/Dismiss.svg'
 import { ReactComponent as Kakao } from 'assets/kakao.svg'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
@@ -15,7 +15,7 @@ const LoginPage = () => {
     <Container>
       <IconContainer>
         <Icon onClick={handleDismissClick}>
-          <Dismiss width="2rem" height="2rem" />
+          <Dismiss20Filled />
         </Icon>
       </IconContainer>
       <ContainerTitle>
