@@ -19,7 +19,7 @@ const OrderList = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
-  const [sort, setSort] = useState(1)
+  const [sort, setSort] = useState(0)
 
   const queryparams = new URLSearchParams(location.search)
   const defaultOrderId = queryparams.get('orderId')
