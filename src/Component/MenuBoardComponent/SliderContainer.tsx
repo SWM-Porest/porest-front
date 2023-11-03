@@ -7,7 +7,8 @@ const SliderContainer: React.FC<{
   title?: string
   lefticon?: React.ReactNode
   righticon?: React.ReactNode
-}> = ({ images, title, lefticon, righticon }) => {
+  intro?: string
+}> = ({ images, title, intro, lefticon, righticon }) => {
   return (
     <StyledContainer>
       <MainBanner images={images} />
@@ -16,7 +17,10 @@ const SliderContainer: React.FC<{
       {/* <IconRight>
         <LocalLanguage width="2rem" height="2rem" fill="#212121" />
       </IconRight> */}
-      {title && <RestaurantName>{title}</RestaurantName>}
+      <RestaurantInfo>
+        {title && <RestaurantName>{title}</RestaurantName>}
+        {intro && <RestaurantIntro>{intro}</RestaurantIntro>}
+      </RestaurantInfo>
     </StyledContainer>
   )
 }
@@ -47,17 +51,38 @@ const IconRight = styled(Icon)`
   right: 1.2rem;
 `
 
+const RestaurantInfo = styled.div`
+  position: absolute;
+  left: 2rem;
+  bottom: 3rem;
+  margin: 0;
+  max-height: 10rem;
+  width: 70%;
+`
+
 const RestaurantName = styled.h1`
   color: ${({ theme }) => theme.COLOR.common.white[0]};
   font-style: normal;
   font-weight: 900;
 
-  position: absolute;
-  left: 2rem;
-  bottom: 2rem;
-  margin: 0;
   cursor: default;
 `
+
+const RestaurantIntro = styled.div`
+  color: ${({ theme }) => theme.COLOR.common.white[70]};
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.6rem;
+
+  max-height: 5rem;
+  word-break: break-all;
+
+  cursor: default;
+  white-space: normal;
+  overflow: auto;
+  width: 100%;
+`
+
 export const StyledSpin = styled(Spin)`
   &&& {
     position: fixed;

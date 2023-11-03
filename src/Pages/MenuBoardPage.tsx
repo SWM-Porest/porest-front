@@ -52,6 +52,7 @@ const MenuBoardPage: React.FC = () => {
               : []
           }
           title={restaurant ? restaurant.name : ''}
+          intro={restaurant ? restaurant.intro : ''}
           lefticon={
             <IconLeft onClick={handleIconLeftClick}>
               <Chevron width="2rem" height="2rem" fill="#212121" />
