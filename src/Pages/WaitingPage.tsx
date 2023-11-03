@@ -1,15 +1,15 @@
+import { ChevronLeft20Filled } from '@fluentui/react-icons'
 import { getWaiting, getWaitingTeam } from 'Api/getWaiting'
 import { useAccessToken } from 'Api/tokenCookie'
+import { fetchWaitingCancel } from 'Api/updateWaiting'
+import { Waiting } from 'Api/waitingRegistration'
 import Header from 'Component/Header'
+import { FullPageDiv, RotateButton, Step1, Step2, Step3 } from 'Component/WaitingComponent/HeadCountForm'
 import { getRestaurant, useRestaurantDispatch, useRestaurantState } from 'Context/restaurantContext'
+import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { StyledSpin } from './MenuBoardPage'
-import { FullPageDiv, RotateButton, Step1, Step2, Step3 } from 'Component/WaitingComponent/HeadCountForm'
-import { fetchWaitingCancel } from 'Api/updateWaiting'
-import { ReactComponent as Chevron } from 'assets/Chevron.svg'
-import { Waiting, fetchWaitingRegistration } from 'Api/waitingRegistration'
-import axios from 'axios'
 
 enum StepNumber {
   SelectHeadCounter = 1,
@@ -122,11 +122,7 @@ const WaitingPage = () => {
   return (
     <FullPageDiv>
       <Header
-        Left={
-          stepNumber === StepNumber.RegisterWaiting && (
-            <Chevron width="2rem" height="2rem" fill="#212121" onClick={prevPage} />
-          )
-        }
+        Left={stepNumber === StepNumber.RegisterWaiting && <ChevronLeft20Filled color="#212121" onClick={prevPage} />}
         HeaderName={headerNames[stepNumber]}
         Right={stepNumber === StepNumber.WaitingData && <RotateButton />}
       />
