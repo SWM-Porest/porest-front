@@ -31,7 +31,7 @@ const MainBanner: React.FC<SliderProps> = ({ images }) => {
         )}
       </Carousel>
       <SliderStatus>
-        <WhiteText>{currentSlide + 1}</WhiteText>
+        <WhiteText>{totalImages === 0 ? 0 : currentSlide + 1}</WhiteText>
         <GreyText>/</GreyText>
         <GreyText>{totalImages}</GreyText>
       </SliderStatus>
