@@ -79,7 +79,7 @@ const OrderList = () => {
     }, 0)
   }
   // const totalPrice = userOrderData.orders.reduce((total: number, order: Order) => total + calculateOrderTotal(order), 0)
-  console.log(userOrderData)
+  // console.log(userOrderData)
   return (
     <div>
       <div>

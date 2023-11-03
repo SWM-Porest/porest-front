@@ -18,14 +18,14 @@ function PrivateRoute() {
             })
             window.location.reload()
           } catch (error) {
-            console.log(error)
+            // console.log(error)
             navigate('/login')
           }
         }
         refreshAccessToken()
         navigate(pathname)
       } catch (err) {
-        console.log(err)
+        // console.log(err)
       }
     }
   }, [])

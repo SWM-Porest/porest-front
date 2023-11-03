@@ -84,7 +84,7 @@ const EditRestaurantPage: React.FC = () => {
         refetchTableData()
       })
       .catch((error) => {
-        console.log(error)
+        // console.log(error)
       })
   }
 
@@ -99,7 +99,7 @@ const EditRestaurantPage: React.FC = () => {
         refetchTableData()
       })
       .catch((error) => {
-        console.log(error)
+        // console.log(error)
       })
   }
 
@@ -126,7 +126,7 @@ const EditRestaurantPage: React.FC = () => {
         setValue('banner_images', [...prev, response.data])
       })
       .catch((error) => {
-        console.log(error)
+        // console.log(error)
       })
   }
 

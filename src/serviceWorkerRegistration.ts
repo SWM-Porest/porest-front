@@ -46,7 +46,7 @@ export function register(config?: Config) {
         navigator.serviceWorker.ready.then((reg) => {
           reg.pushManager.getSubscription().then((subscription) => {
             subscription?.unsubscribe().then((successful) => {
-              console.log(successful)
+              // console.log(successful)
             })
           })
         })
@@ -104,7 +104,7 @@ function checkValidServiceWorker(swUrl: string, config?: Config) {
       }
     })
     .catch(() => {
-      console.log('No internet connection found. App is running in offline mode.')
+      // console.log('No internet connection found. App is running in offline mode.')
     })
 }
 

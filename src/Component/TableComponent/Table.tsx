@@ -83,7 +83,7 @@ const Table: React.FC<Props> = ({ table }) => {
         if (viewedTable.orders) return Object.values(order.menus)
       })
       .flat()
-    console.log(menus)
+    // console.log(menus)
     if (menus === undefined || menus.length === 0) {
       return ''
     }

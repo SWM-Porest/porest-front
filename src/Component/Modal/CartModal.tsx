@@ -53,19 +53,19 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
   const handleOrder = async () => {
     const menus = cookie // 카트의 메뉴
     if (!accessToken) {
-      console.log('AccessToken이 없습니다. 로그인 페이지로 이동합니다.')
+      // console.log('AccessToken이 없습니다. 로그인 페이지로 이동합니다.')
       showMessage('로그인을 진행해주세요.', 1500, '/img/close.png')
       navigate('/login')
       return
     }
 
     if (Object.keys(menus).length === 0) {
-      console.log('주문할 메뉴가 없습니다.')
+      // console.log('주문할 메뉴가 없습니다.')
       showMessage('주문할 메뉴가 없습니다.\n주문할 메뉴를 담아주세요.', 1500, '/img/close.png')
       return
     }
     if (!table) {
-      console.log('테이블 번호가 없습니다.')
+      // console.log('테이블 번호가 없습니다.')
       navigate(`/restaurants/${id}/table`)
       showMessage('테이블 번호를 입력해주세요.', 1500, '/img/close.png')
       return
@@ -88,7 +88,7 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
               createOrder(pushSubscription)
             })
             .catch((err) => {
-              console.log(err)
+              // console.log(err)
               createOrder(null)
             })
         }
@@ -115,7 +115,7 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
     })
 
     if (response.ok) {
-      console.log('주문 생성에 성공했습니다.')
+      // console.log('주문 생성에 성공했습니다.')
       handleRemoveMenu()
       showMessage('주문이 완료되었습니다.\n접수 확인을 기다려주십시오.', 1500, '/img/check.png')
       response.json().then((data) => {

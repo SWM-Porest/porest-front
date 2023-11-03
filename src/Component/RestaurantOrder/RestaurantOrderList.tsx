@@ -43,7 +43,7 @@ const RestaurantOrderList = () => {
         await queryClient.refetchQueries('orderList')
       },
       onError: (error) => {
-        console.log(error)
+        // console.log(error)
       },
     },
   )
@@ -95,7 +95,7 @@ const RestaurantOrderList = () => {
     try {
       updateOrderStatusMutation.mutateAsync(order)
     } catch (e) {
-      console.log(e)
+      // console.log(e)
     }
   }
   const getStatusIcon = (status: number) => {
@@ -159,7 +159,7 @@ const RestaurantOrderList = () => {
   }
 
   const OrderList = (data: Order[] | undefined) => {
-    console.log(data)
+    // console.log(data)
     return (
       <List
         itemLayout="horizontal"

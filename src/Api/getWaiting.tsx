@@ -13,7 +13,7 @@ const fetchgetWaiting = async (id: string, accessToken: string): Promise<Waiting
     })
     return response.data
   } catch (error) {
-    console.log('웨이팅 정보가 없습니다.')
+    // console.log('웨이팅 정보가 없습니다.')
   }
 }
 
@@ -43,7 +43,7 @@ export const fetchWaitingTeam = async (id: string, accessToken: string): Promise
     })
     return response.data
   } catch (error) {
-    console.log('현재 대기 팀 수가 없습니다.')
+    // console.log('현재 대기 팀 수가 없습니다.')
   }
 }
 
@@ -54,7 +54,7 @@ export const getWaiting = (restaurant_id: string, accessToken: string): any => {
       retry: 0,
     })
   } catch (err) {
-    console.log('웨이팅 정보가 없습니다.')
+    // console.log('웨이팅 정보가 없습니다.')
   }
 }
 
@@ -65,6 +65,6 @@ export const getWaitingTeam = (restaurant_id: string, accessToken: string): any 
       retry: 0,
     })
   } catch (err) {
-    console.log('현재 대기 팀 수가 없습니다.')
+    // console.log('현재 대기 팀 수가 없습니다.')
   }
 }
