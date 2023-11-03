@@ -6,6 +6,7 @@ import NowWaitingBox from './NowWaitingBox'
 import { StyledButton } from 'Component/MenuComponent/AddCart'
 import AmountCheck from 'Utils/AmountCheck'
 import axios from 'axios'
+import { StyledSpin } from 'Pages/MenuBoardPage'
 
 export const Step1 = ({ nextPage, data }: any) => {
   const [formData, setFormData] = useState(data)
@@ -41,7 +42,14 @@ export const Step1 = ({ nextPage, data }: any) => {
   )
 }
 
-export const Step2 = ({ data, restaurant, onSubmit, team }: any) => {
+export const Step2 = ({ data, restaurant, onSubmit, team, apiLoading }: any) => {
+  if (apiLoading) {
+    return (
+      <StyledSpin tip="Loading" size="large">
+        <div className="content" />
+      </StyledSpin>
+    )
+  }
   // 데이터 확인 및 제출 로직 넣어야 함.
   return (
     <Container>

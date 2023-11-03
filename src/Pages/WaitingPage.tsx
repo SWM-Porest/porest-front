@@ -22,6 +22,7 @@ const WaitingPage = () => {
   const defaultId = restaurant_id || ''
   const [data, setData] = useState({ head_count: 2, restaurant_id: defaultId })
   const [stepNumber, setStepNumber] = useState(StepNumber.SelectHeadCounter)
+  const [apiLoading, setApiLoading] = useState(false)
   const headerNames = ['', '방문 인원 선택하기', '웨이팅 등록하기', '현재 대기 정보']
   const [accessToken] = useAccessToken()
   const dispatch = useRestaurantDispatch()
@@ -43,6 +44,7 @@ const WaitingPage = () => {
   }
 
   const onSubmit = async () => {
+    setApiLoading(true)
     const waitingRegistration = async (pushSubscription: PushSubscription | null): Promise<Waiting> => {
       const body = { ...data, token: pushSubscription }
       const response = await axios({
@@ -53,13 +55,13 @@ const WaitingPage = () => {
         },
         data: body,
       })
-      console.log(response)
       return response.data
     }
 
     try {
       Notification.requestPermission().then((permission) => {
         if (permission == 'denied') {
+          setApiLoading(false)
           return waitingRegistration(null)
         } else if (navigator.serviceWorker) {
           navigator.serviceWorker
@@ -103,7 +105,8 @@ const WaitingPage = () => {
       alert('취소 중 오류가 발생했습니다.')
     }
   }
-  if (loading && isLoading && isLoading2) {
+
+  if (!(!loading && !isLoading && !isLoading2)) {
     return (
       <StyledSpin tip="Loading" size="large">
         <div className="content" />
@@ -129,7 +132,13 @@ const WaitingPage = () => {
       />
       {stepNumber === StepNumber.SelectHeadCounter && <Step1 nextPage={nextPage} data={data} />}
       {stepNumber === StepNumber.RegisterWaiting && (
-        <Step2 data={data} restaurant={restaurant} team={waitingTeam.waiting_teams} onSubmit={onSubmit} />
+        <Step2
+          data={data}
+          restaurant={restaurant}
+          team={waitingTeam.waiting_teams}
+          onSubmit={onSubmit}
+          apiLoading={apiLoading}
+        />
       )}
       {stepNumber === StepNumber.WaitingData && (
         <Step3 data={data} cancel={cancelWaiting} team={waitingTeam.waiting_teams} accessToken={accessToken} />
