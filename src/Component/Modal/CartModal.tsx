@@ -1,3 +1,4 @@
+import { ChevronLeft20Filled } from '@fluentui/react-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { getCookie, removeAllCookie } from 'Api/cartCookie'
 import { getTableNumberCookie } from 'Api/tableCookie'
@@ -6,7 +7,6 @@ import CartPrice from 'Component/CartComponent/CartPrice'
 import Header from 'Component/Header'
 import { useCartModal } from 'Context/CartModalContext'
 import { useRestaurantState } from 'Context/restaurantContext'
-import { ReactComponent as Chevron } from 'assets/Chevron.svg'
 import React, { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { styled } from 'styled-components'
@@ -133,7 +133,7 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
         <Header
           Left={
             <Icon onClick={closeModal}>
-              <Chevron width="2rem" height="2rem" fill="#212121" />
+              <ChevronLeft20Filled color="#212121" />
             </Icon>
           }
           HeaderName="주문서"

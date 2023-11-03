@@ -1,4 +1,5 @@
 import { CheckCircleOutlined, ClockCircleOutlined, MinusCircleOutlined, SyncOutlined } from '@ant-design/icons'
+import { ChevronDown20Filled, ChevronRight20Filled } from '@fluentui/react-icons'
 import { Order } from 'Api/OrderInterface'
 import { orderService } from 'Api/orderService'
 import { useAccessToken } from 'Api/tokenCookie'
@@ -7,8 +8,6 @@ import { getTimeDiff } from 'Pages/EditWaitingPage'
 import ErrorPage from 'Pages/ErrorPage'
 import { onOrder } from 'Socket/socketio'
 import { Button, List, Space, Tabs, TabsProps, Tag, message } from 'antd'
-import { ReactComponent as ChevronD } from 'assets/ChevronD.svg'
-import { ReactComponent as ChevronR } from 'assets/ChevronR.svg'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
@@ -183,9 +182,9 @@ const RestaurantOrderList = () => {
                   <StyledMenuContainer>
                     <span onClick={() => toggleExpandedOrder(item)}>
                       {expandedOrder && expandedOrder._id === item._id ? (
-                        <ChevronD width="2rem" height="2rem" fill="#212121" />
+                        <ChevronDown20Filled color="#212121" />
                       ) : (
-                        <ChevronR width="2rem" height="2rem" fill="#212121" />
+                        <ChevronRight20Filled color="#212121" />
                       )}
                     </span>
                     {Object.values(item.menus).length === 1

@@ -1,7 +1,7 @@
+import { ChevronLeft20Filled } from '@fluentui/react-icons'
 import Header from 'Component/Header'
 import { MenuModal } from 'Component/MenuComponent/MenuModal'
 import { Restaurant } from 'Context/restaurantContext'
-import { ReactComponent as Chevron } from 'assets/Chevron.svg'
 import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
@@ -84,7 +84,7 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
           <Header
             Left={
               <Icon onClick={handleIconLeftClick}>
-                <Chevron width="2rem" height="2rem" fill="#212121" />
+                <ChevronLeft20Filled color="#212121" />
               </Icon>
             }
             HeaderName={info ? info.name : ''}

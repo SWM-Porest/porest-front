@@ -1,5 +1,4 @@
-import { ReactComponent as Plus } from 'assets/Add.svg'
-import { ReactComponent as Minus } from 'assets/Subtract.svg'
+import { Add12Filled, Subtract12Filled } from '@fluentui/react-icons'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -13,11 +12,11 @@ const AmountCheck: React.FC<AmountContainerProps> = ({ count, handleIncrement, h
   return (
     <Container>
       <MinusButton onClick={handleDecrement}>
-        <Minus />
+        <Subtract12Filled />
       </MinusButton>
       <CountSpan>{count}</CountSpan>
       <PlusButton onClick={handleIncrement}>
-        <Plus />
+        <Add12Filled />
       </PlusButton>
     </Container>
   )

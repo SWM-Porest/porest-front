@@ -1,3 +1,4 @@
+import { ChevronLeft20Filled } from '@fluentui/react-icons'
 import { Order, OrderMenu } from 'Api/OrderInterface'
 import Header from 'Component/Header'
 import OrderInfo from 'Component/ProfileComponent/OrderInfo'
@@ -6,7 +7,6 @@ import TotalPrice from 'Component/ProfileComponent/TotalPrice'
 import { getTimeDiff } from 'Pages/EditWaitingPage'
 import type { StepsProps } from 'antd'
 import { Popover, Steps } from 'antd'
-import { ReactComponent as Chevron } from 'assets/Chevron.svg'
 import dayjs from 'dayjs'
 import React from 'react'
 import styled from 'styled-components'
@@ -89,16 +89,7 @@ const OrderModal: React.FC<OwnProps> = ({ order, isOpen, openModalHandler }) => 
 
         <ModalView $load={isOpen} onClick={(e) => e.stopPropagation()}>
           <Header
-            Left={
-              <Chevron
-                width="2rem"
-                height="2rem"
-                fill="#212121"
-                onClick={() => {
-                  openModalHandler(order ? order._id : '')
-                }}
-              />
-            }
+            Left={<ChevronLeft20Filled color="#212121" onClick={() => openModalHandler(order ? order._id : '')} />}
             HeaderName={'주문내역'}
           />
 

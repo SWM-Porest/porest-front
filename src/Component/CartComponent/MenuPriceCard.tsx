@@ -1,8 +1,8 @@
+import { Dismiss24Filled } from '@fluentui/react-icons'
 import { removeCookie, setCookie } from 'Api/cartCookie'
 import { Menu, useRestaurantState } from 'Context/restaurantContext'
 import AmountCheck from 'Utils/AmountCheck'
 import getImageSrc from 'Utils/getImageSrc'
-import { ReactComponent as Dismiss } from 'assets/Dismiss.svg'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 interface OwnProps {
@@ -66,7 +66,7 @@ const MenuPriceCard: React.FC<OwnProps> = ({ info, orderinfo, handlePriceTotalCh
             ))}
           </MenuInfoDetailsContainer>
         </MenuInfoImageContainer>
-        <Dismiss width="2.4rem" height="2.4rem" onClick={handleRemoveMenu} cursor="pointer" />
+        <Dismiss24Filled onClick={handleRemoveMenu} cursor="pointer" />
       </MenuInfoContainer>
 
       <MenuPriceContainer>
