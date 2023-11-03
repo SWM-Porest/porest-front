@@ -41,9 +41,7 @@ const MenuCardContainer = styled.div`
 
   color: inherit;
   text-decoration: none;
-
-  border-top: ridge;
-  border-color: ${({ theme }) => theme.COLOR.common.gray[700]};
+  border-top: 0.1rem solid ${({ theme }) => theme.COLOR.common.gray[90]};
   cursor: pointer;
 `
 
