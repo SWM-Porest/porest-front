@@ -61,8 +61,7 @@ export const fetchWaitingRegistration = async (data: CreateWaitingDto, accessTok
       throw new Error()
     }
   } catch (error) {
-    // 오류 처리 로직 추가
-    console.error('오류 발생:', error)
-    throw error // 또는 적절한 방식으로 오류 처리
+    // console.log(error)
+    throw new Error()
   }
 }

@@ -99,7 +99,7 @@ const WaitingPage = () => {
         setStepNumber(StepNumber.SelectHeadCounter)
         window.location.reload()
       } else {
-        console.log('취소 안함')
+        // console.log('취소 안함')
       }
     } catch (err) {
       alert('취소 중 오류가 발생했습니다.')

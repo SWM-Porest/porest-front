@@ -3,10 +3,11 @@ import Header from 'Component/Header'
 import OrderInfo from 'Component/ProfileComponent/OrderInfo'
 import RestaurantInfo from 'Component/ProfileComponent/RestaurantInfo'
 import TotalPrice from 'Component/ProfileComponent/TotalPrice'
-import formatDate from 'Utils/formatDate'
+import { getTimeDiff } from 'Pages/EditWaitingPage'
 import type { StepsProps } from 'antd'
 import { Popover, Steps } from 'antd'
 import { ReactComponent as Chevron } from 'assets/Chevron.svg'
+import dayjs from 'dayjs'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -104,19 +105,19 @@ const OrderModal: React.FC<OwnProps> = ({ order, isOpen, openModalHandler }) => 
           <ContentContainer>
             <CustomSteps direction="vertical" current={order.status - 1} progressDot={customDot}>
               {shouldShowStep(1) && (
-                <Step title={getStatusText(1)} description={formatDate(`${order.status_updated_at[1]}`)} />
+                <Step title={getStatusText(1)} description={getTimeDiff(dayjs(`${order.status_updated_at[1]}`))} />
               )}
               {shouldShowStep(2) && (
-                <Step title={getStatusText(2)} description={formatDate(`${order.status_updated_at[2]}`)} />
+                <Step title={getStatusText(2)} description={getTimeDiff(dayjs(`${order.status_updated_at[2]}`))} />
               )}
               {shouldShowStep(3) && (
-                <Step title={getStatusText(3)} description={formatDate(`${order.status_updated_at[3]}`)} />
+                <Step title={getStatusText(3)} description={getTimeDiff(dayjs(`${order.status_updated_at[3]}`))} />
               )}
               {shouldShowStep(4) && (
-                <Step title={getStatusText(4)} description={formatDate(`${order.status_updated_at[4]}`)} />
+                <Step title={getStatusText(4)} description={getTimeDiff(dayjs(`${order.status_updated_at[4]}`))} />
               )}
               {shouldShowStep(5) && (
-                <Step title={getStatusText(5)} description={formatDate(`${order.status_updated_at[5]}`)} />
+                <Step title={getStatusText(5)} description={getTimeDiff(dayjs(`${order.status_updated_at[5]}`))} />
               )}
             </CustomSteps>
 

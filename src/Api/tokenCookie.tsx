@@ -45,6 +45,6 @@ export const getRefreshToken = () => {
       retry: 0,
     })
   } catch (err) {
-    console.log(err)
+    // console.log(err)
   }
 }

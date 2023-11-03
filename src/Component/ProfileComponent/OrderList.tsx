@@ -3,23 +3,26 @@ import { useAccessToken } from 'Api/tokenCookie'
 import useUserData from 'Api/useUserData'
 import useUserOrderData from 'Api/useUserOrderData'
 import OrderModal from 'Component/Modal/OrderModal'
+import { getTimeDiff } from 'Pages/EditWaitingPage'
 import getImageSrc from 'Utils/getImageSrc'
-import { Table } from 'antd'
 import { ReactComponent as ChevronR } from 'assets/ChevronR.svg'
+import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
+import { Pagination, Select, Table } from 'antd'
+const { Option } = Select
+
 const OrderList = () => {
-  const page = 1 // page 변수 정의
-  const pageSize = 10 // pageSize 변수 정의
-  const sort = 0 // sort 변수 정의
-
-  const queryparams = new URLSearchParams(location.search)
-  const defaultOrderId = queryparams.get('orderId')
-
   const [accessToken, setAccessToken] = useAccessToken()
   const [orderId, setOrderId] = useState('')
   const [isOpen, setIsOpen] = useState(false)
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
+  const [sort, setSort] = useState(1)
+
+  const queryparams = new URLSearchParams(location.search)
+  const defaultOrderId = queryparams.get('orderId')
 
   const { data: userOrderData, isLoading, isError } = useUserOrderData(page, pageSize, sort, accessToken)
   const { data: userData } = useUserData(accessToken)
@@ -29,16 +32,23 @@ const OrderList = () => {
     setIsOpen(!isOpen)
   }
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
-  }
-
   useEffect(() => {
     if (defaultOrderId) {
       openModalHandler(defaultOrderId)
     }
   }, [])
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage)
+  }
+
+  const handlePageSizeChange = (newSize: number) => {
+    setPageSize(newSize)
+    setPage(1)
+  }
+  const handleSortChange = (newSort: number) => {
+    setSort(newSort)
+  }
 
   if (isLoading) {
     return <div>Loading...</div>
@@ -51,38 +61,7 @@ const OrderList = () => {
   if (!userData || !userOrderData || !Array.isArray(userOrderData.orders)) {
     return <div>No orders found.</div>
   }
-
-  const restaurantOrders: Record<string, { name: string; count: number }> = {}
-  userOrderData.orders.forEach((order: Order) => {
-    const { restaurant_id, restaurant_name } = order
-    if (restaurant_id in restaurantOrders) {
-      restaurantOrders[restaurant_id].count++
-    } else {
-      restaurantOrders[restaurant_id] = {
-        name: restaurant_name,
-        count: 1,
-      }
-    }
-  })
-  const restaurantOrderDataSource = Object.keys(restaurantOrders).map((restaurant_id) => ({
-    key: restaurant_id,
-    restaurant: restaurantOrders[restaurant_id].name,
-    orderCount: restaurantOrders[restaurant_id].count,
-  }))
-
-  const restaurantOrderColumns = [
-    {
-      title: '레스토랑',
-      dataIndex: 'restaurant',
-      key: 'restaurant',
-    },
-    {
-      title: '주문 횟수',
-      dataIndex: 'orderCount',
-      key: 'orderCount',
-      render: (text: number) => <span>{text}회</span>,
-    },
-  ]
+  const totalPages = Math.ceil(userOrderData.totalCount / pageSize)
 
   const calculateOrderTotal = (order: Order): number => {
     return Object.values(order.menus).reduce((menuTotal: number, menu: OrderMenu) => {
@@ -99,8 +78,8 @@ const OrderList = () => {
       return menuTotal + menuPrice
     }, 0)
   }
-  const totalPrice = userOrderData.orders.reduce((total: number, order: Order) => total + calculateOrderTotal(order), 0)
-
+  // const totalPrice = userOrderData.orders.reduce((total: number, order: Order) => total + calculateOrderTotal(order), 0)
+  // console.log(userOrderData)
   return (
     <div>
       <div>
@@ -108,12 +87,17 @@ const OrderList = () => {
           <StyledContainer>
             <Container>
               <StyledTitle>
-                {userData.nickname}님은 <ColoredText>{userOrderData.orders.length}</ColoredText>회 주문하셨고,
+                {userData.nickname}님은 <ColoredText>{userOrderData.totalCount}</ColoredText>회 주문하셨습니다.
               </StyledTitle>
-              <StyledTitle>
-                <ColoredText>{totalPrice.toLocaleString()}</ColoredText>원 결제하셨어요.
-              </StyledTitle>
-              <StyledTable columns={restaurantOrderColumns} dataSource={restaurantOrderDataSource} pagination={false} />
+              <Select value={pageSize} style={{ width: 120, marginRight: '1rem' }} onChange={handlePageSizeChange}>
+                <Option value={10}>10개씩 보기</Option>
+                <Option value={20}>20개씩 보기</Option>
+                <Option value={30}>30개씩 보기</Option>
+              </Select>
+              <Select value={sort} style={{ width: 120 }} onChange={handleSortChange}>
+                <Option value={0}>최신순</Option>
+                <Option value={1}>오래된 순</Option>
+              </Select>
             </Container>
             {userOrderData.orders.map((order: Order) => (
               <div key={order._id}>
@@ -132,16 +116,16 @@ const OrderList = () => {
                   <InfoContainer>
                     {Object.values(order.menus)
                       .slice(0, 1)
-                      .map((menu: OrderMenu, menuIndex: number) => (
+                      .map((menu, menuIndex) => (
                         <MenuImage key={menuIndex} src={getImageSrc(menu.img)} alt="메뉴 이미지" />
                       ))}
                     <MenuDetailsContainer key={`menu_${order._id}`}>
-                      <MenuDateContainer>{formatDate(order.updated_at)}</MenuDateContainer>
+                      <MenuDateContainer>{getTimeDiff(dayjs(order.updated_at))}</MenuDateContainer>
                       <RestaurantNameContainer>{order.restaurant_name}</RestaurantNameContainer>
                       <div>
                         {Object.values(order.menus)
                           .slice(0, 1)
-                          .map((menu: OrderMenu, menuIndex: number) => (
+                          .map((menu, menuIndex) => (
                             <StyledSpan key={menuIndex}>
                               {Object.values(order.menus).length > 1 ? (
                                 <span>
@@ -159,7 +143,7 @@ const OrderList = () => {
                       </div>
                     </MenuDetailsContainer>
                   </InfoContainer>
-                  <ChevronR />
+                  <ChevronR width="2rem" height="2rem" fill="#AAAAA" />
                 </OrderDetails>
               </div>
             ))}
@@ -170,6 +154,13 @@ const OrderList = () => {
           </StyledContainer>
         )}
       </div>
+      <StyledPagination
+        current={page}
+        total={userOrderData.totalCount}
+        pageSize={pageSize}
+        showSizeChanger={false}
+        onChange={handlePageChange}
+      />
     </div>
   )
 }
@@ -249,4 +240,9 @@ const StyledSpan = styled.span`
   font-style: normal;
   font-weight: 400;
   line-height: 1.8rem;
+`
+const StyledPagination = styled(Pagination)`
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
 `

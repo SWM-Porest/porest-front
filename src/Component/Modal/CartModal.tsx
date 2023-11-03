@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { getCookie, removeAllCookie } from 'Api/cartCookie'
+import { getTableNumberCookie } from 'Api/tableCookie'
 import { useAccessToken } from 'Api/tokenCookie'
 import CartPrice from 'Component/CartComponent/CartPrice'
 import Header from 'Component/Header'
@@ -7,9 +8,8 @@ import { useCartModal } from 'Context/CartModalContext'
 import { useRestaurantState } from 'Context/restaurantContext'
 import { ReactComponent as Chevron } from 'assets/Chevron.svg'
 import React, { useEffect } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { styled } from 'styled-components'
-
 interface OwnProps {
   isOpen: boolean
 }
@@ -18,11 +18,15 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
   const cookie = getCookie(restaurant?._id as string) || {}
   const { isModalOpen, closeModal } = useCartModal()
   const [accessToken] = useAccessToken()
-  const location = useLocation()
-  const queryparams = new URLSearchParams(location.search)
-  const table = queryparams.get('table')
+
   const { id } = useParams()
   const navigate = useNavigate()
+  const getTableFromCookie = () => {
+    const tableCookie = getTableNumberCookie()
+    return tableCookie || ''
+  }
+
+  const table = getTableFromCookie()
 
   if (isOpen) {
     document.body.style.overflow = 'hidden'
@@ -49,19 +53,19 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
   const handleOrder = async () => {
     const menus = cookie // 카트의 메뉴
     if (!accessToken) {
-      console.log('AccessToken이 없습니다. 로그인 페이지로 이동합니다.')
+      // console.log('AccessToken이 없습니다. 로그인 페이지로 이동합니다.')
       showMessage('로그인을 진행해주세요.', 1500, '/img/close.png')
       navigate('/login')
       return
     }
 
     if (Object.keys(menus).length === 0) {
-      console.log('주문할 메뉴가 없습니다.')
+      // console.log('주문할 메뉴가 없습니다.')
       showMessage('주문할 메뉴가 없습니다.\n주문할 메뉴를 담아주세요.', 1500, '/img/close.png')
       return
     }
     if (!table) {
-      console.log('테이블 번호가 없습니다.')
+      // console.log('테이블 번호가 없습니다.')
       navigate(`/restaurants/${id}/table`)
       showMessage('테이블 번호를 입력해주세요.', 1500, '/img/close.png')
       return
@@ -82,6 +86,10 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
             })
             .then(async (pushSubscription) => {
               createOrder(pushSubscription)
+            })
+            .catch((err) => {
+              // console.log(err)
+              createOrder(null)
             })
         }
       })
@@ -107,7 +115,7 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
     })
 
     if (response.ok) {
-      console.log('주문 생성에 성공했습니다.')
+      // console.log('주문 생성에 성공했습니다.')
       handleRemoveMenu()
       showMessage('주문이 완료되었습니다.\n접수 확인을 기다려주십시오.', 1500, '/img/check.png')
       response.json().then((data) => {
@@ -172,6 +180,7 @@ const ModalView = styled.div<{ $load: boolean }>`
   @media screen and (min-width: ${({ theme }) => theme.MEDIA.tablet}) {
     width: ${({ theme }) => theme.MEDIA.mobile};
   }
+  overflow-y: auto;
 `
 
 export const CloseButtonContainer = styled.div`

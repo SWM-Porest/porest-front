@@ -23,7 +23,7 @@ const LoginPage = () => {
         <StyledName>Porest</StyledName>
       </ContainerTitle>
       <ButtonContainer>
-        <LoginButton href="http://localhost:3001/auth/kakao">
+        <LoginButton href={`${process.env.REACT_APP_API_URL}/auth/kakao`}>
           <Kakao width="2.4rem" height="2.4rem" />
           <Text>카카오로 시작하기</Text>
           <></>

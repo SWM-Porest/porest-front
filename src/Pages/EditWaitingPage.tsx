@@ -38,7 +38,7 @@ const EditWaitingPage = () => {
         if (response) {
           const newWaitings = waitings.filter((waiting) => waiting._id !== waitingId)
           setWaitings(newWaitings)
-          console.log('취소')
+          // console.log('취소')
         }
       })
   }
@@ -62,7 +62,7 @@ const EditWaitingPage = () => {
                 })
                 .sort((a, b) => b.status - a.status)
               setWaitings(newWaitings)
-              console.log('호출')
+              // console.log('호출')
             }
           })
         break
@@ -76,7 +76,7 @@ const EditWaitingPage = () => {
             if (response) {
               const newWaitings = waitings.filter((waiting) => waiting._id !== waitingId)
               setWaitings(newWaitings)
-              console.log('입장')
+              // console.log('입장')
             }
           })
     }
