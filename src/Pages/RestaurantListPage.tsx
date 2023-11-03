@@ -146,12 +146,18 @@ const InfoContainer = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 0.4rem;
+  width: 100%;
 `
 const StyledInfo = styled.div`
   color: ${({ theme }) => theme.COLOR.common.gray[30]};
   font-size: 1.2rem;
   font-style: normal;
   font-weight: 400;
+
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 
 const Container = styled.div`
