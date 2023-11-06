@@ -16,11 +16,13 @@ import { createBrowserRouter } from 'react-router-dom'
 import PrivateRoute from 'Routes/private'
 import CreateOrUpdateMenuPage from 'Pages/CreateOrUpdateMenuPage'
 import TablePage from 'Pages/TablePage'
+import RootRedirect from 'Pages/RootRedirect'
 
 const router = createBrowserRouter([
   {
     path: '/',
     children: [
+      { path: '/', element: <RootRedirect /> },
       {
         path: '/login',
         element: <LoginPage />,
