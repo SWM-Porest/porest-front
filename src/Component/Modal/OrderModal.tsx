@@ -7,9 +7,10 @@ import TotalPrice from 'Component/ProfileComponent/TotalPrice'
 import { getTimeDiff } from 'Pages/EditWaitingPage'
 import type { StepsProps } from 'antd'
 import { Popover, Steps } from 'antd'
-import dayjs from 'dayjs'
+import dayjs, { duration } from 'dayjs'
 import React from 'react'
 import styled from 'styled-components'
+dayjs.extend(duration)
 
 const { Step } = Steps
 
