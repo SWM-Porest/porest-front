@@ -71,28 +71,29 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
       return
     }
     try {
-      Notification.requestPermission().then((permission) => {
-        if (permission == 'denied') {
-          createOrder(null)
-        } else if (navigator.serviceWorker) {
-          navigator.serviceWorker
-            .register('../service-worker.js', { scope: '/' })
-            .then((registration) => {
-              const subscribeOptions = {
-                userVisibleOnly: true,
-                applicationServerKey: process.env.REACT_APP_PUBLIC_VAPID_KEY,
-              }
-              return registration.pushManager.subscribe(subscribeOptions)
-            })
-            .then(async (pushSubscription) => {
-              createOrder(pushSubscription)
-            })
-            .catch((err) => {
-              // console.log(err)
-              createOrder(null)
-            })
-        }
-      })
+      createOrder(null)
+      // Notification.requestPermission().then((permission) => {
+      //   if (permission == 'denied') {
+      //     createOrder(null)
+      //   } else if (navigator.serviceWorker) {
+      //     navigator.serviceWorker
+      //       .register('../service-worker.js', { scope: '/' })
+      //       .then((registration) => {
+      //         const subscribeOptions = {
+      //           userVisibleOnly: true,
+      //           applicationServerKey: process.env.REACT_APP_PUBLIC_VAPID_KEY,
+      //         }
+      //         return registration.pushManager.subscribe(subscribeOptions)
+      //       })
+      //       .then(async (pushSubscription) => {
+      //         createOrder(pushSubscription)
+      //       })
+      //       .catch((err) => {
+      //         // console.log(err)
+      //         createOrder(null)
+      //       })
+      //   }
+      // })
     } catch (error) {
       console.error('주문 생성 중 오류 발생:', error)
     }
