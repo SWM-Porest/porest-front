@@ -64,12 +64,12 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
       showMessage('주문할 메뉴가 없습니다.\n주문할 메뉴를 담아주세요.', 1500, '/img/close.png')
       return
     }
-    if (!table) {
-      // console.log('테이블 번호가 없습니다.')
-      navigate(`/restaurants/${id}/table`)
-      showMessage('테이블 번호를 입력해주세요.', 1500, '/img/close.png')
-      return
-    }
+    // if (!table) {
+    //   // console.log('테이블 번호가 없습니다.')
+    //   navigate(`/restaurants/${id}/table`)
+    //   showMessage('테이블 번호를 입력해주세요.', 1500, '/img/close.png')
+    //   return
+    // }
     try {
       createOrder(null)
       // Notification.requestPermission().then((permission) => {
@@ -109,7 +109,7 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
         restaurant_id: restaurant?._id,
         restaurant_name: restaurant?.name,
         restaurant_address: restaurant?.address,
-        table_id: table,
+        table_id: 1,
         menus: cookie,
         token: pushSubscription,
       }),
