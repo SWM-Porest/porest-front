@@ -3,6 +3,7 @@ import { ChevronDown20Filled, ChevronRight20Filled } from '@fluentui/react-icons
 import { Order } from 'Api/OrderInterface'
 import { orderService } from 'Api/orderService'
 import { useAccessToken } from 'Api/tokenCookie'
+import { getSpeech } from 'Api/tts'
 import Loading from 'Component/Loading'
 import { getTimeDiff } from 'Pages/EditWaitingPage'
 import ErrorPage from 'Pages/ErrorPage'
@@ -231,11 +232,13 @@ const RestaurantOrderList = () => {
   ]
 
   useEffect(() => {
+    window.speechSynthesis.getVoices()
     onOrder(id, (event) => {
       const newOrder = event.content as Order
+      getSpeech(`${newOrder.table_id}번 테이블에서 ${Object.values(newOrder.menus)[0].menu_name} 주문이 들어왔습니다.`)
       queryClient.setQueriesData('orderList', (oldData: any) => (newOrder ? [...oldData, newOrder] : oldData))
     })
-  })
+  }, [])
 
   if (isLoading) return <Loading />
 
