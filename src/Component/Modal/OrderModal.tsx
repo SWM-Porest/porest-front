@@ -163,7 +163,6 @@ const ModalBackdrop = styled.div<{ $load: boolean }>`
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  background-color: ${({ theme }) => theme.COLOR.common.black[20]};
   ${(props) => (props.$load ? 'top: 0; left: 0; right: 0;' : '')};
 `
 
