@@ -1,5 +1,4 @@
-import { Settings24Filled } from '@fluentui/react-icons'
-import { useAccessToken } from 'Api/tokenCookie'
+import { logout, useAccessToken } from 'Api/tokenCookie'
 import useUserData from 'Api/useUserData'
 import { ReactComponent as Person } from 'assets/Person.svg'
 import styled from 'styled-components'
@@ -11,6 +10,10 @@ const ProfileBox = () => {
   if (!userData) {
     return <div>No orders found.</div>
   }
+  const handleLogout = () => {
+    logout()
+    window.location.href = '/restaurants'
+  }
 
   return (
     <Container>
@@ -21,9 +24,10 @@ const ProfileBox = () => {
           <Mail>{userData.email}</Mail>
         </ContentsContainer>
       </ProfileContainer>
-      <SettingContainer>
+      {/* <SettingContainer>
         <Settings24Filled onClick={() => alert('현재 준비 중인 기능입니다.')} />
-      </SettingContainer>
+      </SettingContainer> */}
+      <SettingContainer onClick={handleLogout}>Logout</SettingContainer>
     </Container>
   )
 }
@@ -52,6 +56,8 @@ const SettingContainer = styled.div`
   align-items: center;
   border-radius: 2.2rem;
   background: ${({ theme }) => theme.COLOR.common.gray[120]};
+  font-weight: 700;
+  font-size: 1.2rem;
 `
 const ContentsContainer = styled.div`
   display: flex;
