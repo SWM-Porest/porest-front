@@ -65,7 +65,7 @@ const WaitingPage = () => {
           return waitingRegistration(null)
         } else if (navigator.serviceWorker) {
           navigator.serviceWorker
-            .register(`../service-worker.js`, { scope: '/' })
+            .register(`/service-worker.js`, { scope: '/' })
             .then((registration) => {
               const subscribeOptions = {
                 userVisibleOnly: true,
