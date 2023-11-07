@@ -25,6 +25,7 @@ const WaitingPage = () => {
   const [stepNumber, setStepNumber] = useState(StepNumber.SelectHeadCounter)
   const [apiLoading, setApiLoading] = useState(false)
   const headerNames = ['', '방문 인원 선택하기', '웨이팅 등록하기', '현재 대기 정보']
+  const pushToken = localStorage.getItem('pushToken')
   const [accessToken] = useAccessToken()
   const dispatch = useRestaurantDispatch()
   const { data: restaurant, loading } = useRestaurantState().restaurant
@@ -46,7 +47,7 @@ const WaitingPage = () => {
 
   const onSubmit = async () => {
     setApiLoading(true)
-    const waitingRegistration = async (pushSubscription: PushSubscription | null): Promise<Waiting> => {
+    const waitingRegistration = async (pushSubscription: string | null): Promise<Waiting> => {
       const body = { ...data, token: pushSubscription }
       const response = await axios({
         method: 'POST',
@@ -64,15 +65,6 @@ const WaitingPage = () => {
       Notification.requestPermission().then((permission) => {
         if (permission === 'granted') {
           console.log('알림 권한 허용')
-
-          const messaging = getMessaging()
-          getToken(messaging, { vapidKey: process.env.REACT_APP_PUBLIC_VAPID_KEY }).then((currentToken) => {
-            if (currentToken) {
-              console.log('토큰 발급 성공', currentToken)
-            } else {
-              console.log('토큰 발급 실패')
-            }
-          })
         } else {
           console.log('알림 건한 거부')
         }
@@ -81,7 +73,8 @@ const WaitingPage = () => {
 
     try {
       requestPermission()
-      waitingRegistration(null)
+      waitingRegistration(pushToken)
+      window.location.reload()
     } catch (error) {
       // 오류 처리 로직 추가
       console.error('오류 발생:', error)

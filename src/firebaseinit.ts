@@ -25,7 +25,7 @@ export function requestPermission() {
     getToken(messaging, { vapidKey: process.env.REACT_APP_FIREBASE_VAPID_KEY })
       .then((token: string) => {
         if (token.length > 0) {
-          console.log(`푸시 토큰 발급 완료 : ${token}`)
+          localStorage.setItem('pushToken', token)
         } else {
           console.log('푸시 토큰 발급 실패')
         }

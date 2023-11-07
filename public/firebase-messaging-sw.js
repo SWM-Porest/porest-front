@@ -19,7 +19,6 @@ self.addEventListener('push', function (e) {
     tag: resultData.tag,
     ...resultData,
   }
-  console.log('push: ', { resultData, notificationTitle, notificationOptions })
 
   self.registration.showNotification(notificationTitle, notificationOptions)
 })
