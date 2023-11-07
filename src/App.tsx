@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { RouterProvider } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 import styled, { ThemeProvider } from 'styled-components'
+import './firebaseinit'
 
 const App: React.FC = () => {
   const queryClient = new QueryClient()

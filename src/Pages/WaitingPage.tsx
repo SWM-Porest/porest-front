@@ -10,6 +10,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { StyledSpin } from './MenuBoardPage'
+import { getMessaging, getToken } from 'firebase/messaging'
 
 enum StepNumber {
   SelectHeadCounter = 1,
@@ -57,32 +58,30 @@ const WaitingPage = () => {
       })
       return response.data
     }
+    const requestPermission = () => {
+      console.log('권한 요청 중')
 
-    try {
       Notification.requestPermission().then((permission) => {
-        if (permission == 'denied') {
-          setApiLoading(false)
-          return waitingRegistration(null)
-        } else if (navigator.serviceWorker) {
-          navigator.serviceWorker
-            .register(`../service-worker.js`, { scope: '/' })
-            .then((registration) => {
-              const subscribeOptions = {
-                userVisibleOnly: true,
-                applicationServerKey: process.env.REACT_APP_PUBLIC_VAPID_KEY,
-              }
-              return registration.pushManager.subscribe(subscribeOptions)
-            })
-            .then(async (pushSubscription) => {
-              const response = await waitingRegistration(pushSubscription)
-              setData({ ...response })
-              setStepNumber(StepNumber.WaitingData)
-            })
-            .catch((err) => {
-              console.log(err)
-            })
+        if (permission === 'granted') {
+          console.log('알림 권한 허용')
+
+          const messaging = getMessaging()
+          getToken(messaging, { vapidKey: process.env.REACT_APP_PUBLIC_VAPID_KEY }).then((currentToken) => {
+            if (currentToken) {
+              console.log('토큰 발급 성공', currentToken)
+            } else {
+              console.log('토큰 발급 실패')
+            }
+          })
+        } else {
+          console.log('알림 건한 거부')
         }
       })
+    }
+
+    try {
+      requestPermission()
+      waitingRegistration(null)
     } catch (error) {
       // 오류 처리 로직 추가
       console.error('오류 발생:', error)
@@ -103,6 +102,7 @@ const WaitingPage = () => {
       }
     } catch (err) {
       alert('취소 중 오류가 발생했습니다.')
+      window.location.reload()
     }
   }
 
