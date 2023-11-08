@@ -7,7 +7,7 @@ import { getSpeech } from 'Api/tts'
 import Loading from 'Component/Loading'
 import { getTimeDiff } from 'Pages/EditWaitingPage'
 import ErrorPage from 'Pages/ErrorPage'
-import { onOrder } from 'Socket/socketio'
+import { connect, disconnect, onOrder } from 'Socket/socketio'
 import { Button, List, Space, Tabs, TabsProps, Tag, message } from 'antd'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
@@ -231,13 +231,20 @@ const RestaurantOrderList = () => {
     },
   ]
 
+  const [isVoiceNotification, setIsVoiceNotification] = useState<boolean>(false)
+
   useEffect(() => {
     window.speechSynthesis.getVoices()
+    connect()
+
     onOrder(id, (event) => {
       const newOrder = event.content as Order
-      getSpeech(`${newOrder.table_id}번 테이블에서 ${Object.values(newOrder.menus)[0].menu_name} 주문이 들어왔습니다.`)
       queryClient.setQueriesData('orderList', (oldData: any) => (newOrder ? [...oldData, newOrder] : oldData))
     })
+
+    return () => {
+      disconnect()
+    }
   }, [])
 
   if (isLoading) return <Loading />
@@ -246,13 +253,53 @@ const RestaurantOrderList = () => {
 
   return (
     <StyledContainer>
-      <div></div>
+      <div>
+        <VoiceNotificationButton
+          onClick={() => {
+            if (isVoiceNotification) {
+              setIsVoiceNotification(false)
+              getSpeech('음성 알림이 꺼졌습니다.')
+              onOrder(id, (event) => {
+                const newOrder = event.content as Order
+                queryClient.setQueriesData('orderList', (oldData: any) => (newOrder ? [...oldData, newOrder] : oldData))
+              })
+            } else {
+              setIsVoiceNotification(true)
+              getSpeech('음성 알림이 켜졌습니다.')
+              onOrder(id, (event) => {
+                const newOrder = event.content as Order
+                queryClient.setQueriesData('orderList', (oldData: any) => (newOrder ? [...oldData, newOrder] : oldData))
+                console.log(
+                  Object.values(newOrder.menus)
+                    .map((menu) => {
+                      return `${menu.menu_name} ${menu.quantity}개`
+                    })
+                    .join(','),
+                )
+                getSpeech(
+                  `${newOrder.table_id}번 테이블에서 ${Object.values(newOrder.menus)
+                    .map((menu) => {
+                      return `${menu.menu_name} ${menu.quantity}개`
+                    })
+                    .join(',')} 주문이 들어왔습니다.`,
+                )
+              })
+            }
+          }}
+        >
+          {isVoiceNotification ? '음성 알림 끄기' : '음성 알림 켜기'}
+        </VoiceNotificationButton>
+      </div>
       {isFetching ? <Loading /> : <Tabs defaultActiveKey="1" items={items} />}
     </StyledContainer>
   )
 }
 
 export default RestaurantOrderList
+
+const VoiceNotificationButton = styled(Button)`
+  margin-bottom: 1rem;
+`
 
 const StyledContainer = styled.div`
   padding: 1rem;
