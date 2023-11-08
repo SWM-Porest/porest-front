@@ -55,7 +55,7 @@ const router = createBrowserRouter([
             element: <EditRestaurantPage />,
           },
           {
-            path: '/waitings/:restaurant_id',
+            path: '/restaurants/:restaurant_id/waitings',
             element: <WaitingPage />,
           },
           {

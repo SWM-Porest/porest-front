@@ -23,7 +23,7 @@ function PrivateRoute() {
           }
         }
         refreshAccessToken()
-        navigate(pathname)
+        navigate('/login/redirection')
       } catch (err) {
         // console.log(err)
       }
