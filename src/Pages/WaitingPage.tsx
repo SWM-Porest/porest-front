@@ -10,7 +10,6 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { StyledSpin } from './MenuBoardPage'
-import { getMessaging, getToken } from 'firebase/messaging'
 
 enum StepNumber {
   SelectHeadCounter = 1,
@@ -25,7 +24,6 @@ const WaitingPage = () => {
   const [stepNumber, setStepNumber] = useState(StepNumber.SelectHeadCounter)
   const [apiLoading, setApiLoading] = useState(false)
   const headerNames = ['', '방문 인원 선택하기', '웨이팅 등록하기', '현재 대기 정보']
-  const pushToken = localStorage.getItem('pushToken')
   const [accessToken] = useAccessToken()
   const dispatch = useRestaurantDispatch()
   const { data: restaurant, loading } = useRestaurantState().restaurant
@@ -47,7 +45,7 @@ const WaitingPage = () => {
 
   const onSubmit = async () => {
     setApiLoading(true)
-    const waitingRegistration = async (pushSubscription: string | null): Promise<Waiting> => {
+    const waitingRegistration = async (pushSubscription: PushSubscription | null): Promise<Waiting> => {
       const body = { ...data, token: pushSubscription }
       const response = await axios({
         method: 'POST',
@@ -59,22 +57,32 @@ const WaitingPage = () => {
       })
       return response.data
     }
-    const requestPermission = () => {
-      console.log('권한 요청 중')
-
-      Notification.requestPermission().then((permission) => {
-        if (permission === 'granted') {
-          console.log('알림 권한 허용')
-        } else {
-          console.log('알림 건한 거부')
-        }
-      })
-    }
 
     try {
-      requestPermission()
-      waitingRegistration(pushToken)
-      window.location.reload()
+      Notification.requestPermission().then((permission) => {
+        if (permission == 'denied') {
+          setApiLoading(false)
+          return waitingRegistration(null)
+        } else if (navigator.serviceWorker) {
+          navigator.serviceWorker
+            .register(`../service-worker.js`, { scope: '/' })
+            .then((registration) => {
+              const subscribeOptions = {
+                userVisibleOnly: true,
+                applicationServerKey: process.env.REACT_APP_PUBLIC_VAPID_KEY,
+              }
+              return registration.pushManager.subscribe(subscribeOptions)
+            })
+            .then(async (pushSubscription) => {
+              const response = await waitingRegistration(pushSubscription)
+              setData({ ...response })
+              setStepNumber(StepNumber.WaitingData)
+            })
+            .catch((err) => {
+              console.log(err)
+            })
+        }
+      })
     } catch (error) {
       // 오류 처리 로직 추가
       console.error('오류 발생:', error)
@@ -95,7 +103,6 @@ const WaitingPage = () => {
       }
     } catch (err) {
       alert('취소 중 오류가 발생했습니다.')
-      window.location.reload()
     }
   }
 
