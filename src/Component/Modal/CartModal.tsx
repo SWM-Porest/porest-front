@@ -18,6 +18,7 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
   const cookie = getCookie(restaurant?._id as string) || {}
   const { isModalOpen, closeModal } = useCartModal()
   const [accessToken] = useAccessToken()
+  const pushToken = localStorage.getItem('pushToken')
 
   const { id } = useParams()
   const navigate = useNavigate()
@@ -71,7 +72,7 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
     //   return
     // }
     try {
-      createOrder(null)
+      createOrder(pushToken)
       // Notification.requestPermission().then((permission) => {
       //   if (permission == 'denied') {
       //     createOrder(null)
@@ -98,7 +99,7 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
       console.error('주문 생성 중 오류 발생:', error)
     }
   }
-  const createOrder = async (pushSubscription: PushSubscription | null) => {
+  const createOrder = async (pushSubscription: string | null) => {
     const response = await fetch(`${process.env.REACT_APP_API_URL}/orders`, {
       method: 'POST',
       headers: {
