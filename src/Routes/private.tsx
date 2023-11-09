@@ -9,24 +9,19 @@ function PrivateRoute() {
 
   useEffect(() => {
     if (!accessToken) {
-      try {
-        localStorage.setItem('savedPath', pathname)
-        const refreshAccessToken = async () => {
-          try {
-            await axios(`${process.env.REACT_APP_API_URL}/auth/refresh-accesstoken`, {
-              method: 'GET',
-            })
-            window.location.reload()
-          } catch (error) {
-            // console.log(error)
-            navigate('/login')
-          }
+      localStorage.setItem('savedPath', pathname)
+      const refreshAccessToken = async () => {
+        try {
+          await axios(`${process.env.REACT_APP_API_URL}/auth/refresh-accesstoken`, {
+            method: 'GET',
+          })
+          window.location.href = '/login/redirection'
+        } catch (error) {
+          // console.log(error)
+          navigate('/login')
         }
-        refreshAccessToken()
-        navigate('/login/redirection')
-      } catch (err) {
-        // console.log(err)
       }
+      refreshAccessToken()
     }
   }, [])
 
