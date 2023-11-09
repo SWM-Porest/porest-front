@@ -59,12 +59,14 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
       showMessage('로그인을 진행해주세요.', 1500, '/img/close.png')
       localStorage.setItem('savedPath', pathname)
       navigate('/login')
+      closeModal()
       return
     }
 
     if (Object.keys(menus).length === 0) {
       // console.log('주문할 메뉴가 없습니다.')
       showMessage('주문할 메뉴가 없습니다.\n주문할 메뉴를 담아주세요.', 1500, '/img/close.png')
+      closeModal()
       return
     }
     // if (!table) {
@@ -75,6 +77,7 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
     // }
     try {
       createOrder(pushToken)
+      closeModal()
       // Notification.requestPermission().then((permission) => {
       //   if (permission == 'denied') {
       //     createOrder(null)
@@ -99,6 +102,7 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
       // })
     } catch (error) {
       console.error('주문 생성 중 오류 발생:', error)
+      closeModal()
     }
   }
   const createOrder = async (pushSubscription: string | null) => {
