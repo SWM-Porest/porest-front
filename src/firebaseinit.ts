@@ -12,28 +12,32 @@ const firebaseConfig = {
 }
 
 export function requestPermission() {
-  void Notification.requestPermission().then((permission) => {
-    if (permission === 'granted') {
-      console.log('푸시 권한 허용')
-    } else if (permission === 'denied') {
-      console.log('푸시 권한 거부')
-    }
+  try {
+    void Notification.requestPermission().then((permission) => {
+      if (permission === 'granted') {
+        console.log('푸시 권한 허용')
+      } else if (permission === 'denied') {
+        console.log('푸시 권한 거부')
+      }
 
-    const firebaseApp = initializeApp(firebaseConfig)
-    const messaging = getMessaging(firebaseApp)
+      const firebaseApp = initializeApp(firebaseConfig)
+      const messaging = getMessaging(firebaseApp)
 
-    getToken(messaging, { vapidKey: process.env.REACT_APP_FIREBASE_VAPID_KEY })
-      .then((token: string) => {
-        if (token.length > 0) {
-          localStorage.setItem('pushToken', token)
-        } else {
-          console.log('푸시 토큰 발급 실패')
-        }
-      })
-      .catch((err) => {
-        console.log('푸시 토큰 가져오는 중에 에러 발생')
-      })
-  })
+      getToken(messaging, { vapidKey: process.env.REACT_APP_FIREBASE_VAPID_KEY })
+        .then((token: string) => {
+          if (token.length > 0) {
+            localStorage.setItem('pushToken', token)
+          } else {
+            console.log('푸시 토큰 발급 실패')
+          }
+        })
+        .catch((err) => {
+          console.log('푸시 토큰 가져오는 중에 에러 발생')
+        })
+    })
+  } catch (err) {
+    console.log('Notification 미지원 브라우저')
+  }
 }
 
 requestPermission()
