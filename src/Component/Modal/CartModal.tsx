@@ -8,7 +8,7 @@ import Header from 'Component/Header'
 import { useCartModal } from 'Context/CartModalContext'
 import { useRestaurantState } from 'Context/restaurantContext'
 import React, { useEffect } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { styled } from 'styled-components'
 interface OwnProps {
   isOpen: boolean
@@ -19,6 +19,7 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
   const { isModalOpen, closeModal } = useCartModal()
   const [accessToken] = useAccessToken()
   const pushToken = localStorage.getItem('pushToken')
+  const { pathname } = useLocation()
 
   const { id } = useParams()
   const navigate = useNavigate()
@@ -56,6 +57,7 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
     if (!accessToken) {
       // console.log('AccessToken이 없습니다. 로그인 페이지로 이동합니다.')
       showMessage('로그인을 진행해주세요.', 1500, '/img/close.png')
+      localStorage.setItem('savedPath', pathname)
       navigate('/login')
       return
     }
