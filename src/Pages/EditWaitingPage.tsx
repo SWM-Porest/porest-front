@@ -146,7 +146,7 @@ export const getTimeDiff = (time: Dayjs): string => {
   } else if (secondDiff > 0) {
     return `${secondDiff}초 전`
   } else {
-    return ''
+    return '방금 전'
   }
 }
 
