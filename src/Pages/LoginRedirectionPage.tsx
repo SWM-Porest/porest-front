@@ -1,14 +1,20 @@
 import { useEffect } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import LoginPage from './LoginPage'
+import { useAccessToken } from 'Api/tokenCookie'
 
 const LoginRedirectionPage = () => {
   const navigate = useNavigate()
   const savedPath = localStorage.getItem('savedPath') || '/restaurants'
-  console.log(savedPath)
+  const [accessToken] = useAccessToken()
+
   useEffect(() => {
-    navigate(savedPath)
+    if (accessToken) {
+      navigate(savedPath)
+    }
   }, [])
-  return <div>{savedPath || <Navigate to={'/restaurants'}></Navigate>}</div>
+
+  return <LoginPage />
 }
 
 export default LoginRedirectionPage
