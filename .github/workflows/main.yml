@@ -17,6 +17,7 @@ jobs:
         run: |
           echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" >> .env
           echo "REACT_APP_STATIC_URL=${{ secrets.REACT_APP_STATIC_URL }}" >> .env
+          echo "REACT_APP_FIREBASE_API_KEY=${{ secrets.REACT_APP_FIREBASE_API_KEY }}" >> .env
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
