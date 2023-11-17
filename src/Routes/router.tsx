@@ -17,6 +17,7 @@ import PrivateRoute from 'Routes/private'
 import CreateOrUpdateMenuPage from 'Pages/CreateOrUpdateMenuPage'
 import TablePage from 'Pages/TablePage'
 import RootRedirect from 'Pages/RootRedirect'
+import ChatbotPage from 'Pages/ChatbotPage'
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: '/restaurants/:id/table', // 레스토랑 id, table number
         element: <TablePage />,
+      },
+      {
+        path: '/restaurants/:id/chat',
+        element: <ChatbotPage />,
       },
       {
         element: <PrivateRoute />,
