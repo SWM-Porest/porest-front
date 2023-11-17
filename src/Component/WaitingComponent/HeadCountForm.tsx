@@ -83,6 +83,9 @@ export const Step3 = ({ data, cancel, team, accessToken }: any) => {
   }, [])
   return (
     <Container>
+      <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+        <h2 style={{ flex: '1', margin: '0 20px' }}>{data.restaurant_name} 웨이팅</h2>
+      </div>
       <NowWaitingBox team={team} head_count={data.head_count} stand={standData}></NowWaitingBox>
       <ButtonContainer>
         <StyledRedButton onClick={() => cancel(data._id)}>웨이팅 취소하기</StyledRedButton>
