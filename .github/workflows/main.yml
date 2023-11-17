@@ -28,7 +28,7 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: install node modules
-        run: npm install
+        run: npm install --force
 
       - name: build
         run: CI=false npm run build
