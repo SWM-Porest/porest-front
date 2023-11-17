@@ -80,6 +80,7 @@ const CartPrice: React.FC = () => {
                 name: order.menu_name,
                 price: order.price,
                 img: order.img,
+                isSoldOut: order.isSoldOut,
                 en_name: restaurant?.menus.find((e) => e._id === key)?.en_name || '',
                 category: restaurant?.menus.find((e) => e._id === key)?.category || '',
                 description: restaurant?.menus.find((e) => e._id === key)?.description || '',

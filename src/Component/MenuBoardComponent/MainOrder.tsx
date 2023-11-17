@@ -39,7 +39,7 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
     setIsOpen(!isOpen)
   }
 
-  const filteredMenus = info.menus.filter((menu) => menu.category !== '간편주문')
+  const filteredMenus = info.menus.filter((menu) => menu.category !== '간편주문' && !menu.isSoldOut)
 
   // 중복되지 않은 메뉴 타입 추출
   const uniqueMenuTypes = filteredMenus.reduce((types: string[], menu) => {

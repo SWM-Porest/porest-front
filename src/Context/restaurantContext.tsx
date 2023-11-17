@@ -37,6 +37,7 @@ export interface Menu {
   img: Image
   ingre: string[]
   _id: string
+  isSoldOut: boolean
   menuOptions: MenuOption[]
 }
 
@@ -58,6 +59,7 @@ export const restaurantContextDefaultValue: Restaurant = {
       _id: '',
       name: '',
       en_name: 'string',
+      isSoldOut: false,
       price: 2000,
       category: 'string',
       description: 'string',
