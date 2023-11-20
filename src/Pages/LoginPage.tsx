@@ -8,7 +8,7 @@ const LoginPage = () => {
   const navigate = useNavigate()
 
   const handleDismissClick = () => {
-    navigate(-3) // 전전 페이지로 이동
+    navigate(-1) // 전전 페이지로 이동
   }
 
   return (
