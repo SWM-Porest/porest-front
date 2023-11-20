@@ -22,8 +22,8 @@ const OptionSelector: React.FC<{
         <OptionTitleText>{option.name}</OptionTitleText>
       </OptionTitle>
       <OptionContainer>
-        {option.items.map((item: any) => (
-          <LargeButton key={item.name} selected={selectedItems.includes(item.name)}>
+        {option.items.map((item: any, index) => (
+          <LargeButton key={`item_${item.name}_${index}`} selected={selectedItems.includes(item.name)}>
             <ItemContainer>
               <Checkbox checked={selectedItems.includes(item.name)} onChange={() => handleCheckboxChange(item.name)} />
               <ItemName>{item.name}</ItemName>

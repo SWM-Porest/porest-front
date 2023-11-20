@@ -85,16 +85,16 @@ export const MenuModal: React.FC<OwnProps> = ({ id, isOpen, openModalHandler }) 
           <div>
             <Categories ingre={menu ? menu.ingre : []}></Categories>
             {menu?.menuOptions &&
-              menu?.menuOptions.map((option) => {
+              menu?.menuOptions.map((option, index) => {
                 return option._id !== null ? (
                   <OptionSelector
-                    key={option._id}
+                    key={`option_${menu._id}_${index}`}
                     option={option}
                     selectedItems={selectedOptions[option._id]?.map((item) => item.name) || []}
                     onSelect={(selectedItems) => handleOptionSelect(option._id ?? '', selectedItems)}
                   />
                 ) : (
-                  <></>
+                  <div key={`option_${menu._id}_${index}`}></div>
                 )
               })}
           </div>

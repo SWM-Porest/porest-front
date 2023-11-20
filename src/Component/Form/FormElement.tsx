@@ -45,7 +45,7 @@ export const FormInputInContainer = styled.input`
   justify-content: center;
 `
 
-export const FormItmeHeader = styled.div`
+export const FormItemHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;

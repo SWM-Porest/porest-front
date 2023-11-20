@@ -17,7 +17,7 @@ import Footer from 'Component/Footer'
 import Loading from 'Component/Loading'
 import { useForm } from 'react-hook-form'
 import { Table } from 'Api/table'
-import { FormItemContainer, FormItemInput, FormItemLabel, FormItmeHeader } from 'Component/Form/FormElement'
+import { FormItemContainer, FormItemInput, FormItemLabel, FormItemHeader } from 'Component/Form/FormElement'
 import { useAccessToken } from 'Api/tokenCookie'
 
 const EditRestaurantPage: React.FC = () => {
@@ -220,15 +220,15 @@ const EditRestaurantPage: React.FC = () => {
       <Container>
         <form id="form" onSubmit={handleSubmit(onRetaurantEditSubmit)}>
           <FormItemContainer>
-            <FormItmeHeader>
+            <FormItemHeader>
               <FormItemLabel>가게 이름</FormItemLabel>
-            </FormItmeHeader>
+            </FormItemHeader>
             <FormItemInput type="text" {...register('name')} />
           </FormItemContainer>
           <FormItemContainer>
-            <FormItmeHeader>
+            <FormItemHeader>
               <FormItemLabel>가게 사진</FormItemLabel>
-            </FormItmeHeader>
+            </FormItemHeader>
             <ImageListContainer>
               {restaurantImageList && restaurantImageList.length >= 6 ? null : uploadButton}
               {restaurantImageList && restaurantImageList.length > 0
@@ -265,30 +265,30 @@ const EditRestaurantPage: React.FC = () => {
             </ImageListContainer>
           </FormItemContainer>
           <FormItemContainer>
-            <FormItmeHeader>
+            <FormItemHeader>
               <FormItemLabel>가게 설명</FormItemLabel>
-            </FormItmeHeader>
+            </FormItemHeader>
             <FormItemInput type="text" {...register('intro')} />
           </FormItemContainer>
           <FormItemContainer>
-            <FormItmeHeader>
+            <FormItemHeader>
               <FormItemLabel>연락처</FormItemLabel>
-            </FormItmeHeader>
+            </FormItemHeader>
             <FormItemInput type="text" {...register('phone_number')} />
           </FormItemContainer>
           <FormItemContainer>
-            <FormItmeHeader>
+            <FormItemHeader>
               <FormItemLabel>주소</FormItemLabel>
-            </FormItmeHeader>
+            </FormItemHeader>
             <FormItemInput type="text" {...register('address')} />
           </FormItemContainer>
           <input type="hidden" {...register('banner_images')} />
         </form>
         <FormHeader>
-          <FormItmeHeader>
+          <FormItemHeader>
             <FormItemLabel>테이블</FormItemLabel>
             <div style={{ color: '#999999' }}>{tableData?.length}개</div>
-          </FormItmeHeader>
+          </FormItemHeader>
         </FormHeader>
         <FormBody>
           {tableData &&
