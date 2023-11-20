@@ -144,12 +144,18 @@ export default EditWaitingPage
 
 export const getTimeDiff = (time: Dayjs): string => {
   const timeDiffDuration: Duration = dayjs.duration(dayjs().diff(time))
+  const yearDiff: number = parseInt(timeDiffDuration.format('Y'))
+  const monthDiff: number = parseInt(timeDiffDuration.format('M'))
   const dateDiff: number = parseInt(timeDiffDuration.format('D'))
   const hourDiff: number = parseInt(timeDiffDuration.format('H'))
   const minuteDiff: number = parseInt(timeDiffDuration.format('m'))
   const secondDiff: number = parseInt(timeDiffDuration.format('s'))
 
-  if (dateDiff > 0) {
+  if (yearDiff > 0) {
+    return `${yearDiff}년 전`
+  } else if (monthDiff > 0) {
+    return `${monthDiff}달 전`
+  } else if (dateDiff > 0) {
     return `${dateDiff}일 전`
   } else if (hourDiff > 0) {
     return `${hourDiff}시간 전`
