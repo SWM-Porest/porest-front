@@ -9,7 +9,6 @@ function PrivateRoute() {
 
   useEffect(() => {
     if (!accessToken) {
-
       localStorage.setItem('savedPath', pathname)
       const refreshAccessToken = async () => {
         try {
@@ -20,7 +19,6 @@ function PrivateRoute() {
         } catch (error) {
           // console.log(error)
           navigate('/login')
-
         }
       }
       refreshAccessToken()
