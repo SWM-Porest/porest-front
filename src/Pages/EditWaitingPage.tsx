@@ -2,7 +2,7 @@ import { fetchgetRestaurantWaiting } from 'Api/getWaiting'
 import { useAccessToken } from 'Api/tokenCookie'
 import { useParams } from 'react-router-dom'
 import { StyledSpin } from './MenuBoardPage'
-import { FullPageDiv } from 'Component/WaitingComponent/HeadCountForm'
+import { FullPageDiv, RotateButton } from 'Component/WaitingComponent/HeadCountForm'
 import { Waiting } from 'Api/waitingRegistration'
 import Header from 'Component/Header'
 import styled from 'styled-components'
@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react'
 import { fetchWaitingCall, fetchWaitingCancel, fetchWaitingSeated } from 'Api/updateWaiting'
 import dayjs, { Dayjs } from 'dayjs'
 import duration, { Duration } from 'dayjs/plugin/duration'
+import { ChevronLeft20Filled } from '@fluentui/react-icons'
 dayjs.extend(duration)
 
 const EditWaitingPage = () => {
@@ -92,7 +93,18 @@ const EditWaitingPage = () => {
 
   return (
     <FullPageDiv>
-      <Header HeaderName="웨이팅 관리" />
+      <Header
+        HeaderName="웨이팅 관리"
+        Left={
+          <ChevronLeft20Filled
+            color="#212121"
+            onClick={() => {
+              window.location.href = '/mypage'
+            }}
+          />
+        }
+        Right={<RotateButton />}
+      />
       <WaitingList>
         {waitings.map((waiting: Waiting) => {
           return (
