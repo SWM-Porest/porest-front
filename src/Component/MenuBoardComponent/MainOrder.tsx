@@ -2,7 +2,7 @@ import { ChevronLeft20Filled } from '@fluentui/react-icons'
 import Header from 'Component/Header'
 import { MenuModal } from 'Component/MenuComponent/MenuModal'
 import { Restaurant } from 'Context/restaurantContext'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { createRef, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import MenuCard from './MenuCard'
@@ -16,6 +16,7 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [activeMenuIndex, setActiveMenuIndex] = useState(0)
   const [isHeaderVisible, setIsHeaderVisible] = useState(true)
+  const [contentRefs, setContentRefs] = useState<React.RefObject<HTMLDivElement>[]>([])
   const navigate = useNavigate()
 
   const handleIconLeftClick = () => {
@@ -49,8 +50,13 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
     return types
   }, [])
 
-  // Ref 배열을 동적 생성
-  const contentRefs = uniqueMenuTypes.map(() => useRef<HTMLDivElement>(null))
+  useEffect(() => {
+    setContentRefs((contentRefs) =>
+      Array(filteredMenus.length)
+        .fill(null)
+        .map((_, i) => contentRefs[i] || createRef()),
+    )
+  }, [filteredMenus.length])
 
   useEffect(() => {
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
@@ -75,7 +81,7 @@ const MainOrder: React.FC<OwnProps> = ({ info }) => {
     return () => {
       observer.disconnect()
     }
-  }, [])
+  }, [contentRefs])
 
   return (
     <div>
