@@ -98,6 +98,29 @@ const RestaurantOrderList = () => {
       // console.log(e)
     }
   }
+
+  const cancelOrder = async (order: Order) => {
+    if (order.status == 3) {
+      message.error('이미 조리가 완료된 주문입니다.')
+      return
+    }
+    if (order.status == 4) {
+      message.error('이미 서빙이 완료된 주문입니다.')
+      return
+    }
+    if (order.status >= 5) {
+      message.error('이미 결제가 완료된 주문입니다.')
+      return
+    }
+    try {
+      await orderService.cancelOrder(order._id, access_token)
+      queryClient.setQueriesData('orderList', (oldData: any) =>
+        oldData.filter((oldOrder: Order) => oldOrder._id !== order._id),
+      )
+    } catch (e) {
+      // console.log(e)
+    }
+  }
   const getStatusIcon = (status: number) => {
     switch (status) {
       case 1:
@@ -196,11 +219,14 @@ const RestaurantOrderList = () => {
                 </div>
               }
             />
-            <div>
+            <ButtonConatiner>
+              <StyledButton onClick={() => cancelOrder(item)} disabled={item.status > 2 ? true : false} danger>
+                취소하기
+              </StyledButton>
               <StyledButton type="primary" onClick={() => changeStatus(item)} disabled={item.status > 2 ? true : false}>
                 {getStatusButtonText(item.status)}
               </StyledButton>
-            </div>
+            </ButtonConatiner>
           </List.Item>
         )}
       />
@@ -344,4 +370,11 @@ const StyledMenuContainer = styled.div`
     display: flex;
     justify-content: center;
   }
+`
+const ButtonConatiner = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  height: 100%;
+  justify-content: space-between;
 `
