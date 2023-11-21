@@ -173,6 +173,11 @@ const RestaurantOrderList = () => {
             <div key={menu.menu_name}>
               <div>
                 {menu.menu_name} - {menu.quantity}개
+                {menu.options.map((option) => (
+                  <div key={option.name}>
+                    - {option.name} - {option.items.map((item) => item.name).join(', ')}
+                  </div>
+                ))}
               </div>
             </div>
           ))}
