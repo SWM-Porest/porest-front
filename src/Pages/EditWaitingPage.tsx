@@ -7,7 +7,7 @@ import { Waiting } from 'Api/waitingRegistration'
 import Header from 'Component/Header'
 import styled from 'styled-components'
 import { useEffect, useState } from 'react'
-import { fetchWaitingCall, fetchWaitingCancel, fetchWaitingManagerCancel, fetchWaitingSeated } from 'Api/updateWaiting'
+import { fetchWaitingCall, fetchWaitingManagerCancel, fetchWaitingSeated } from 'Api/updateWaiting'
 import dayjs, { Dayjs } from 'dayjs'
 import duration, { Duration } from 'dayjs/plugin/duration'
 dayjs.extend(duration)
