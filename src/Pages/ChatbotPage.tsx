@@ -746,7 +746,9 @@ const ChatbotPage: React.FC = () => {
                 <RecieveMessage>카테고리: {infoMenu.category}</RecieveMessage>
                 <RecieveMessage>가격: {infoMenu.price}</RecieveMessage>
                 <RecieveMessage>설명: {infoMenu.description}</RecieveMessage>
-                <RecieveMessage>옵션: {infoMenu.menuOptions.map((option) => option.name).join(', ')}</RecieveMessage>
+                {infoMenu.menuOptions.length > 0 && (
+                  <RecieveMessage>옵션: {infoMenu.menuOptions.map((option) => option.name).join(', ')}</RecieveMessage>
+                )}
               </RecieveBox>
             </RecieveContainer>
             <SendContainer>
