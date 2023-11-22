@@ -32,7 +32,7 @@ const MenuBoardPage: React.FC = () => {
   useEffect(() => {
     getRestaurant(dispatch, id)
     // 열었을 때 영업중 아니라고 뜨는 오류 있음;;
-    if (restaurant?.status != 1) {
+    if (restaurant && restaurant.status != 1) {
       alert('영업중인 레스토랑이 아닙니다.')
       navigate(-1)
     }
