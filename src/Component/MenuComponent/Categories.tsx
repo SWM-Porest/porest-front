@@ -6,9 +6,9 @@ interface ingre {
 const Categories = ({ ingre }: ingre) => {
   let ulelem
   if (ingre) {
-    ulelem = ingre.map((elem: string) => {
+    ulelem = ingre.map((elem: string, index) => {
       return (
-        <LiContainer>
+        <LiContainer key={`elem_${index}`}>
           <CategoryLi>{elem}</CategoryLi>
         </LiContainer>
       )

@@ -7,9 +7,12 @@ import CartPrice from 'Component/CartComponent/CartPrice'
 import Header from 'Component/Header'
 import { useCartModal } from 'Context/CartModalContext'
 import { useRestaurantState } from 'Context/restaurantContext'
+import axios from 'axios'
 import React, { useEffect } from 'react'
+import { UseQueryResult, useQuery } from 'react-query'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { styled } from 'styled-components'
+import { Table as TableModel } from 'Api/table'
 interface OwnProps {
   isOpen: boolean
 }
@@ -20,6 +23,7 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
   const [accessToken] = useAccessToken()
   const pushToken = localStorage.getItem('pushToken')
   const { pathname } = useLocation()
+  const [accesstoken] = useAccessToken()
 
   const { id } = useParams()
   const navigate = useNavigate()
@@ -29,6 +33,18 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
   }
 
   const table = getTableFromCookie()
+
+  const fecthTableList = async () => {
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/tables/restaurants/${id}`, {
+      headers: {
+        Authorization: `Bearer ${accesstoken}`,
+      },
+    })
+
+    return response.data
+  }
+
+  const { data: tables, isLoading }: UseQueryResult<TableModel[]> = useQuery('tables', fecthTableList)
 
   if (isOpen) {
     document.body.style.overflow = 'hidden'
@@ -69,12 +85,12 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
       closeModal()
       return
     }
-    // if (!table) {
-    //   // console.log('테이블 번호가 없습니다.')
-    //   navigate(`/restaurants/${id}/table`)
-    //   showMessage('테이블 번호를 입력해주세요.', 1500, '/img/close.png')
-    //   return
-    // }
+    if (tables && tables.length > 0 && !table) {
+      // console.log('테이블 번호가 없습니다.')
+      navigate(`/restaurants/${id}/table`)
+      showMessage('테이블 번호를 입력해주세요.', 1500, '/img/close.png')
+      return
+    }
     try {
       createOrder(pushToken)
       closeModal()

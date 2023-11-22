@@ -134,7 +134,7 @@ const FloatingButton: React.FC<OwnProps> = ({ info }) => {
         <SimpleOrderIcon onClick={handleSimpleOrderClick}>
           <AlertUrgent24Filled />
         </SimpleOrderIcon>
-        <ChatBotIcon onClick={() => alert('현재 준비 중인 기능입니다.')}>
+        <ChatBotIcon onClick={() => navigate(`/restaurants/${id}/chat`)}>
           <ChatBot width="2.4rem" height="2.4rem" />
         </ChatBotIcon>
 

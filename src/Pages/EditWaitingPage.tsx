@@ -2,14 +2,15 @@ import { fetchgetRestaurantWaiting } from 'Api/getWaiting'
 import { useAccessToken } from 'Api/tokenCookie'
 import { useParams } from 'react-router-dom'
 import { StyledSpin } from './MenuBoardPage'
-import { FullPageDiv } from 'Component/WaitingComponent/HeadCountForm'
+import { FullPageDiv, RotateButton } from 'Component/WaitingComponent/HeadCountForm'
 import { Waiting } from 'Api/waitingRegistration'
 import Header from 'Component/Header'
 import styled from 'styled-components'
 import { useEffect, useState } from 'react'
-import { fetchWaitingCall, fetchWaitingCancel, fetchWaitingSeated } from 'Api/updateWaiting'
+import { fetchWaitingCall, fetchWaitingManagerCancel, fetchWaitingSeated } from 'Api/updateWaiting'
 import dayjs, { Dayjs } from 'dayjs'
 import duration, { Duration } from 'dayjs/plugin/duration'
+import { ChevronLeft20Filled } from '@fluentui/react-icons'
 dayjs.extend(duration)
 
 const EditWaitingPage = () => {
@@ -29,7 +30,7 @@ const EditWaitingPage = () => {
   }, [])
 
   const handleWaitingCancel = (waitingId: string) => {
-    fetchWaitingCancel(accessToken, waitingId)
+    fetchWaitingManagerCancel(accessToken, waitingId)
       .catch(() => {
         alert('취소를 실패했습니다. 페이지를 새로고침합니다.')
         window.location.reload()
@@ -92,7 +93,18 @@ const EditWaitingPage = () => {
 
   return (
     <FullPageDiv>
-      <Header HeaderName="웨이팅 관리" />
+      <Header
+        HeaderName="웨이팅 관리"
+        Left={
+          <ChevronLeft20Filled
+            color="#212121"
+            onClick={() => {
+              window.location.href = '/mypage'
+            }}
+          />
+        }
+        Right={<RotateButton />}
+      />
       <WaitingList>
         {waitings.map((waiting: Waiting) => {
           return (
@@ -132,12 +144,18 @@ export default EditWaitingPage
 
 export const getTimeDiff = (time: Dayjs): string => {
   const timeDiffDuration: Duration = dayjs.duration(dayjs().diff(time))
+  const yearDiff: number = parseInt(timeDiffDuration.format('Y'))
+  const monthDiff: number = parseInt(timeDiffDuration.format('M'))
   const dateDiff: number = parseInt(timeDiffDuration.format('D'))
   const hourDiff: number = parseInt(timeDiffDuration.format('H'))
   const minuteDiff: number = parseInt(timeDiffDuration.format('m'))
   const secondDiff: number = parseInt(timeDiffDuration.format('s'))
 
-  if (dateDiff > 0) {
+  if (yearDiff > 0) {
+    return `${yearDiff}년 전`
+  } else if (monthDiff > 0) {
+    return `${monthDiff}달 전`
+  } else if (dateDiff > 0) {
     return `${dateDiff}일 전`
   } else if (hourDiff > 0) {
     return `${hourDiff}시간 전`

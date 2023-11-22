@@ -46,6 +46,52 @@ const MyPage = () => {
     navigate('/orderlist')
   }
 
+  const openRestaurant = async (id: string) => {
+    await axios
+      .patch(`${process.env.REACT_APP_API_URL}/restaurants/${id}/status`, null, {
+        params: {
+          status: 1,
+        },
+      })
+      .then((response) => {
+        setRestaurants((prevState) => {
+          const newState = prevState.map((restaurant) => {
+            if (restaurant._id === id) {
+              restaurant = response.data
+            }
+            return restaurant
+          })
+          return newState
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
+  const closeRestaurant = async (id: string) => {
+    await axios
+      .patch(`${process.env.REACT_APP_API_URL}/restaurants/${id}/status`, null, {
+        params: {
+          status: 0,
+        },
+      })
+      .then((response) => {
+        setRestaurants((prevState) => {
+          const newState = prevState.map((restaurant) => {
+            if (restaurant._id === id) {
+              restaurant = response.data
+            }
+            return restaurant
+          })
+          return newState
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/restaurants`)
@@ -125,6 +171,19 @@ const MyPage = () => {
                     Name={`${restaurant.name} 웨이팅 관리`}
                     onClick={() => navigate(`/restaurants/${restaurant._id}/waitings/edit`)}
                   />
+                  {restaurant.status && restaurant.status === 1 ? (
+                    <SelectionList
+                      Icon={<TextBulletListSquare20Filled color="#212121" />}
+                      Name={`${restaurant.name} 닫기`}
+                      onClick={() => closeRestaurant(restaurant._id)}
+                    />
+                  ) : (
+                    <SelectionList
+                      Icon={<TextBulletListSquare20Filled color="#212121" />}
+                      Name={`${restaurant.name} 열기`}
+                      onClick={() => openRestaurant(restaurant._id)}
+                    />
+                  )}
                 </SubMenuContainer>
               )}
             </div>

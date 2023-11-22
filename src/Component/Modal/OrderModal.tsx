@@ -40,6 +40,8 @@ const OrderModal: React.FC<OwnProps> = ({ order, isOpen, openModalHandler }) => 
 
   const getStatusText = (status: number) => {
     switch (status) {
+      case 0:
+        return '접수 취소'
       case 1:
         return '접수중'
       case 2:

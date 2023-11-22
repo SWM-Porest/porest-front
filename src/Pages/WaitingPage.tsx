@@ -59,20 +59,7 @@ const WaitingPage = () => {
       })
       return response.data
     }
-    const requestPermission = () => {
-      console.log('권한 요청 중')
-
-      Notification.requestPermission().then((permission) => {
-        if (permission === 'granted') {
-          console.log('알림 권한 허용')
-        } else {
-          console.log('알림 건한 거부')
-        }
-      })
-    }
-
     try {
-      requestPermission()
       waitingRegistration(pushToken)
       window.location.reload()
     } catch (error) {

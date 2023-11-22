@@ -15,7 +15,7 @@ const MenuCard: React.FC<OwnProps> = ({ info }) => {
           <StyledImage src={getImageSrc(info.img)} alt="메뉴 이미지" />
           <StyledText>
             <StyledName>{info.name}</StyledName>
-            <StyledDes>{info.description}</StyledDes>
+            {/* <StyledDes>{info.description}</StyledDes> */}
             <StyledPrice>{price}원</StyledPrice>
           </StyledText>
         </MenuCardContainer>
@@ -23,7 +23,7 @@ const MenuCard: React.FC<OwnProps> = ({ info }) => {
         <MenuCardContainer>
           <StyledText>
             <StyledName>{info.name}</StyledName>
-            <StyledDes>{info.description}</StyledDes>
+            {/* <StyledDes>{info.description}</StyledDes> */}
             <StyledPrice>{price}원</StyledPrice>
           </StyledText>
         </MenuCardContainer>

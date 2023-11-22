@@ -45,24 +45,30 @@ const RestaurantListPage = () => {
   return (
     <div>
       <RestaurantList>
-        {restaurants.map((restaurant) => (
-          <div key={restaurant._id}>
-            <RestaurantLink to={`/restaurants/${restaurant._id}`}>
-              <StyledImage src={getImageSrc(restaurant.banner_images[0])} alt="매장 사진" />
-              <ContentsContainer>
-                <NameContainer>
-                  <StyledName>{restaurant.name}</StyledName>
-                </NameContainer>
-                <AddressContainer>
-                  <StyledAddress>주소: {restaurant.address}</StyledAddress>
-                </AddressContainer>
-                <InfoContainer>
-                  <StyledInfo>설명: {restaurant.intro}</StyledInfo>
-                </InfoContainer>
-              </ContentsContainer>
-            </RestaurantLink>
-          </div>
-        ))}
+        {restaurants.map((restaurant) => {
+          if (restaurant.status === 1) {
+            return (
+              <div key={restaurant._id}>
+                <RestaurantLink to={`/restaurants/${restaurant._id}`}>
+                  <StyledImage src={getImageSrc(restaurant.banner_images[0])} alt="매장 사진" />
+                  <ContentsContainer>
+                    <NameContainer>
+                      <StyledName>{restaurant.name}</StyledName>
+                    </NameContainer>
+                    <AddressContainer>
+                      <StyledAddress>주소: {restaurant.address}</StyledAddress>
+                    </AddressContainer>
+                    <InfoContainer>
+                      <StyledInfo>설명: {restaurant.intro}</StyledInfo>
+                    </InfoContainer>
+                  </ContentsContainer>
+                </RestaurantLink>
+              </div>
+            )
+          } else {
+            return <div key={restaurant._id}></div>
+          }
+        })}
       </RestaurantList>
       <NavContainer>
         <Navbar

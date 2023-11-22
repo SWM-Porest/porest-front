@@ -16,16 +16,16 @@ import {
   FormInputContainer,
   FormInputInContainer,
   FormItemContainer,
+  FormItemHeader,
   FormItemInput,
   FormItemLabel,
   FormItemTextField,
-  FormItmeHeader,
 } from 'Component/Form/FormElement'
 import Header from 'Component/Header'
 import { Image, isInstanceOfImage } from 'Context/restaurantContext'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { set, useForm } from 'react-hook-form'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { styled } from 'styled-components'
 import ErrorPage from './ErrorPage'
@@ -49,6 +49,7 @@ const CreateOrUpdateMenuPage = () => {
     menuOptions: [],
     img: null,
     category: '',
+    isSoldOut: false,
     ...state?.menu,
   }
 
@@ -61,8 +62,12 @@ const CreateOrUpdateMenuPage = () => {
     menu.img = state.menu.img
     menu.category = state.menu.category
     menu._id = state.menu._id
+    menu.isSoldOut = state.menu.isSoldOut
   }
+
   const { register, handleSubmit, formState, setValue, getValues, reset } = useForm()
+
+  const [isSoldOut, setSoldOut] = useState<boolean>(false)
 
   const [menuImage, setMenuImage] = useState<Image | null>(null)
 
@@ -96,6 +101,7 @@ const CreateOrUpdateMenuPage = () => {
   }
 
   const submitMenuForm = async (data: any) => {
+    console.log(data)
     if (data.price) {
       data.price = Number(data.price)
     }
@@ -254,12 +260,22 @@ const CreateOrUpdateMenuPage = () => {
     }
   }
 
+  const toggleIsSoldOut = async () => {
+    setSoldOut((prev) => !prev)
+    setValue('isSoldOut', getValues('isSoldOut') ? false : true)
+  }
+
   useEffect(() => {
     if (!!state && !!state.category) {
       setValue('category', state.category)
     }
+
     if (!!state && !!state.menu) {
       reset(state.menu)
+      if (menu.isSoldOut) {
+        setSoldOut(menu.isSoldOut)
+      }
+
       if (menu.ingre !== undefined) {
         setIngreInputValues([...menu.ingre])
       }
@@ -321,9 +337,19 @@ const CreateOrUpdateMenuPage = () => {
             <input id="menuImage" type="file" accept="image/*" onChange={uploadImage} hidden />
           </FormItemContainer>
           <FormItemContainer>
-            <FormItmeHeader>
+            <FormItemHeader>
+              <FormItemLabel>품절여부</FormItemLabel>
+            </FormItemHeader>
+            {isSoldOut ? (
+              <SetSoldOutButton onClick={toggleIsSoldOut}>매진 취소</SetSoldOutButton>
+            ) : (
+              <SetSoldOutButton onClick={toggleIsSoldOut}>매진 설정</SetSoldOutButton>
+            )}
+          </FormItemContainer>
+          <FormItemContainer>
+            <FormItemHeader>
               <FormItemLabel>가격</FormItemLabel>
-            </FormItmeHeader>
+            </FormItemHeader>
 
             <FormInputContainer>
               <FormInputInContainer
@@ -339,15 +365,15 @@ const CreateOrUpdateMenuPage = () => {
             </FormInputContainer>
           </FormItemContainer>
           <FormItemContainer>
-            <FormItmeHeader>
+            <FormItemHeader>
               <FormItemLabel>설명</FormItemLabel>
-            </FormItmeHeader>
+            </FormItemHeader>
             <FormItemTextField {...register('description')} placeholder="메뉴에 대한 설명을 입력해주세요" />
           </FormItemContainer>
           <FormItemContainer>
-            <FormItmeHeader>
+            <FormItemHeader>
               <FormItemLabel>주요 재료</FormItemLabel>
-            </FormItmeHeader>
+            </FormItemHeader>
             <FormInputContainer>
               <FormInputInContainer
                 type="text"
@@ -360,7 +386,7 @@ const CreateOrUpdateMenuPage = () => {
             <IngreList>
               {ingreInputValues.map((ingre: string, index: number) => {
                 return (
-                  <IngreContainer key={`key-ingre-${Number}`}>
+                  <IngreContainer key={`key-ingre-${index}}`}>
                     <RedSubtractCircle20Filled
                       onClick={() => {
                         removeIngre(index)
@@ -373,13 +399,13 @@ const CreateOrUpdateMenuPage = () => {
               <input id="ingre" type="hidden" {...register(`ingre`)} />
             </IngreList>
             <FormItemContainer>
-              <FormItmeHeader>
+              <FormItemHeader>
                 <FormItemLabel>옵션</FormItemLabel>
                 <OptionAddButton onClick={addOption}>
                   <Add20Filled color="#3FBA73" />
                   옵션 추가
                 </OptionAddButton>
-              </FormItmeHeader>
+              </FormItemHeader>
 
               <OptionList>
                 {options.map((option: MenuOption, moIdx: number) => {
@@ -712,4 +738,17 @@ const MenuBody = styled.div`
 const Form = styled.form`
   width: 100%;
   padding: 0 2rem 0 2rem;
+`
+
+const SetSoldOutButton = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 5.2rem;
+  font-size: ${({ theme }) => theme.FONT_SIZE.medium};
+  color: #3fba73;
+  border-radius: 1.2rem;
+  background-color: rgba(63, 186, 115, 0.1);
+  cursor: pointer;
 `

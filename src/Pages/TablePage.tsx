@@ -6,6 +6,11 @@ import { Button, Input } from 'antd'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
+import { Table as TableModel } from 'Api/table'
+import { UseQueryResult, useQuery } from 'react-query'
+import axios from 'axios'
+import { useAccessToken } from 'Api/tokenCookie'
+
 const TablePage = () => {
   const { id } = useParams()
   const storedTableNumber = getTableNumberCookie() || '' // 쿠키에서 테이블 번호 가져오기
@@ -17,6 +22,19 @@ const TablePage = () => {
   const [tableNumber, setTableNumber] = useState<string>(storedTableNumber)
   const [isInputValid, setInputValid] = useState(!!storedTableNumber)
 
+  const [accesstoken] = useAccessToken()
+  const fecthTableList = async () => {
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/tables/restaurants/${id}`, {
+      headers: {
+        Authorization: `Bearer ${accesstoken}`,
+      },
+    })
+
+    return response.data
+  }
+
+  const { data: tables, isLoading }: UseQueryResult<TableModel[]> = useQuery('tables', fecthTableList)
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value
     setTableNumber(inputValue)
@@ -26,9 +44,11 @@ const TablePage = () => {
   }
 
   const handleInputComplete = () => {
-    if (tableNumber) {
+    if (tableNumber && tables && tables.length >= Number(tableNumber)) {
       setTableNumberCookie(tableNumber)
       navigate(`/restaurants/${id}`)
+    } else {
+      alert('유효하지 않는 테이블 번호입니다. 다시 확인해주세요')
     }
   }
 
