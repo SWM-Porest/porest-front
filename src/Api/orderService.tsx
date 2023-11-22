@@ -26,4 +26,15 @@ export const orderService = {
       },
     })
   },
+
+  cancelOrder: async (id: string, access_token: string): Promise<Order> => {
+    return await api.patch(`/${id}`, null, {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+      params: {
+        s: 0,
+      },
+    })
+  },
 }
