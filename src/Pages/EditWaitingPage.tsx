@@ -7,7 +7,7 @@ import { Waiting } from 'Api/waitingRegistration'
 import Header from 'Component/Header'
 import styled from 'styled-components'
 import { useEffect, useState } from 'react'
-import { fetchWaitingCall, fetchWaitingCancel, fetchWaitingSeated } from 'Api/updateWaiting'
+import { fetchWaitingCall, fetchWaitingCancel, fetchWaitingManagerCancel, fetchWaitingSeated } from 'Api/updateWaiting'
 import dayjs, { Dayjs } from 'dayjs'
 import duration, { Duration } from 'dayjs/plugin/duration'
 dayjs.extend(duration)
@@ -29,7 +29,7 @@ const EditWaitingPage = () => {
   }, [])
 
   const handleWaitingCancel = (waitingId: string) => {
-    fetchWaitingCancel(accessToken, waitingId)
+    fetchWaitingManagerCancel(accessToken, waitingId)
       .catch(() => {
         alert('취소를 실패했습니다. 페이지를 새로고침합니다.')
         window.location.reload()
