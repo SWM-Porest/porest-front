@@ -62,13 +62,17 @@ const WaitingPage = () => {
     const requestPermission = () => {
       console.log('권한 요청 중')
 
-      Notification.requestPermission().then((permission) => {
-        if (permission === 'granted') {
-          console.log('알림 권한 허용')
-        } else {
-          console.log('알림 건한 거부')
-        }
-      })
+      try {
+        Notification.requestPermission().then((permission) => {
+          if (permission === 'granted') {
+            console.log('알림 권한 허용')
+          } else {
+            console.log('알림 건한 거부')
+          }
+        })
+      } catch (error) {
+        console.log('알림 권한 요청 오류')
+      }
     }
 
     try {
