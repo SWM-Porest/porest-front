@@ -76,7 +76,7 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
     //   return
     // }
     try {
-      createOrder(null)
+      createOrder(pushToken)
       closeModal()
       // Notification.requestPermission().then((permission) => {
       //   if (permission == 'denied') {
