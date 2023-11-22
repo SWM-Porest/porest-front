@@ -1,6 +1,7 @@
 import { ChevronLeft20Filled } from '@fluentui/react-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { getCookie, removeAllCookie } from 'Api/cartCookie'
+import { Table as TableModel } from 'Api/table'
 import { getTableNumberCookie } from 'Api/tableCookie'
 import { useAccessToken } from 'Api/tokenCookie'
 import CartPrice from 'Component/CartComponent/CartPrice'
@@ -12,7 +13,6 @@ import React, { useEffect } from 'react'
 import { UseQueryResult, useQuery } from 'react-query'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { styled } from 'styled-components'
-import { Table as TableModel } from 'Api/table'
 interface OwnProps {
   isOpen: boolean
 }
@@ -132,7 +132,7 @@ const CartModal: React.FC<OwnProps> = ({ isOpen }) => {
         restaurant_id: restaurant?._id,
         restaurant_name: restaurant?.name,
         restaurant_address: restaurant?.address,
-        table_id: 1,
+        table_id: table || 1,
         menus: cookie,
         token: pushSubscription,
       }),
